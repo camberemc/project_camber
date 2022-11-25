@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_assign_project_wizard" model="ir.ui.view">
+        <field name="name">Assign Project</field>
+        <field name="model">sale.project.assign.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Assign Project">
+                <group>
+                    <group>
+                        <field name="order_id" required="1" options="{'no_create': True, 'no_create_edit':True}" domain="[('id', '=', context.get('default_sale_order'))]" invisible="1" />
+                        <field name="project_id" options="{'no_create': True, 'no_create_edit':True}" />
+                    </group>
+
+                    <h4>Message</h4>
+                    <field name="message" />
+                </group>
+                <footer>
+                    <button name="assign_project_to" string="_Apply" type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <act_window id="action_assign_project" name="Assign Project" res_model="sale.project.assign.wizard" view_mode="form" target="new" />
+
+</odoo>

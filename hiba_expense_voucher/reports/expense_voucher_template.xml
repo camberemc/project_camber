@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="account_expense_voucher_template">
+            <t t-call="web.html_container">
+                <t t-call="hiba_expense_voucher.report_header_minimal_new"/>
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <h2>EXPENSE VOUCHER</h2>
+                            <strong style="font-size:20px;" t-field="o.name"/>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <table width="90%" height="100%" class="text-center"
+                                       style="margin-left:25px;margin-right:20px;border: 1pt solid black;">
+                                    <tr width="100%" height="100%">
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <b>
+                                                <span>Name :
+                                                    <span t-field="o.name"/>
+                                                </span>
+                                            </b>
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span>Reference :
+                                                <span t-field="o.reference"/>
+                                            </span>
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <b>
+                                                <span>Amount :
+                                                    <span t-field="o.total_amount"
+                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </span>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr width="100%" height="100%">
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+
+                                            <span>Date :
+                                                <span t-field="o.date"/>
+                                            </span>
+
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span>Customer :
+                                                <t t-if="o.partner_id">
+                                                    <span t-field="o.partner_id.name"/>
+                                                </t>
+                                            </span>
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+
+                                            <span>Journal :
+                                                <span t-field="o.journal_id.name"/>
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <table width="90%" height="100%" class="text-center"
+                                       style="margin-left:25px;margin-right:20px;border: 1pt solid black;">
+                                    <thead>
+                                        <tr width="100%" height="100%">
+                                            <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                height="100%"
+                                                class="text-center" name="th_label">
+                                                <strong>ACCOUNT</strong>
+                                            </th>
+                                            <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                height="100%"
+                                                class="text-center" name="th_account">
+
+                                                <strong>LABEL</strong>
+                                            </th>
+                                            <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                height="100%"
+                                                name="th_amount" class="text-center">
+                                                <strong>AMOUNT</strong>
+                                            </th>
+                                            <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                height="100%"
+                                                name="th_vat" class="text-center">
+                                                <strong>VAT</strong>
+                                            </th>
+                                            <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                height="100%"
+                                                name="th_price_unit" class="text-center">
+                                                <strong>TOTAL</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.expense_line_ids" t-as="line">
+                                            <tr width="100%" height="100%">
+                                                <td style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                    height="100%"
+                                                    class="text-center">
+                                                    <span t-field="line.account_id.name"/>
+                                                </td>
+                                                <td style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                    height="100%"
+                                                    class="text-center">
+
+                                                    <span t-field="line.label"/>
+                                                </td>
+                                                <td style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                    height="100%"
+                                                    class="text-right">
+                                                    <span t-field="line.price_amount" style="padding-right:5px"/>
+                                                </td>
+                                                <td style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                    height="100%"
+                                                    class="text-right">
+                                                    <span t-field="line.tax_amount" style="padding-right:5px"/>
+                                                </td>
+                                                <td style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                    height="100%"
+                                                    class="text-right">
+                                                    <span t-field="line.subtotal" style="padding-right:5px"
+                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-8">
+
+                                </div>
+                                <div class="col-4">
+                                    <table width="75%" class="text-center"
+                                           style="margin-left:25px;margin-right:20px;border: 1pt solid black;">
+                                        <tr width="100%">
+                                            <td style="border: 1px solid black"
+                                                width="45%" class="text-center">
+                                                <b>
+                                                    <span>Untaxed Amount</span>
+                                                </b>
+                                            </td>
+                                            <td style="border: 1px solid black;"
+                                                width="45%" class="text-right">
+                                                <b>
+                                                    <span t-field="o.untaxed_amount" style="padding-right:5px;"
+                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </b>
+                                            </td>
+                                        </tr>
+                                        <tr width="100%">
+                                            <td style="border: 1px solid black"
+                                                width="45%" class="text-center">
+                                                <b>
+                                                    <span>Vat Amount</span>
+                                                </b>
+                                            </td>
+                                            <td style="border: 1px solid black;"
+                                                width="45%" class="text-right">
+                                                <b>
+                                                    <span t-field="o.tax_amount" style="padding-right:5px;"
+                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </b>
+                                            </td>
+                                        </tr>
+                                        <tr width="100%">
+                                            <td style="border: 1px solid black"
+                                                width="45%" class="text-center">
+                                                <b>
+                                                    <span>Total</span>
+                                                </b>
+                                            </td>
+                                            <td style="border: 1px solid black;"
+                                                width="45%" class="text-right">
+                                                <b>
+                                                    <span t-field="o.total_amount" style="padding-right:5px;"
+                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </b>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <strong>Comments</strong>
+                            <p t-field="o.comments"/>
+                            <div class="oe_structure"/>
+                        </div>
+
+
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+        <template id="account_expense_voucher_template_gmech">
+            <t t-call="web.html_container">
+                <t t-call="hiba_expense_voucher.report_header_minimal"/>
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <h2>EXPENSE VOUCHER</h2>
+                            <strong style="font-size:20px;" t-field="o.name"/>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <table width="90%" height="100%" class="text-center"
+                                       style="margin-left:25px;margin-right:20px;border: 1pt solid black;">
+                                    <tr width="100%" height="100%">
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <b>
+                                                <span>Name :
+                                                    <span t-field="o.name"/>
+                                                </span>
+                                            </b>
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span>Reference :
+                                                <span t-field="o.reference"/>
+                                            </span>
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <b>
+                                                <span>Amount :
+                                                    <span t-field="o.total_amount"
+                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </span>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr width="100%" height="100%">
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+
+                                            <span>Date :
+                                                <span t-field="o.date"/>
+                                            </span>
+
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span>Customer :
+                                                <t t-if="o.partner_id">
+                                                    <span t-field="o.partner_id.name"/>
+                                                </t>
+                                            </span>
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+
+                                            <span>Journal :
+                                                <span t-field="o.journal_id.name"/>
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <table width="90%" height="100%" class="text-center"
+                                       style="margin-left:25px;margin-right:20px;border: 1pt solid black;">
+                                    <thead>
+                                        <tr width="100%" height="100%">
+                                            <th style="border: 1px solid black;padding-left: 8px" width="25%"
+                                                height="100%"
+                                                class="text-center" name="th_label">
+                                                <strong>ACCOUNT</strong>
+                                            </th>
+                                            <th style="border: 1px solid black;padding-left: 8px" width="25%"
+                                                height="100%"
+                                                class="text-center" name="th_account">
+
+                                                <strong>LABEL</strong>
+                                            </th>
+                                            <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                height="100%"
+                                                name="th_amount" class="text-center">
+                                                <strong>AMOUNT</strong>
+                                            </th>
+                                            <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                height="100%"
+                                                name="th_vat" class="text-center">
+                                                <strong>VAT</strong>
+                                            </th>
+                                            <th style="border: 1px solid black;padding-left: 8px" width="20%"
+                                                height="100%"
+                                                name="th_price_unit" class="text-center">
+                                                <strong>TOTAL</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.expense_line_ids" t-as="line">
+                                            <tr width="100%" height="100%">
+                                                <td style="border: 1px solid black;padding-left: 8px" width="25%"
+                                                    height="100%"
+                                                    class="text-center">
+                                                    <span t-field="line.account_id.name"/>
+                                                </td>
+                                                <td style="border: 1px solid black;padding-left: 8px" width="25%"
+                                                    height="100%"
+                                                    class="text-center">
+
+                                                    <span t-field="line.label"/>
+                                                </td>
+                                                <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px" width="15%"
+                                                    height="100%"
+                                                    class="text-right">
+                                                    <span  t-esc="'{0:,.2f}'.format(float(line.price_amount))" style="padding-right:5px"/>
+                                                </td>
+                                                <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px" width="15%"
+                                                    height="100%"
+                                                    class="text-right">
+                                                    <span t-esc="'{0:,.2f}'.format(float(line.tax_amount))" style="padding-right:5px"/>
+                                                </td>
+                                                <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px" width="20%"
+                                                    height="100%"
+                                                    class="text-right">
+                                                    <span   style="padding-right:5px"
+                                                          t-esc="'{0:,.2f}'.format(float(line.subtotal))"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr width="100%">
+                                            <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px"
+                                                colspan="4"
+                                                height="100%"
+                                                class="text-right">
+                                                <strong>Untaxed
+                                                    Amount
+                                                </strong>
+                                            </td>
+                                            <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px"
+                                                height="100%"
+                                                class="text-right">
+
+                                                <strong t-field="o.untaxed_amount" style="padding-right:5px;"
+                                                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr width="100%">
+                                            <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px"
+                                                colspan="4"
+                                                height="100%"
+                                                class="text-right">
+                                                <strong>Vat
+                                                    Amount
+                                                </strong>
+                                            </td>
+                                            <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px"
+                                                height="100%"
+                                                class="text-right">
+
+                                                <span t-field="o.tax_amount" style="padding-right:5px;"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr width="100%">
+                                            <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px"
+                                                colspan="4"
+                                                height="100%"
+                                                class="text-right">
+                                                <strong>Total</strong>
+                                            </td>
+                                            <td style="border: 1px solid black;padding-left: 8px;padding-right: 8px"
+                                                height="100%"
+                                                class="text-right">
+
+                                                <strong t-field="o.total_amount" style="padding-right:5px;"
+                                                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <br/>
+                            <strong>Comments</strong>
+                            <p t-field="o.comments"/>
+                            <div class="oe_structure"/>
+                        </div>
+
+
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+
+    </data>
+
+
+</odoo>

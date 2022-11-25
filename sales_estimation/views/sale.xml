@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estimation_sale_order_form" model="ir.ui.view">
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='validity_date']" position="before">
+                <field name="estimation_id" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//page[1]/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
+                <field name="unit_estd_cost"/>
+                <field name="service_cost"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

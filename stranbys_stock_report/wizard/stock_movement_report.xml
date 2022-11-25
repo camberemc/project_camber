@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_stock_movement_form" model="ir.ui.view">
+        <field name="name">Stock Movement Report</field>
+        <field name="model">stock.movement.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="date_fr" required="1" />
+                        <field name="date_to" required="1" />
+                    </group>
+                    <group>
+                        <field name="product_ids"  widget="many2many_tags" options="{'no_create':True,'no_create_edit':True}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_stock_movement_preview" string="PREVIEW" type="object" class="oe_highlight" />
+                    <button name="print_stock_movement_pdf" string="PDF" type="object" class="oe_highlight" />
+                    <button name="print_stock_movement" string="EXCEL" type="object" class="oe_highlight" />
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <report id="report_print_stock_movement"
+            model="stock.movement.wizard"
+            string="Stock Summary Report"
+            report_type="xlsx"
+            name="stock.movement.xlsx"
+            file="stock.movement.xlsx"
+            attachment_use="False" />
+
+    <record id="act_view_stock_movement_form" model="ir.actions.act_window">
+        <field name="name">Stock Summary</field>
+        <field name="res_model">stock.movement.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+<!--        <field name="view_type">form</field>-->
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_stock_movement_form" />
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_stock_inventory_reports" name="Mis Inventory Reports" parent="stock.menu_stock_root"
+            sequence="50" groups="stock.group_stock_manager"/>
+
+    <menuitem action="act_view_stock_movement_form" id="menu_view_stock_movement_form" parent="menu_stock_inventory_reports" sequence="200" />
+
+
+</odoo>

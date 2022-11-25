@@ -1,0 +1,115 @@
+<odoo>
+    <record id="expense_calculation_form_view" model="ir.ui.view">
+        <field name="name">estimation.calculation.form</field>
+        <field name="model">estimation.calculation</field>
+        <field name="arch" type="xml">
+            <form string="Calculation">
+                <group>
+                    <group>
+                        <field name="item_type" required="1"/>
+                        <field name="estimation_id"/>
+                    </group>
+                    <group>
+                        <field name="total"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page name="calculation_lines" string="Calculation Lines">
+                        <field name="calculation_line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name" required="1"/>
+                                <field name="product_qty"
+                                       attrs="{'column_invisible': [('parent.item_type', 'in', ('bank_charges'))]}"/>
+                                <field name="unit_price_material"
+                                       attrs="{'column_invisible': [('parent.item_type', 'in', ('bank_charges'))]}"/>
+                                <!--                                bank -->
+                                <field name="bond_value"
+                                       attrs="{'column_invisible': [('parent.item_type', 'not in', ('bank_charges'))]}"/>
+                                <field name="validity_monthly"
+                                       attrs="{'column_invisible': [('parent.item_type', 'not in', ('bank_charges'))]}"/>
+                                <!--                                <field name="validity_days" attrs="{'column_invisible': [('parent.item_type', 'not in', ('bank_charges'))]}"/>-->
+                                <field name="bank_charges"
+                                       attrs="{'column_invisible': [('parent.item_type', 'not in', ('bank_charges'))]}"/>
+
+                                <field name="duration_days"
+                                       attrs="{'column_invisible': [('parent.item_type', 'not in', 'fd_accommodation')]}"/>
+                                <field name="duration_month" attrs="{'column_invisible': [('parent.item_type', 'in', ('admin_cost','fd_accommodation','bank_charges','material_transport_to_site','scaffolding',
+                                'civil_power_tools','additional_mob_demob','consumables'))]}"/>
+                                <field name="total" sum="Total"/>
+                                <field name="calculation_id" invisible="1"/>
+
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="estimation_expense_form_view" model="ir.ui.view">
+        <field name="name">estimation.expense.type.form</field>
+        <field name="model">estimation.expense.type</field>
+        <field name="arch" type="xml">
+            <form string="Expense Type">
+                <group>
+                    <group>
+                        <field name="name" options="{'no_create': True, 'no_open': True,'no_edit':True}"/>
+                    </group>
+                    <group>
+                        <field name="department"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="estimation_expense_list_view" model="ir.ui.view">
+        <field name="model">estimation.expense.type</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Expense Type">
+                <field name="name"/>
+                <field name="department"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="expense_calculation_list_view" model="ir.ui.view">
+        <field name="model">estimation.calculation</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Calculation">
+                <field name="estimation_id"/>
+                <field name="item_type"/>
+                <field name="total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="act_expense_calculation_view" model="ir.actions.act_window">
+        <field name="name">Estimation Calculation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">estimation.calculation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new orderline
+            </p>
+        </field>
+    </record>
+    <record id="act_expense_estimation" model="ir.actions.act_window">
+        <field name="name">Expense Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">estimation.expense.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new orderline
+            </p>
+        </field>
+    </record>
+<!--    <menuitem action="chamber_erp.act_expense_calculation_view" id="menu_expense_view" parent="crm.crm_menu_config"-->
+<!--              sequence="1"/>-->
+    <menuitem action="chamber_erp.act_expense_estimation" id="menu_estimation_expense_type_view" parent="crm.crm_menu_config"
+              sequence="2"/>
+</odoo>

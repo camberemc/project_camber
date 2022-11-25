@@ -1,0 +1,18 @@
+<odoo>
+    <record id="project_form_extend_hiba" model="ir.ui.view">
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[1]" position="after">
+            <page name="project_summary" string="Project Summary">
+                    <group>
+                        <group>
+                            <button string="Update" type="object" name="update_project_summary" class="oe_highlight"/>
+                            <field name="total_labour_expense" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,329 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.page{   
+	font-family: 'Roboto', serif;
+    font-size: 12px;
+    color: #000000;
+}
+
+/* .invoice {   
+    font-size: 14px;
+} */
+
+.space16 {
+    margin-bottom: 16px;
+}
+
+.space32 {
+    margin-bottom: 64px !important;
+}
+
+
+.center {
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.head-content {
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.head-content>div {
+    background-color: #875a7b;
+    border-left: 1px solid white ;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.head-content>div>* {
+    width: max-content;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+
+.head-partner-details {
+    width: max-content;
+    padding : 5px
+
+}
+
+.head-partner-top {
+    width: max-content;
+    background-color: #875a7b;
+    color: #fff  !important;
+    padding : 2px;
+    font-weight: bold;
+}
+
+
+.head-partner-top>span {
+    color: #fff  !important;
+}
+
+
+
+.blue {
+    background-color: #00205b;
+    color: #fff;
+    border-bottom: 1px solid #569493;
+    font-weight: bold;
+}
+.black {
+    background-color: rgb(103, 156, 180);
+    color: #fff;
+    border-bottom: 1px solid #569493;
+    font-weight: bold;
+}
+.line {
+    border-bottom: 1px solid #569493;
+}
+.grey {
+    background-color: #dddddd;
+    color: #000;
+    border-bottom: 1px solid #569493;
+}
+.head-name {
+	font-size: 180%;
+	font-weight: 400;
+}
+
+.head-strong {
+	font-size: 180%px;
+    font-weight: 700;
+    color: #875a7b;
+}
+
+.head-strong-start {
+    color: #6aa84e;
+	font-size: 180%;
+	font-weight: 700;
+}
+
+ul, ol {
+     margin-left:3em;
+}
+ul li{
+	font-size: 8px;
+}
+
+.details-box {
+	font-size: 20px;
+}
+
+.boxed {
+    border: 1px solid grey;
+}
+
+.reward {
+    margin-top: -30px; 
+    margin-bottom: -30px;
+}
+
+
+tr.is-total td{
+    background-color: #c7dbfc;
+  }
+
+.br { 
+    display: block; 
+    margin-bottom: 0em; 
+} 
+  
+.brsmall { 
+    display: block; 
+    margin-bottom: -.2em; 
+} 
+  
+.brxsmall { 
+    display: block; 
+    margin-bottom: -.4em; 
+} 
+
+thead.blue {
+    background-color: #00205b;
+    color: #fff;
+  }
+
+.fade-blue1 {
+    background-color: #00205b;
+    color: #fff;
+  }
+
+.fade-blue2 {
+    background-color: #9CC3D5;
+    color: #fff;
+  }
+
+.warning {
+    color : #AD3232
+}
+.approval {
+    color : #198C19;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.doc-name {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* .header {
+    font-size: 16px;
+    font-weight: 700;
+} */
+
+.header2 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.head1 {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.tab-space {
+    tab-size: 16;
+}
+
+.footer {
+    font-size: 12px;
+    border-top: none;
+}
+.line2 {
+    border-top: 1px solid rgb(0, 0, 0);
+}
+
+.text-right {
+    text-align: right;
+}
+
+
+.matrix{   
+    font-family: 'Roboto', serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #000000;
+}
+
+.matrix-head {
+    position: relative;
+    background: none;
+}
+
+
+
+.matrix-address {
+    position: absolute;
+    top: 240px;
+
+}
+
+.matrix-name {
+    position: absolute;
+    top: 225px;
+    left: 750px;
+}
+
+
+.matrix-ref{
+    position: absolute;
+    top:360px;
+    left:50px
+
+}
+
+.matrix-user{
+    position: absolute;
+    top:360px;
+    left:350px
+
+}
+
+.matrix-terms{
+    position: absolute;
+    top:360px;
+    left:650px
+
+}
+
+.matrix-content {
+    position: relative;
+    top:280px;
+    margin: auto;
+}
+
+/* .matrix-total {
+    position: absolute;
+    top:440px;
+    left:820px;
+    margin: auto;
+} */
+
+
+.matrix-total-qty {
+    position: absolute;
+    top:425px;
+    left:470px;
+}
+
+.matrix-total-amount {
+    position: absolute;
+    top:425px;
+    left:650px;
+}
+
+
+.matrix-total-tax {
+    position: absolute;
+    top:425px;
+    left:750px;
+}
+
+
+.matrix-total-subtotal {
+    position: absolute;
+    top:425px;
+    left:810px;
+}
+
+
+
+
+.matrix-total-line {
+    position: absolute;
+    top:425px;
+}
+
+.matrix-total-words {
+    position: absolute;
+    top:465px;
+    left:130px;
+}
+
+.no-border th,  .no-border td{
+    border: 0px !important;
+    height:1px !important;
+    padding-top: 0.1rem;
+    padding-right: 0.1rem;
+  }
+
+
+
+
+/* .matrix-user{
+    top:130px;
+
+} */
+
+
+

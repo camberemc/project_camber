@@ -1,0 +1,67 @@
+<odoo>
+    <data noupdate="1">
+        <record id="seq_crm_lead_fire" model="ir.sequence">
+            <field name="name">Crm Fire Consulting</field>
+            <field name="code">crm.lead.fire</field>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="seq_crm_lead_electro" model="ir.sequence">
+            <field name="name">Crm Fire Consulting</field>
+            <field name="code">crm.lead.electro</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="seq_crm_lead_technical" model="ir.sequence">
+            <field name="name">Crm Fire Consulting</field>
+            <field name="code">crm.lead.technical</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="seq_crm_lead_facility" model="ir.sequence">
+            <field name="name">Crm Fire Consulting</field>
+            <field name="code">crm.lead.facility</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!--    project code-->
+        <record id="seq_project_fire" model="ir.sequence">
+            <field name="name">Project Fire Consulting</field>
+            <field name="code">project.lead.fire</field>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="seq_project_electro" model="ir.sequence">
+            <field name="name">Project Fire Consulting</field>
+            <field name="code">project.lead.electro</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="seq_project_technical" model="ir.sequence">
+            <field name="name">Project Fire Consulting</field>
+            <field name="code">project.lead.technical</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="seq_project_facility" model="ir.sequence">
+            <field name="name">Project Fire Consulting</field>
+            <field name="code">project.lead.facility</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="seq_inventory_return_code" model="ir.sequence">
+            <field name="name">Inventory Return</field>
+            <field name="code">inventory.return.code</field>
+            <field name="prefix">IR# </field>
+            <field name="padding">5</field>
+        </record>
+        <record id="seq_contract_based_sale" model="ir.sequence">
+            <field name="name">Contract Sale Order</field>
+            <field name="code">contract.sale.order</field>
+            <field name="padding">2</field>
+        </record>
+<!--        ESTIMATION-->
+        <record id="seq_estimation_code" model="ir.sequence">
+            <field name="name">Estimation Code</field>
+            <field name="code">estimation.code</field>
+            <field name="prefix">EST</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+
+</odoo>

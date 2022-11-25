@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_em_techno_commercial_camber">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="chamber_erp.report_em_techno_commercial_camber_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+        <template id="report_em_techno_commercial_camber_document">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="chamber_erp.camber_technical_report_header"/>
+                <t t-call="web.external_layout" id="layout">
+                    <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                    <div class="page" style="font-size: 14px;font-family:Roboto;">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <th width="100%"
+                                            style="padding-left:7px;text-align:center;">
+                                            <span style="font-size:30px">TECHNO COMMERCIAL PROPOSAL</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <br/>
+                        <span style="text-align:center;padding-left:100px">
+                            <i>
+                                Please notify our reference in all your future correspondence either verbal/written
+                            </i>
+                        </span>
+                        <!--                        </div>-->
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <table width="100%" style="border:1px #4BD0EA;padding-left:7px;padding-right:7px">
+                                <tr>
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <span>
+                                            <b>Client</b>
+                                        </span>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;"
+                                        width="35%">
+                                        <span t-field="doc.partner_id"/>
+                                    </td>
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <strong>Qt Ref</strong>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;" width="35%">
+                                        <span t-field="doc.name"/>
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <strong>Attn</strong>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;"
+                                        width="35%">
+                                        <span t-field="doc.attention"/>
+                                    </td>
+
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <b>TRN</b>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;" width="35%">
+                                        <span t-field="doc.company_id.vat"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <b>Dept.</b>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;" width="35%">
+                                        <span t-field="doc.e_department"/>
+                                    </td>
+
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <strong>Date</strong>
+                                    </td>
+                                    <td style="padding-left:7px;text-align:left;border:1px solid black;" width="35%">
+                                        <span t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <strong>Phone</strong>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;"
+                                        width="35%">
+                                        <t t-if="doc.phn_number">
+                                            <span t-field="doc.phn_number"/>
+                                        </t>
+                                    </td>
+
+
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <b>End User</b>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;" width="35%">
+                                        <span t-field="doc.e_end_user"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:7px;border:1px solid black;" width="15%">
+                                        <strong>Email</strong>
+                                    </td>
+                                    <td colspan="3" style="text-align:left;padding-left:7px;border:1px solid black;"
+                                        width="35%">
+                                        <t t-if="doc.email">
+                                            <span t-field="doc.email"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+                            </table>
+
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <strong>Sub :
+                                <span t-field="doc.e_subject"/>
+                            </strong>
+
+                        </div>
+
+                        <br/>
+                        <br/>
+
+                        <!--                        <div    class="carousel-content col-lg-6 offset-lg-6 p-5 pt48 pb40 o_cc o_cc5 shadow border" style="border-width: 1px !important; border-color: #65D9F0 !important;">-->
+                        <div class="row">
+                            <table width="100%" style="border:1px solid black">
+                                <thead>
+                                    <tr class="border-#65D9F0">
+                                        <th width="20%"
+                                            style="border:1px solid black;padding-left:7px;padding-right:7px">Project
+                                        </th>
+
+                                        <th width="80%"
+                                            style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                            <span t-field="doc.e_project"/>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <!--                        </div>-->
+                        <!--                        <tbody>-->
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <span>Dear Sir,</span>
+                        <br/>
+                        <br/>
+                        <span>With reference to the subject project, please find herewith our Techno Commercial Offer
+                            for Subject project to your kind reference. This quote shall be valid for a period of
+                            <span t-field="doc.validity"/>
+                            from
+                            <span t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                        </span>
+                        <br/>
+                        <br/>
+                        <span>Hope our Offer meets your requirements and looking forward to receiving your valuable
+                            order.
+                            However, if you have any queries, please feel free to contact us.
+                        </span>
+                        <br/>
+                        <br/>
+                        <span>Thanks for your understanding and we are always assuring you our best service. Yours
+                            faithfully,
+                        </span>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <strong>For Camber Electromechanical</strong>
+                        <br/>
+                        <t t-if="doc.user_id">
+                            <br/>
+                            <span t-field="doc.user_id"/>
+                            <br/>
+                            <t t-if="doc.user_id.partner_id.function">
+                                <span t-field="doc.user_id.partner_id.function"/>
+                                <br/>
+                            </t>
+                            <span>Phone :</span>
+                            <span t-field="doc.user_id.phone"/>
+                            <br/>
+                            <span>Email :</span>
+                            <span t-field="doc.user_id.email"/>
+                        </t>
+                    </div>
+                    <p style="page-break-after:always;"></p>
+                    <div class="row">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th width="100%" style="padding-left:7px;text-align:center;">
+                                        <span style="font-size:30px">CONTENTS</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <br/>
+                    <table width="100%" style="border:1px solid black;padding-left:7px;padding-right:7px">
+                        <thead>
+                            <tr>
+                                <th width="15%" style="border:1px solid black;text-align:center">S.No</th>
+
+                                <th width="85%" style="border:1px solid black;text-align:center">Description</th>
+                                <!--                                <th width="15%" style="border:1px solid black;text-align:center">Page No.</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                                <td colspan="2" style="text-align:center">
+                                    <strong>TECHNICAL PROPOSAL</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">1</td>
+                                <td style="border:1px solid black;padding-left:5px">Introduction</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">2</td>
+                                <td style="border:1px solid black;padding-left:5px">Scope of work</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">3</td>
+                                <td style="border:1px solid black;padding-left:5px">Health, Safety and Quality</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">4</td>
+                                <td style="border:1px solid black;padding-left:5px">Camber Scope and Considerations.
+                                </td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">5</td>
+                                <td style="border:1px solid black;padding-left:5px">Exclusion / Limitation:</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">6</td>
+                                <td style="border:1px solid black;padding-left:5px">Notes &amp; Assumptions</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+
+                                <td colspan="2" style="text-align:center">
+                                    <strong>COMMERCIAL PROPOSAL</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">1</td>
+                                <td style="border:1px solid black;padding-left:5px">Pricing Schedule</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">2</td>
+                                <td style="border:1px solid black;padding-left:5px">Service Terms</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">3</td>
+                                <td style="border:1px solid black;padding-left:5px">Payment Terms</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black;padding-left:5px;text-align:center">4</td>
+                                <td style="border:1px solid black;padding-left:5px">Order Cancellation</td>
+                                <!--                                <td style="border:1px solid black;padding-left:5px;text-align:center">nil</td>-->
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div class="row">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th width="100%" style="padding-left:7px;text-align:center;">
+                                        <span style="font-size:30px">REVISION HISTORY</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <table width="100%" style="border:1px solid black;padding-left:7px;padding-right:7px">
+                        <thead>
+                            <tr>
+                                <th width="12%" style="border:1px solid black;text-align:center">Rev</th>
+                                <th width="22%" style="border:1px solid black;text-align:center">Date</th>
+                                <th width="22%" style="border:1px solid black;text-align:center">Prepared By</th>
+                                <th width="22%" style="border:1px solid black;text-align:center">Checked By</th>
+                                <th width="22%" style="border:1px solid black;text-align:center">Approved By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc._get_all_revisions()" t-as="sale">
+                                <t t-set="rev_no" t-value="sale['name'].split(' ')"/>
+                                <t t-if="len(rev_no) > 1">
+                                    <t t-set="rev_no" t-value="sale['name'].split(' ')[1]"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="rev_no" t-value="0"/>
+                                </t>
+                                <tr>
+                                    <td width="12%" style="border:1px solid black;text-align:center">
+                                        <span t-esc="rev_no"/>
+                                    </td>
+                                    <td width="22%" style="border:1px solid black;text-align:center">
+                                        <span t-esc="sale['date']"/>
+                                        <!--                                    <span t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'/>-->
+                                    </td>
+                                    <td width="22%" style="border:1px solid black;text-align:center">
+                                        <span>SALES MANAGER</span>
+                                    </td>
+                                    <td width="22%" style="border:1px solid black;text-align:center">BD MANAGER</td>
+                                    <td width="22%" style="border:1px solid black;text-align:center">GENERAL MANAGER
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <p style="page-break-after:always;"></p>
+                    <div class="row">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th width="100%" style="padding-left:7px;text-align:center;">
+                                        <span style="font-size:30px">TECHNICAL PROPOSAL</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <br/>
+                    <strong>1.
+                        <u>INTRODUCTION</u>
+                    </strong>
+                    <br/>
+                    <t t-if="doc.e_introduction">
+                        <span t-raw="doc.e_introduction"/>
+                        <br/>
+                        <br/>
+                    </t>
+                    <strong>2.
+                        <u>SCOPE OF WORK</u>
+                    </strong>
+                    <br/>
+                    <t t-if="doc.e_scope_of_work">
+                        <span t-raw="doc.e_scope_of_work"/>
+                        <br/>
+                    </t>
+
+                    <strong>3.
+                        <u>Health, Safety and Quality:</u>
+                    </strong>
+                    <br/>
+                    <t t-if="doc.e_hsq">
+                        <span t-raw="doc.e_hsq"/>
+                        <br/>
+                    </t>
+                    <strong>4.
+                        <u>Camber Scope and Considerations.</u>
+                    </strong>
+                    <br/>
+                    <t t-if="doc.e_camber_scope">
+                        <span t-raw="doc.e_camber_scope"/>
+                        <br/>
+                    </t>
+                    <!--                    <p style="page-break-after:always;"></p>-->
+                    <strong>5.
+                        <u>Exclusions / Limitations:</u>
+                    </strong>
+                    <br/>
+                    <t t-if="doc.e_exclusion">
+                        <span t-raw="doc.e_exclusion"/>
+                        <br/>
+                    </t>
+                    <!--                    <p style="page-break-after:always;"></p>-->
+                    <strong>6.
+                        <u>Notes &amp; Assumptions.</u>
+                    </strong>
+                    <br/>
+                    <t t-if="doc.e_notes_assumption">
+                        <span t-raw="doc.e_notes_assumption"/>
+                    </t>
+
+                    <p style="page-break-after:always;"></p>
+                    <div class="row">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th width="100%" style="padding-left:7px;text-align:center;">
+                                        <span style="font-size:30px">COMMERCIAL PROPOSAL</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <br/>
+                    <strong style="padding-left:20px;">
+                        1.
+                        <u>PRICING SCHEDULE</u>
+                    </strong>
+                    <br/>
+                    <br/>
+                    <t t-if="doc.electro_mechanic_lines">
+                        <table width="100%" style="border:1px solid black;padding-left:7px;padding-right:7px">
+
+                            <thead>
+                                <th width="7%" style="border:1px solid black;text-align:center">S. No</th>
+                                <th width="50%" style="border:1px solid black;text-align:center">Description</th>
+                                <th width="10%" style="border:1px solid black;text-align:center">Unit</th>
+                                <th width="10%" style="border:1px solid black;text-align:center">Qty</th>
+                                <th width="33%" style="border:1px solid black;text-align:center">Remarks</th>
+                            </thead>
+                            <t t-set="electro_sl_no" t-value="0"/>
+                            <t t-set="grand_total" t-value="0"/>
+                            <tbody>
+                                <t t-foreach="doc.electro_mechanic_lines" t-as="line">
+                                    <t t-if="not line.display_type">
+                                        <tr>
+                                            <t t-set="electro_sl_no" t-value="electro_sl_no + 1"/>
+                                            <td class="text-center"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span t-esc="electro_sl_no"/>
+                                            </td>
+                                            <td class="text-left"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td class="text-center"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span t-field="line.product_uom"/>
+                                            </td>
+                                            <td class="text-center"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span t-field="line.qty"/>
+                                            </td>
+
+                                            <td class="text-left"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span
+                                                        t-field="line.remarks"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <tr>
+                                    <td colspan="5" class="text-left"
+                                        style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                        <strong>Notes:</strong>
+                                        <br/>
+                                        <span t-raw="doc.e_notes"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-if="doc.order_line">
+                        <table width="100%" style="border:1px solid black;padding-left:7px;padding-right:7px">
+
+                            <thead>
+                                <th width="7%" style="border:1px solid black;text-align:center">S. No</th>
+                                <th width="50%" style="border:1px solid black;text-align:center">Description</th>
+                                <th width="10%" style="border:1px solid black;text-align:center">Unit</th>
+                                <th width="10%" style="border:1px solid black;text-align:center">Qty</th>
+                                <th width="33%" style="border:1px solid black;text-align:center">Remarks</th>
+                            </thead>
+                            <t t-set="electro_sl_no" t-value="0"/>
+                            <t t-set="grand_total" t-value="0"/>
+                            <tbody>
+                                <t t-foreach="doc.order_line" t-as="line">
+                                    <t t-if="not line.display_type">
+                                        <tr>
+                                            <t t-set="electro_sl_no" t-value="electro_sl_no + 1"/>
+                                            <td class="text-center"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span t-esc="electro_sl_no"/>
+                                            </td>
+                                            <td class="text-left"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td class="text-center"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span t-field="line.product_uom"/>
+                                            </td>
+                                            <td class="text-center"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span t-field="line.product_uom_qty"/>
+                                            </td>
+
+                                            <td class="text-left"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                                <span
+                                                        t-field="line.remarks"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <tr>
+                                    <td colspan="5" class="text-left"
+                                        style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                        <strong>Notes:</strong>
+                                        <br/>
+                                        <span t-raw="doc.e_notes"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <br/>
+                    <!--                    <p style="page-break-after:always;"></p>-->
+                    <strong>
+                        2.
+                        <u>SERVICE TERMS:</u>
+                    </strong>
+                    <br/>
+                    <span t-raw="doc.e_service_terms"/>
+                    <br/>
+                    <strong>
+                        3.
+                        <u>PAYMENT TERMS</u>
+                    </strong>
+                    <br/>
+                    <span t-raw="doc.e_payment_terms"/>
+                    <br/>
+                    <strong>
+                        4.
+                        <u>ORDER CANCELLATION:</u>
+                    </strong>
+                    <br/>
+                    <span t-raw="doc.e_order_cancellation"/>
+
+
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

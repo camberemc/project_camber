@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="triton_res_partner_view" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="before">
+                    <field name="is_customer"/>
+                </xpath>
+            <xpath expr="//page[@name='sales_purchases']//group[@name='purchase']/field[@name='property_supplier_payment_term_id']" position="before">
+                <field name="is_supplier" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

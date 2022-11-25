@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="act_estimation_view" model="ir.actions.act_window">
+        <field name="name">Estimations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crm.estimation</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create New Estimation
+            </p>
+        </field>
+    </record>
+    <record id="view_estimation_search" model="ir.ui.view">
+            <field name="model">crm.estimation</field>
+            <field name="arch" type="xml">
+                <search string="Estimation">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="lead_id"/>
+                </search>
+            </field>
+        </record>
+    <record id="estimation_list_view" model="ir.ui.view">
+        <field name="model">crm.estimation</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Estimations" default_order="id desc">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="lead_id"/>
+                <field name="estimator_id"/>
+                <field name="edt_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="act_quotation_filtered_result" model="ir.actions.act_window">
+        <field name="name">Quotations</field>
+        <field name="res_model">sale.order</field>
+        <field name="domain">[('estimation_id', '=', active_id)]</field>
+        <field name="context">{'search_estimation_id': [active_id], 'default_estimation_id': active_id}</field>
+    </record>
+
+    <record id="estimation_form_view" model="ir.ui.view">
+        <field name="model">crm.estimation</field>
+        <field name="name">crm.estimation.form</field>
+        <field name="arch" type="xml">
+            <form string="Estimation">
+                <header>
+                    <button string="Send for Approval" type="object" name="send_approval" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'draft'),]}"/>
+                    <button string="Approve" groups="sales_estimation.sales_estimation_approver" type="object"
+                            name="approval_estimation" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'send'),]}"/>
+                    <button string="Reject" groups="sales_estimation.sales_estimation_approver" type="object"
+                            name="create_rejection" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'send'),]}"/>
+                    <button string="Create Quotation" type="object" name="create_quotation" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'approved'),]}"/>
+                    <button string="Lock" type="object" name="lock_estimation" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'approved'),]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="Estimation Details">
+                    <div class="oe_button_box" name="button_box" groups="base.group_user">
+                        <button class="oe_stat_button" type="action" name="%(act_quotation_filtered_result)d"
+                                icon="fa-pencil-square-o" context="{'default_estimation_id': id}">
+                            <div class="o_stat_info">
+                                <field name="quotation_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Quotations</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" force_save="1" class="oe_title" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="lead_id" string="Lead" readonly="1"/>
+
+                            <field name="estimator_id"/>
+                            <field name="edt_id"/>
+                            <label for="copy_estimation_id"/>
+                            <div class="o_row">
+                                <field name="copy_estimation_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                <button type="object" name="copy_estimation" class="btn-sm btn-link mb4 fa fa-copy"
+                                        aria-label="Copy" title="Copy Estimation"
+                                        confirm="This will rewrite the estimation lines with the lines from the source esimation, do you really want to continue"/>
+                            </div>
+
+                        </group>
+                        <group string="Estimation Cost">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="cost" string="Product Cost"/>
+
+                            <!--                            <field name="selling_price" string="Product Price"/>-->
+                            <field name="service_cost" string="Installation Price"/>
+                            <field name="expense_total"/>
+<!--                            <field name="amc_total"/>-->
+                            <field name="total_value"/>
+                            <field name="profit"/>
+                            <field name="total_selling_price" string=" Price"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Requirement">
+                            <field name="requirement" string="Requirement" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Project Estimations" name="project_estimation">
+                            <field name="product_line_ids" widget="section_and_note_one2many"
+                                   context="{'default_estimation_type':'product'}"
+                                   domain="[('estimation_type', '=', 'product')]">
+                                <tree string="Estimation Lines" editable="bottom">
+                                    <control>
+                                        <create string="Add a product"/>
+                                        <create string="Add a section"
+                                                context="{'default_display_type': 'line_section'}"/>
+                                        <create string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                    </control>
+
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="display_type" invisible="1"/>
+                                    <field name="estimation_id" invisible="1"/>
+                                    <field name="estimation_type" invisible="1"/>
+                                    <field
+                                            name="product_id"
+                                            attrs="{
+                                            'required': [('display_type', '=', False)],
+                                        }"
+                                            force_save="1"
+                                            context="{
+                                            'default_description_sale': name
+                                        }"
+                                            domain="[('type', '=', 'service'), ('estimation_type', '!=',False )]"
+                                    options="{'no_create': True, 'no_create_edit':True}" />
+                                    <field name="name"/>
+                                    <field
+                                            name="product_uom"
+                                            force_save="1"
+                                            attrs="{
+                                        'required': [('display_type', '=', False)],
+                                    }"
+                                            groups="uom.group_uom"
+                                            options='{"no_open": True}'
+                                    />
+                                    <field name="product_qty"/>
+                                    <field name="unit_cost" sum="Unit Cost" optional="hide"/>
+                                    <field name="service_cost" string="Inst. Cost" sum="Service Cost" optional="hide"/>
+                                    <field name="freight_percent" invisible="1" optional="hide"/>
+                                    <field name="duty_percent" invisible="1" optional="hide"/>
+                                    <field name="others" invisible="1" optional="hide"/>
+                                    <field name="profit_percent" sum="Profit Percent" readonly="1" force_save="1" optional="hide"/>
+<!--                                    <field name="profit_percent" invisible="1" />-->
+                                    <field name="freight" invisible="1" optional="hide"/>
+                                    <field name="duty" invisible="1" optional="hide"/>
+                                    <field name="landed_cost" invisible="1" optional="hide"/>
+                                    <field name="net_cost" readonly="1" force_save="1" sum="Net Cost" optional="hide"/>
+                                    <field name="profit" readonly="1" force_save="1" sum="Profit" optional="hide"/>
+                                    <field name="service_subtotal" readonly="1" force_save="1" sum="Service Subtotal" optional="hide"/>
+                                    <field name="unit_selling_price" sum="Unit Selling Price" optional="hide"/>
+                                    <field name="unit_total" string="With Service" sum="Unit Total Price" optional="hide"/>
+                                    <field name="selling_price" readonly="1" force_save="1" sum="Selling Price" optional="hide"/>
+                                    <field name="total_selling_service" sum="Total Selling With Service" optional="hide"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="display_type" invisible="1"/>
+                                        <group attrs="{'invisible': [('display_type', '!=', False)]}">
+
+                                            <field name="estimation_id" invisible="1"/>
+                                            <field name="estimation_type" invisible="1"/>
+                                            <field name="product_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                            <field name="product_uom"/>
+                                            <field name="product_qty"/>
+                                            <field name="unit_cost"/>
+                                            <field name="freight_percent"/>
+                                            <field name="duty_percent"/>
+                                            <field name="others"/>
+                                            <field name="profit_percent"/>
+                                        </group>
+                                        <group attrs="{'invisible': [('display_type', '!=', False)]}">
+                                            <field name="freight" readonly="1" force_save="1"/>
+                                            <field name="duty" readonly="1" force_save="1"/>
+                                            <field name="landed_cost" readonly="1" force_save="1"/>
+                                            <field name="net_cost" readonly="1" force_save="1"/>
+                                            <field name="profit" readonly="1" force_save="1"/>
+                                            <field name="service_subtotal" widget="monetary"/>
+                                            <field name="selling_price" readonly="1" force_save="1" widget="monetary"/>
+                                        </group>
+                                        <field name="name"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <!--                        <page string="Service Estimations">-->
+                        <!--                            <field name="service_line_ids" editable="bottom" widget="one2many_list" context="{'default_estimation_type':'service'}" domain="[('estimation_type', '=', 'service')]">-->
+                        <!--                                <tree>-->
+                        <!--                                    <field name="sequence" widget="handle" />-->
+                        <!--                                    <field name="estimation_id" invisible="1" />-->
+                        <!--                                    <field name="estimation_type" invisible="1" />-->
+                        <!--                                    <field name="product_id" domain="[('type', '=', 'service'), ('estimation_type', '=', 'service')]" options="{'no_create': True, 'no_create_edit':True}"/>-->
+                        <!--                                    <field name="name" />-->
+                        <!--                                    <field name="product_qty" />-->
+                        <!--                                    <field name="product_uom" />-->
+                        <!--                                    <field name="net_cost" />-->
+                        <!--                                    <field name="selling_price" widget="monetary" />-->
+                        <!--                                </tree>-->
+                        <!--                                <form>-->
+                        <!--                                    <group>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="estimation_id" invisible="1" />-->
+                        <!--                                            <field name="estimation_type" invisible="1" />-->
+                        <!--                                            <field name="product_id" domain="[('type', '=', 'service'), ('estimation_type', '=', 'service')]" options="{'no_create': True, 'no_create_edit':True}" />-->
+                        <!--                                            <field name="product_qty" />-->
+                        <!--                                            <field name="product_uom" />-->
+                        <!--                                            <field name="net_cost" />-->
+                        <!--                                            <field name="selling_price" widget="monetary" />-->
+                        <!--                                        </group>-->
+
+                        <!--                                    </group>-->
+                        <!--                                    <field name="name" placeholder="Description" />-->
+                        <!--                                </form>-->
+                        <!--                            </field>-->
+                        <!--                        </page>-->
+                        <!--                        <page string="Installation Details">-->
+                        <!--                            <field name="service_description" placeholder="Installation Description" />-->
+                        <!--                        </page>-->
+                        <page string="Consumable Estimations">
+                            <field name="consumable_line_ids" editable="bottom" widget="one2many_list">
+                                <tree>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="estimation_id" invisible="1"/>
+                                    <field name="product_id" domain="[('type', '!=', 'service')]" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="name" required="1"/>
+                                    <field name="uom_id"/>
+                                    <field name="product_qty"/>
+                                    <field name="unit_cost" sum="Unit Cost"/>
+                                    <field name="cost" widget="monetary" sum="Total Cost"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="estimation_id" invisible="1"/>
+                                            <field name="product_id" domain="[('type', '!=', 'service')]"
+                                                   options="{'no_create': True, 'no_create_edit':True}"/>
+                                            <field name="uom_id"/>
+                                            <field name="product_qty"/>
+                                            <field name="unit_cost"/>
+                                            <field name="cost" widget="monetary"/>
+                                        </group>
+
+                                    </group>
+                                    <field name="name" placeholder="Description"/>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Expense">
+                            <field name="expense_line_ids" editable="bottom" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="amount" sum="Amount"/>
+                                    <field name="estimation_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <menuitem action="act_estimation_view" id="menu_estimation_view" parent="crm.crm_menu_sales" sequence="2"/>
+</odoo>

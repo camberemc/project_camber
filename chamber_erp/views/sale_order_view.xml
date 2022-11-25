@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_extend_camber" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='attention']"
+                   position="after">
+                <field name="job_title"/>
+                <field name="estimation_type"/>
+            </xpath>
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']"
+                   position="replace">
+                <field name="product_id"
+                       attrs="{                                             'readonly': [('product_updatable', '=', False)],                                             'required': [('display_type', '=', False)],                                         }"
+                       force_save="1"
+                       context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom':product_uom,                                             'company_id': parent.company_id,                                             'default_lst_price': price_unit,                                             'default_description_sale': name                                         }"
+
+                       domain="[('is_quotation_product', '=', True), ('type', '=', 'service')]"
+                       widget="product_configurator"
+                       options="{'no_create': True, 'no_create_edit':True}"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/form/group/group[1]/field[@name='product_id']"
+                   position="replace">
+                <field name="product_id"
+                       attrs="{                                             'readonly': [('product_updatable', '=', False)],                                             'required': [('display_type', '=', False)],                                         }"
+                       force_save="1"
+                       context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom':product_uom,                                             'company_id': parent.company_id,                                             'default_lst_price': price_unit,                                             'default_description_sale': name                                         }"
+
+                       domain="[('is_quotation_product', '=', True), ('type', '=', 'service')]"
+                       widget="product_configurator"
+                       options="{'no_create': True, 'no_create_edit':True}"/>
+
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_subtotal']"
+                   position="after">
+                <field name="remarks"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='other_information']" position="before">
+                <page name="electro_mechanical" string="Electro Mechanical">
+                    <!--                    <group>-->
+                    <group>
+                        <group>
+                            <field name="e_department"/>
+                            <field name="validity"/>
+                            <field name="e_end_user"/>
+                            <field name="email"/>
+                            <field name="phn_number"/>
+                        </group>
+                        <group>
+
+                        </group>
+                    </group>
+
+                    <field name="electro_mechanic_lines" nolabel="1" widget="section_and_note_one2many">
+                        <tree editable="bottom">
+                            <control>
+                                <create name="add_product_control" string="Add a product"/>
+                                <create name="add_section_control" string="Add a section"
+                                        context="{'default_display_type': 'line_section'}"/>
+                                <create name="add_note_control" string="Add a note"
+                                        context="{'default_display_type': 'line_note'}"/>
+                            </control>
+                            <field name="display_type" invisible="1"/>
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="product_uom"/>
+                            <field name="qty"/>
+                            <field name="price_unit"/>
+                            <field name="total_rate" sum="Total Rate"/>
+                            <field name="remarks"/>
+                            <field name="order_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <br/>
+                    <strong>Subject</strong>
+                    <br/>
+                    <field name="e_subject" nolabel="1"/>
+                    <br/>
+                    <strong>Project</strong>
+                    <br/>
+                    <field name="e_project" nolabel="1"/>
+                    <br/>
+                    <strong>Introduction</strong>
+                    <br/>
+                    <field name="e_introduction" nolabel="1"/>
+                    <br/>
+                    <strong>Scope of work</strong>
+                    <br/>
+                    <field name="e_scope_of_work" widget="html" nolabel="1"/>
+                    <br/>
+                    <strong>Health, Safety and Quality</strong>
+                    <br/>
+                    <field name="e_hsq" widget="html" nolabel="1"/>
+                    <br/>
+                    <strong>Camber Scope and Considerations.</strong>
+                    <br/>
+                    <field name="e_camber_scope" widget="html" nolabel="1"/>
+                    <br/>
+                    <strong>Exclusion / Limitation:</strong>
+                    <br/>
+                    <field name="e_exclusion" widget="html" nolabel="1"/>
+                    <br/>
+                    <strong>Notes &amp; Assumptions</strong>
+                    <br/>
+                    <field name="e_notes_assumption" widget="html" nolabel="1"/>
+                    <br/>
+                    <strong>Payment Terms</strong>
+                    <br/>
+                    <field name="e_payment_terms" widget="html" nolabel="1"/>
+                    <br/>
+                    <strong>Service Terms</strong>
+                    <br/>
+                    <field name="e_service_terms" widget="html" nolabel="1"/>
+                    <br/>
+                    <strong>Order Cancellation</strong>
+                    <br/>
+                    <field name="e_order_cancellation" widget="html" nolabel="1"/>
+                    <br/>
+                    <strong>Notes</strong>
+                    <br/>
+                    <field name="e_notes" widget="html" nolabel="1"/>
+
+                    <!--                    </group>-->
+                </page>
+                <page name="techno_outsourcing" string="Technical Outsourcing">
+                    <group>
+                        <group>
+                            <field name="price_type"/>
+                            <field name="t_validity"/>
+                            <field name="t_contract_period"/>
+                            <field name="t_normal_working_hours"/>
+                        </group>
+                        <group>
+                            <field name="t_over_time"/>
+                            <field name="t_food"/>
+                            <field name="t_accommodation"/>
+                            <field name="t_transportation"/>
+
+                        </group>
+                    </group>
+                    <strong>Order Lines</strong>
+                    <br/>
+                    <field name="technical_outsourcing_line_ids" string="Order Lines"
+                           widget="section_and_note_one2many">
+                        <tree editable="bottom" string="Order Lines">
+                            <control>
+                                <create name="add_product_control" string="Add a Name"/>
+                                <create name="add_section_control" string="Add a section"
+                                        context="{'default_display_type': 'line_section'}"/>
+                                <create name="add_note_control" string="Add a note"
+                                        context="{'default_display_type': 'line_note'}"/>
+                            </control>
+                            <field name="display_type" invisible="1"/>
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="qty"/>
+                            <field name="price_unit"/>
+                            <field name="order_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <strong>Terms and Condition</strong>
+                    <br/>
+
+                    <field name="technical_terms_ids" string="Terms and Condition" widget="section_and_note_one2many">
+                        <tree editable="bottom" string="Terms and Condition">
+                            <control>
+                                <create name="add_product_control" string="Add a Name"/>
+                                <create name="add_section_control" string="Add a section"
+                                        context="{'default_display_type': 'line_section'}"/>
+                                <create name="add_note_control" string="Add a note"
+                                        context="{'default_display_type': 'line_note'}"/>
+                            </control>
+                            <field name="display_type" invisible="1"/>
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="order_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+
+            </xpath>
+
+        </field>
+    </record>
+    <record id="quotation_tree_extend_camber" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="sale_order_tree_extend_camber" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

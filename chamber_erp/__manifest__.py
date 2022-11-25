@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Camber Customisation',
+    'version': "14.0",
+    'description': 'Camber Customisation',
+    'author': "Siyad S",
+    'depends': ['base', 'sale', 'stranbys_amc', 'project_management', 'purchase', 'crm', 'stevok_customisation',
+                "stock", 'stranbys_saleorder_revision'],
+    'data': [
+        'security/data.xml',
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'views/sale_order_view.xml',
+        'views/crm_lead_view.xml',
+        'wizard/crm_wizard.xml',
+        'views/project_view.xml',
+        'views/hr_employee_view.xml',
+        'views/product_view.xml',
+        'views/inventory_return.xml',
+        'views/stock_picking.xml',
+
+        'views/estimation_view.xml',
+        'views/master_view.xml',
+'wizard/revision_wizard.xml',
+        'wizard/stock_picking_out_wizard.xml',
+        'wizard/reject_wizard.xml',
+        'wizard/estimation_create_quotation.xml',
+
+        'report/report.xml',
+        # 'report/custom_reports_view.xml',
+        'report/custom_sale_report.xml',
+        'report/amc_quotation_report.xml',
+        'report/amc_contract_report.xml',
+        'report/purchase_order.xml',
+        'report/inherited_report.xml',
+        'report/techno_commercial_report.xml',
+        'report/em_technical_report.xml',
+        'report/delivery_slip.xml',
+        'report/em_lympsum.xml',
+        'report/technical_outsourcing_report.xml',
+        'report/estimation_report.xml'
+
+    ],
+    'installable': True,
+    'application': True,
+}

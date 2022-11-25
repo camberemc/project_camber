@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="search_project_project_order_line" model="ir.ui.view">
+        <field name="name">project.project.orderline.filter</field>
+        <field name="model">project.project.orderline</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="project_id" string="Project"/>
+                <field name="product_id" string="Product"/>
+                <group expand="0" string="Group By...">
+                    <filter name="group_project" string="Project" domain="[ ]" context="{'group_by': 'project_id'}"/>
+                    <filter name="product" string="Product" domain="[ ]" context="{'group_by': 'product_id'}"/>
+                    <filter name="sale" string="Sale Order" domain="[ ]" context="{'group_by': 'order_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="act_project_project_orderline_list_view" model="ir.actions.act_window">
+        <field name="name">Project Order Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.project.orderline</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_project': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new orderline
+            </p>
+        </field>
+    </record>
+
+    <record id="act_my_project_project_orderline_list_view" model="ir.actions.act_window">
+        <field name="name">My Project Order Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.project.orderline</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('project_id.user_id', '=', uid)]</field>
+        <field name="context">{'search_default_group_project': 1,}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new orderline
+            </p>
+        </field>
+    </record>
+
+
+    <record id="act_project_project_list_view" model="ir.actions.act_window">
+        <field name="name">Projects</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new orderline
+            </p>
+        </field>
+    </record>
+    <record id="act_my_project_project_list_view" model="ir.actions.act_window">
+        <field name="name">My Projects</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new orderline
+            </p>
+        </field>
+    </record>
+
+    <record id="project_indent_list_quick_add_view" model="ir.ui.view">
+        <field name="model">project.delivery.indent</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Project Info" default_order="id desc" editable="top">
+                <field name="project_id" options="{'no_create': True, 'no_create_edit':True}"
+                       attrs="{'readonly':[('is_readonly','=', True)]}"/>
+                <field name="product_id" domain="[('type', '!=', 'service')]"
+                       options="{'no_create': True, 'no_create_edit':True}"
+                       attrs="{'readonly':[('is_readonly','=', True)]}"/>
+                <field name="name" attrs="{'readonly':[('is_readonly','=', True)]}"/>
+                <field name="uom_id" invisible="1"/>
+                <field name="product_qty" attrs="{'readonly':[('is_readonly','=', True)]}"/>
+                <field name="product_cost"/>
+<!--                <field name="estimated_qty" readonly="1" invisible="1"/>-->
+                <field name="delivered_qty" readonly="1"/>
+                <field name="is_readonly" invisible="1"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="act_project_indent_list" model="ir.actions.act_window">
+        <field name="name">Project Consumable Indents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.delivery.indent</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'tree_view_ref':'project_indent_list_quick_add_view'}</field>
+        <field name="view_ids" eval="
+                            [
+                            (5, 0, 0),
+                            (0, 0, {'view_mode': 'tree', 'view_id': ref('project_indent_list_quick_add_view')}),
+                          ]"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Consumable Indent
+            </p>
+        </field>
+    </record>
+
+    <record id="act_my_project_indent_list" model="ir.actions.act_window">
+        <field name="name">My Project Consumable Indents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.delivery.indent</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('project_id.user_id', '=', uid)]</field>
+        <field name="context">{'tree_view_ref':'project_indent_list_quick_add_view'}</field>
+        <field name="view_ids" eval="
+                            [
+                            (5, 0, 0),
+                            (0, 0, {'view_mode': 'tree', 'view_id': ref('project_indent_list_quick_add_view')}),
+                          ]"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Consumable Indent
+            </p>
+        </field>
+    </record>
+
+
+    <record id="project_project_orderline_list_view" model="ir.ui.view">
+        <field name="model">project.project.orderline</field>
+        <!--        <field name="type">tree</field>-->
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Project Info" default_order="id desc" create="false" edit="false">
+                <field name="project_id" string="Project"/>
+                <field name="product_id" string="Product"/>
+                <field name="product_uom_qty"/>
+                <field name="qty_delivered"/>
+                <field name="qty_on_hand"/>
+                <field name="qty_purchased"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="project_project_orderline_form_view" model="ir.ui.view">
+        <field name="name">project.project.orderline.form</field>
+        <field name="model">project.project.orderline</field>
+        <field name="arch" type="xml">
+            <form string="Project Order Line">
+                <header>
+                    <button string="L1 Approval" groups="project.group_project_manager" type="object" name="l1_approval"
+                            class="oe_highlight" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <button string="Confirm" groups="project.group_project_manager" type="object" name="set_confirm"
+                            class="oe_highlight" attrs="{'invisible':[('state','!=','send')]}"/>
+                    <button string="Unlock" type="object" groups="project.group_project_manager" name="set_draft"
+                            class="oe_highlight" attrs="{'invisible':[('state','!=','confirm')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="Project Details">
+                    <div class="oe_title">
+                        <group>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </group>
+                    </div>
+                    <group>
+                        <group string="Project Information">
+                            <field name="project_id" readonly="1"/>
+                        </group>
+                        <group string="Product Details">
+                            <field name="product_id" required="1" options="{'no_create': True, 'no_create_edit':True}"
+                                   attrs="{'readonly':[('state','=','confirm')]}"/>
+                        </group>
+                        <group string="Order Details">
+                            <field name="partner_id" readonly="1"/>
+                            <field name="order_line_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="order_id" readonly="1"/>
+                        </group>
+
+                        <group string="Inventory Movements">
+                            <field name="product_uom_qty" readonly="1"/>
+                            <field name="qty_on_hand" readonly="1"/>
+                            <field name="qty_purchased" readonly="1"/>
+                            <field name="qty_balance_purchase" readonly="1"/>
+                            <field name="qty_delivered" readonly="1"/>
+                            <field name="qty_balance_delivery" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Purchases">
+                            <field name="project_purchase_ids" context="{'default_project_order_line_id': id}">
+                                <tree string="Purchase Order Lines" editable="false" create="true" readonly="0">
+                                    <field name="project_order_line_id" invisible="1"/>
+                                    <field name="order_id"/>
+                                    <field name="project_id" invisible="1"/>
+                                    <field name="order_line_id" readonly="0" required="1"
+                                           options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="date_planned"/>
+                                    <field name="price_unit"/>
+                                    <field name="qty" readonly="1"/>
+                                    <field name="price_subtotal"/>
+                                </tree>
+                                <form>
+                                    <header>
+                                        <field name="state" widget="statusbar"/>
+                                    </header>
+                                    <group>
+                                        <group>
+                                            <field name="order_id"/>
+                                            <field name="order_line_id" readonly="1"
+                                                   options="{'no_create': True, 'no_open': True}"/>
+                                            <field name="date_planned"/>
+                                        </group>
+                                        <group>
+                                            <field name="price_unit"/>
+                                            <field name="qty" readonly="1"/>
+                                            <field name="price_subtotal"/>
+                                        </group>
+                                    </group>
+
+
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Delivery">
+                            <field name="project_delivery_ids">
+                                <tree string="Delivery Lines" editable="false" create="false" readonly="1">
+                                    <field name="picking_id"/>
+                                    <field name="move_line_id" readonly="1"/>
+                                    <field name="date_planned"/>
+                                    <field name="qty" readonly="1"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form>
+                                    <header>
+                                        <field name="state" widget="statusbar"/>
+                                    </header>
+                                    <group>
+                                        <group>
+                                            <field name="picking_id"/>
+                                            <field name="move_line_id" readonly="1"/>
+                                            <field name="date_planned"/>
+                                        </group>
+                                        <group>
+                                            <field name="qty" readonly="1"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="o_attachment_preview"/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_sale_edit_view" model="ir.ui.view">
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <header>
+                <button string="Confirm Project" type="object" name="confirm_project" class="oe_highlight"
+                        attrs="{'invisible':[('state','!=','draft')]}"/>
+                <button string="Complete Project" type="object" name="complete_project" class="oe_highlight"
+                        attrs="{'invisible':[('state','!=','ongoing')]}"/>
+                <button string="Close Project" type="object" name="close_project" class="oe_highlight"
+                        attrs="{'invisible':[('state','!=','ongoing')]}"/>
+                <button string="Print" type="object" name="action_export_project_details" class="oe_highlight" attrs="{'invisible':[
+                ('state', 'not in', ('ongoing', 'completed'))]}"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+
+            <xpath expr="//div[@name='options_active']" position="replace">
+                <field name="code" readonly="1" force_save="1"/>
+            </xpath>
+            <!--            <xpath expr="//field[@name='privacy_visibility']" position="replace"></xpath>-->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="description" placeholder="Project description..."/>
+                <field name="retention_date"/>
+            </xpath>
+            <xpath expr="//page[1]" position="after">
+                <page name="products" string="Products">
+                    <field name="project_line_product_ids" nolabel="1">
+                        <tree>
+                            <field name="product_id" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="product_uom_qty" readonly="1"/>
+                            <field name="cost" readonly="1"/>
+                            <field name="qty_purchased" readonly="1" string="Purchased"/>
+                            <field name="qty_on_hand" string="Stock on Hand"/>
+                            <field name="qty_delivered" string="Delivered"/>
+                            <field name="uom_id" readonly="1" string="Unit"/>
+                        </tree>
+                    </field>
+                </page>
+                <page name="project_summary" string="Project Summary">
+                    <group>
+                        <group>
+                            <button string="Update" type="object" name="update_project_summary" class="oe_highlight"/>
+                            <field name="total_material_cost"/>
+                            <field name="total_expense"/>
+                            <field name="total_income"/>
+                        </group>
+                        <group>
+                            <field name="total_profit"/>
+                            <field name="total_profit_per"/>
+                        </group>
+                    </group>
+                </page>
+                <page name="indents" string="Delivery Indents">
+                    <field name="project_indent_ids" nolabel="1" context="{'default_project_id': id}" readonly="1">
+                        <tree editable="bottom">
+                            <field name="project_id" invisible="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="product_qty" readonly="1" string="Quantity"/>
+                            <field name="uom_id" readonly="1"/>
+<!--                            <field name="product_qty" readonly="1"/>-->
+                            <field name="product_cost"/>
+<!--                            <field name="estimated_qty" readonly="1"/>-->
+                            <field name="delivered_qty" readonly="1"/>
+                        </tree>
+<!--                        <form>-->
+<!--                            <group>-->
+<!--                                <group>-->
+<!--                                    <field name="project_id" invisible="1"/>-->
+<!--                                    <field name="new_item"/>-->
+<!--                                    <field name="product_id" attrs="{'invisible':[('new_item','!=', True)]}"-->
+<!--                                           domain="[('type', '=', 'consu')]"/>-->
+<!--&lt;!&ndash;                                    <field name="consumable_list_id" attrs="{'invisible':[('new_item','!=', False)]}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                           domain="[('project_id', '=', project_id)]"/>&ndash;&gt;-->
+<!--                                    <field name="uom_id" string="Unit"/>-->
+<!--                                    <field name="product_qty" string="Quantity"/>-->
+<!--                                </group>-->
+<!--                                <group>-->
+<!--                                    <field name="estimated_qty"/>-->
+<!--                                    <field name="delivered_qty"/>-->
+<!--                                </group>-->
+<!--                                <field name="name"/>-->
+
+<!--                            </group>-->
+
+<!--                        </form>-->
+                    </field>
+                </page>
+            </xpath>
+                <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button class="oe_stat_button" name="action_expense_entries" type="object" icon="fa-pencil-square-o"
+                        string="Expenses">
+                </button>
+                <button class="oe_stat_button" name="action_income_entries" type="object" icon="fa-pencil-square-o"
+                        string="Income">
+                </button>
+                <button class="oe_stat_button" name="action_sale_entries" type="object" icon="fa-pencil-square-o"
+                        string="Sales">
+                </button>
+            </xpath>
+            <xpath expr="//div[@class='oe_chatter']" position="inside">
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_list_view_extend" model="ir.ui.view">
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='sequence']" position="before">
+                        <field name="code"/>
+                </xpath>
+        </field>
+    </record>
+
+    <menuitem action="act_my_project_project_list_view" id="menu_my_project_project_view" parent="project.menu_projects"
+              sequence="1"/>
+
+    <menuitem action="act_my_project_project_orderline_list_view" id="menu_my_project_project_orderline_view"
+              parent="project.menu_projects" sequence="15"/>
+
+
+    <menuitem action="act_project_project_orderline_list_view" groups="group_show_all_projects"
+              id="menu_project_project_orderline_view" parent="project.menu_projects" sequence="35"/>
+    <menuitem action="act_project_project_list_view" groups="group_show_all_projects" id="menu_project_project_view"
+              parent="project.menu_projects" sequence="40"/>
+    <menuitem action="act_my_project_indent_list" id="menu_my_project_indent_view" parent="project.menu_projects"
+              sequence="25"/>
+    <menuitem action="act_project_indent_list" groups="group_show_all_projects" id="menu_project_indent_view"
+              parent="project.menu_projects" sequence="45"/>
+
+
+
+</odoo>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="partner_statement_templates">
+        <t t-call="web.html_container">
+            <t t-call="stranbys_outstanding.report_header_minimal"/>
+            <t t-call="web.internal_layout">
+                <div class="page">
+                <div class="oe_structure"/>
+                    <br/>
+                    <br/>
+                <div class="row">
+                    <div class="col-6" >
+                        <strong t-field="customer.name"/>
+                        <br/>
+                        <span t-if="customer.street">
+                            <span t-field="customer.street"/>
+                        </span>
+                        <span t-if="customer.street2">
+                            <span t-field="customer.street2"/>
+                        </span>
+                        <span t-if="customer.city">
+                            <span t-field="customer.city"/>
+                        </span>
+                        <br/>
+                        <span t-if="customer.state_id">
+                            <span t-field="customer.state_id.name"/>
+                        </span>
+                        <span t-if="customer.zip or customer.country_id">
+                            <span t-field="customer.country_id.name"/>
+                        </span>
+                        <t t-if="customer.phone">
+                            <br/>
+                            <span>Phone :</span>
+                            <span t-field="customer.phone"/>
+                        </t>
+
+                        <t t-if="customer.email">
+                            <br/>
+                            <span>Email :</span>
+                            <span t-field="customer.email"/>
+                        </t>
+                        <br/>
+                        <span>TRN :
+                            <span t-field="customer.vat"/>
+                        </span>
+                    </div>
+                    <div class="col-6 pull-right">
+                        <div class="name-box" style="text-align:center">
+                            <strong>Total Overdue *</strong>
+                            <br/>
+                            <span  t-esc="grand_total_residue"/>
+                        </div><br/>
+                        <div class="name-box" style="text-align:center">
+                            <strong>Pending PDCs *</strong>
+                            <br/>
+                            <span t-esc="grand_total_pdc_amount"/>
+                        </div><br/>
+                        <div class="name-box" style="text-align:center">
+                            <strong>Total Outstanding *</strong>
+                            <br/>
+                            <span t-esc="grand_total_residue"/>
+                        </div>
+
+                    </div>
+                    <!--                    <h4>Outstanding Report</h4>-->
+                    <!--                    <div id="informations" class="row mt32 mb32" style="font-size:14px">-->
+                    <!--                        <div class="col-3 bm-2">-->
+                    <!--                            <strong>From</strong>-->
+                    <!--                            <p t-esc="start_dt" class="m-0" t-options='{"widget": "date"}'/>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-3 bm-2">-->
+                    <!--                            <strong>To</strong>-->
+                    <!--                            <p t-esc="end_dt" class="m-0" t-options='{"widget": "date"}'/>-->
+                    <!--                        </div>-->
+                                        </div>
+                    <!--                    <br/>-->
+                    <t t-if="in_data">
+                        <h1>
+                            <strong>BILL WISE DETAILS</strong>
+                        </h1>
+                        <table class="table header2" style="border: 1px solid black;line-height:1.2;" width="100%">
+                            <thead>
+                                <tr>
+                                    <!--                                <th style="text-align:center;" width="10%">Sl.No</th>-->
+                                    <th style="text-align:center;" width="10%">Date</th>
+                                    <th style="text-align:center;" width="10%">Invoice Number</th>
+                                    <th style="text-align:center;" width="10%">Bill Ref</th>
+<!--                                    <th style="text-align:center;" width="10%">LPO No.</th>-->
+                                    <th style="text-align:center;" width="10%">Due Date</th>
+                                    <th style="text-align:center;" width="10%">Due Days</th>
+                                    <th style="text-align:right;" width="10%">Amount</th>
+                                    <th style="text-align:right;" width="10%">Adjustment</th>
+                                    <th style="text-align:right;" width="10%">Balance</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="sl_no" t-value="1"/>
+                                <t t-foreach="in_data" t-as="u">
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['date']" t-options='{"widget": "date"}'/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['reference']"/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['bill_ref']"/>
+                                        </td>
+<!--                                        <td style="text-align:center;">-->
+<!--                                            <span t-esc="u['lpo']"/>-->
+<!--                                        </td>-->
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['due_dates']" t-options='{"widget": "date"}'/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['due_date']"/>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <span t-esc="u['total_amount']"/>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <span t-esc="u['balance']"/>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <span t-esc="u['amount_residue']"/>
+                                        </td>
+
+                                        <t t-set="sl_no" t-value="sl_no+1"/>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="5" style="text-align:right;">
+                                        <strong>Total Balance</strong>
+
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <strong>
+                                            <span t-esc="grand_total_amount"/>
+                                        </strong>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <strong>
+                                            <span t-esc="grand_total_balance"/>
+                                        </strong>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <strong>
+                                            <span t-esc="grand_total_residue"/>
+                                        </strong>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <t t-if="pdc_data">
+                        <h1>
+                            <strong>PENDING PDC</strong>
+                        </h1>
+                        <table class="table header2" style="border: 1px solid black;line-height:1.2;" width="100%">
+                            <thead>
+                                <tr>
+                                    <!--                                <th style="text-align:center;" width="10%">Sl.No</th>-->
+                                    <th style="text-align:center;">Cheque#</th>
+                                    <th style="text-align:center;">Cheque Date</th>
+                                    <th style="text-align:center;">Receipt#</th>
+                                    <th style="text-align:center;">Bank</th>
+                                    <th style="text-align:right;">Amount</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="sl_no" t-value="1"/>
+                                <t t-foreach="pdc_data" t-as="u">
+                                    <tr>
+
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['seq']"/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['date']" t-options='{"widget": "date"}'/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['voucher']"/>
+                                        </td>
+
+                                        <td style="text-align:center;">
+                                            <span t-esc="u['bank']"/>
+                                        </td>
+
+                                        <td style="text-align:right;">
+                                            <span t-esc="u['amount']"/>
+                                        </td>
+
+                                        <!--                                    <t t-set="sl_no" t-value="sl_no+1"/>-->
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="4" style="text-align:right;">
+                                        <strong>Total Amount</strong>
+
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <strong>
+                                            <span t-esc="grand_total_pdc_amount"/>
+                                        </strong>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </t>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>For <span t-field="company_id.name"/> </strong>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+    <!--    <template id="report_deliveryslip_dime">-->
+    <!--        <t t-call="web.html_container">-->
+    <!--            <t t-foreach="docs" t-as="o">-->
+    <!--                <t t-call="dimemarine_erp.report_delivery_dime_document" t-lang="o.partner_id.lang"/>-->
+    <!--            </t>-->
+    <!--        </t>-->
+    <!--    </template>-->
+
+</odoo>

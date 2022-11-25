@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,500,700,900');
+.printpage {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    line-height: 1.3em;
+    color: inherit;
+    margin-top: 20px;
+    margin-bottom: 1px;
+
+}
+.print-format {
+    font-family: 'Raleway', sans-serif;
+    -webkit-print-color-adjust: exact;
+}
+.print-format {
+    background-color: white;
+    box-shadow: 0px 0px 9px rgba(0,0,0,0.5);
+    max-width: 8.3in;
+    min-height: 11.69in;
+    padding: 0.1in;
+    margin: auto;
+    color: black;
+    font-size: 14px;
+}
+.print-heading {
+    text-align: right;
+    text-transform: uppercase;
+    color: #666;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #d1d8dd;
+}
+blockquote {
+  border-left: 15px solid #2f6aa3;
+  font-size: 45px;
+  font-weight: 700;
+  font-family: 'Raleway', sans-serif;
+  padding: 0px 2px;
+  margin: 0 0 0px;
+  border-top: 0px solid transparent;
+  border-bottom: 0px solid transparent;
+  border-right: 0px solid transparent;
+}
+blockquote footer, blockquote small, blockquote .small{
+  font-size: 13px;
+  font-family: 'Raleway', sans-serif;
+  color: black;
+}
+blockquote footer:before, blockquote small:before, blockquote .small:before{
+  content: '';
+}
+.print-heading {
+  border-bottom: 1px solid transparent;
+}
+h1 {
+  font-size: 30px;
+  font-weight: 700;
+}
+.table-bodered {
+  border-collapse: collapse;
+  border-bottom: 1px solid black;
+  border: 0px solid transparent;
+}
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+  border: 0px solid transparent;
+  border-bottom: 1px solid #dcdcdc;
+}
+.borderbottom {
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+  margin-bottom: 5px;
+  border-color: #b7b7b7;
+}
+.column {
+  float: left;
+  content: "\200B";
+}
+
+.left {
+  width: 50%;
+
+}
+.right {
+  width: 25%;
+}
+
+.middle {
+  width: 25%;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.text-right {
+  text-align: right;
+}
+
+.table-bordered {
+   border: 1px solid #fff;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #fff;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+.border-bottom {
+  border-top: 1px solid #555555;
+  border-left: 1px solid transparent;
+}
+
+.print-format {
+	padding: 0.5in;
+	margin-top: 0mm;
+  	margin-left: 0mm;
+  	margin-right: 0mm;
+}
+body {
+        margin: 0 !important;
+        border: 0 !important;
+        padding: 0mm 0mm 0mm !important;
+      }
+
+print-format {
+		vertical-align: middle;
+}
+
+@media screen {
+        .print-format {
+            width: 210mm;
+                         
+            min-height: 297mm;
+                        position: relative;
+        }
+    }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_pdc_receipts" model="ir.sequence">
+            <field name="name">Receipts</field>
+            <field name="code">account.cheque.receipts</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="seq_pdc_send" model="ir.sequence">
+            <field name="name">Send</field>
+            <field name="code">account.cheque.send</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>

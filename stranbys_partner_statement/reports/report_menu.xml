@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+            <xpath expr="//head" position="inside">
+                <link rel="stylesheet" href="/triton_foods/static/src/css/all.css"/>
+                <link rel="stylesheet" href="/triton_foods/static/src/css/print.css"/>
+            </xpath>
+        </template>
+
+        <template id="report_header_minimal">
+            <div class="header" style="font-size: 13px;font-family:Roboto;">
+                <div class="row">
+                    <div class="col-6 left">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-6 pull-right text-right" style="padding-top:20px;font-size: 15px;">
+                        <strong style="font-size:17px;" t-field="res_company.name"/>
+                        <span t-if="res_company.street">
+                            <br/>
+                            <span t-field="res_company.street"/>
+                        </span>
+                        <span t-if="res_company.street2">
+                            <br/>
+                            <span t-field="res_company.street2"/>
+                            <span t-field="res_company.city"/>
+                            <span t-field="res_company.state_id.name"/>
+                        </span>
+                        <span t-if="res_company.zip or res_company.country_id">
+                            <br/>
+                            <span t-field="res_company.zip"/>
+                            <span t-field="res_company.country_id.name"/>
+                        </span>
+                        <br/>
+                        <strong>TRN :</strong>
+                        <strong t-field="res_company.vat"/>
+                    </div>
+                </div>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <strong t-field="res_company.name"/>
+                |
+                <i class="fa fa-phone-alt"></i>
+                <span t-field="res_company.phone"/>
+                |
+                <i class="fa fa-envelope"></i>
+                <span t-field="res_company.email"/>
+                |
+                <i class="fa fa-globe"></i>
+                <span t-field="res_company.website"/>
+                <div class="row" style="border-top: 1px solid gray;">
+                    <div class="col-10"></div>
+                    <div class="col-2 pull-right">
+                        <small class="pull-right">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                            <br/>
+                            <br/>
+                            <span style="font-size:8px;"></span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <report
+                id="report_partner_statement_xlsx"
+                model="partner.statement.wizard"
+                string="Partner Statement Report"
+                report_type="xlsx"
+                name="partner.statement.report.xlsx"
+                file="Partner Statement"
+                attachment_use="False"
+                menu="False"
+        />
+    </data>
+</odoo>

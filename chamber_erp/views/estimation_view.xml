@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="act_estimation_view" model="ir.actions.act_window">
+        <field name="name">Estimations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crm.estimation</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create New Estimation
+            </p>
+        </field>
+    </record>
+    <record id="act_estimation_line_view" model="ir.actions.act_window">
+        <field name="name">Estimations Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crm.estimation.line</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create New Estimation
+            </p>
+        </field>
+    </record>
+    <record id="view_estimation_search" model="ir.ui.view">
+        <field name="model">crm.estimation</field>
+        <field name="arch" type="xml">
+            <search string="Estimation">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="lead_id"/>
+            </search>
+        </field>
+    </record>
+    <record id="estimation_list_view" model="ir.ui.view">
+        <field name="model">crm.estimation</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Estimations" default_order="id desc">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="lead_id"/>
+                <field name="estimator_id"/>
+                <field name="edt_id"/>
+                <field name="requirement"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="act_quotation_filtered_result" model="ir.actions.act_window">
+        <field name="name">Quotations</field>
+        <field name="res_model">sale.order</field>
+        <field name="domain">[('estimation_id', '=', active_id)]</field>
+        <field name="context">{'search_estimation_id': [active_id], 'default_estimation_id': active_id}</field>
+    </record>
+
+    <record id="estimation_form_view" model="ir.ui.view">
+        <field name="model">crm.estimation</field>
+        <field name="name">crm.estimation.form</field>
+        <field name="arch" type="xml">
+            <form string="Estimation">
+                <header>
+                    <button string="Send for Approval" type="object" name="send_approval" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'draft'),]}"/>
+                    <button string="Approve" groups="chamber_erp.sales_estimation_approver" type="object"
+                            name="approval_estimation" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'send'),]}"/>
+                    <button string="Reject" groups="chamber_erp.sales_estimation_approver" type="object"
+                            name="create_rejection" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'send'),]}"/>
+                    <button string="Create Quotation" type="object" name="create_quotation" class="oe_highlight"
+                            attrs="{'invisible':['|',('state', '!=', 'approved'),('is_quoted', '!=', False)]}"/>
+                    <button string="Lock" type="object" name="lock_estimation" class="oe_highlight"
+                            attrs="{'invisible':[('state', '!=', 'approved')]}"/>
+                    <button name="button_report_xlsx" string="Print" type="object" class="oe_highlight"/>
+
+                    <field name="revision_id" invisible="1"/>
+                    <button name="create_new_version" string="Create Revision" type="object" class="btn-primary"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="Estimation Details">
+                    <div class="oe_button_box" name="button_box" groups="base.group_user">
+                        <button class="oe_stat_button" type="action" name="%(act_quotation_filtered_result)d"
+                                icon="fa-pencil-square-o" context="{'default_estimation_id': id}">
+                            <div class="o_stat_info">
+                                <!--                                <field name="quotation_count" class="o_stat_value"/>-->
+                                <span class="o_stat_text">Quotations</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_project_estimations" type="object"
+                                icon="fa-pencil-square-o"
+                                string="Project Estimation"/>
+                        <button class="oe_stat_button" type="object" name="action_view_revisions" icon="fa-bars"
+                                attrs="{'invisible':[('revision_id','=', False)]}">
+                            <field string="Revisions" name="revision_count" widget="statinfo"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" force_save="1" class="oe_title" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="estimation_type"/>
+                            <field name="partner_id"/>
+                            <field name="lead_id" string="Lead" readonly="1"/>
+                            <field name="is_quoted" invisible="1"/>
+
+                            <field name="estimator_id"/>
+                            <field name="edt_id"/>
+                            <label for="copy_estimation_id"/>
+                            <div class="o_row">
+                                <field name="copy_estimation_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                <button type="object" name="copy_estimation" class="btn-sm btn-link mb4 fa fa-copy"
+                                        aria-label="Copy" title="Copy Estimation"
+                                        confirm="This will rewrite the estimation lines with the lines from the source esimation, do you really want to continue"/>
+                            </div>
+
+                        </group>
+                        <group>
+                            <strong>MATERIAL</strong>
+                            <br/>
+                            <field name="material_hour_profit_ids" nolabel="1">
+                                <tree editable="bottom ">
+                                    <field name="name" required="1"/>
+                                    <field name="percentage" required="1"/>
+                                    <field name="total" sum="Total"/>
+                                </tree>
+                            </field>
+                            <br/>
+                            <strong>MAN HOUR + OTHER EXPENSE</strong>
+                            <br/>
+                            <field name="man_hour_profit_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="name" required="1"/>
+                                    <field name="percentage" required="1"/>
+                                    <field name="total" sum="Total"/>
+                                </tree>
+                            </field>
+                            <br/>
+                            <strong style="color: blue;">TOTAL</strong>
+                            <field name="material_total" string="Material"/>
+                            <field name="man_hours_total" string="Man Hours"/>
+                            <field name="other_expense_total" string="Other Expense"/>
+                            <field name="material_total_with_profit"/>
+                            <field name="man_hours_other_expense_total" string="Man Hours + Other Expense"/>
+                            <field name="man_hours_other_expense_total_with_profit"
+                                   string="Man Hours + Other Expense with profit"/>
+                            <field name="overall_total" style="color: red;"/>
+                            <field name="overall_total_percentage"/>
+                            <strong style="color: blue;">MULTIPLICATION FACTOR</strong>
+                            <field name="material_multiplication_factor"/>
+                            <field name="man_hour_multiplication_factor"/>
+
+                            <!--                                <field name="currency_id" invisible="1"/>-->
+                            <!--                                <field name="cost" string="Product Cost"/>-->
+
+                            <!--                                &lt;!&ndash;                            <field name="selling_price" string="Product Price"/>&ndash;&gt;-->
+                            <!--                                <field name="service_cost" string="Installation Price"/>-->
+                            <!--                                <field name="expense_total"/>-->
+                            <!--                                &lt;!&ndash;                            <field name="amc_total"/>&ndash;&gt;-->
+                            <!--                                <field name="total_value"/>-->
+                            <!--                                <field name="profit"/>-->
+                            <!--                                <field name="total_selling_price" string=" Price"/>-->
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Requirement">
+                            <field name="requirement" string="Requirement" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+
+                        <page string="Project Estimations" name="project_estimation">
+                            <button string="Update" type="object" name="update_datas" class="oe_highlight"/>
+                            <field name="product_line_ids" widget="section_and_note_one2many">
+
+                                <tree string="Estimation Lines" editable="bottom">
+                                    <control>
+                                        <create string="Add a product"/>
+                                        <create string="Add a section"
+                                                context="{'default_display_type': 'line_section'}"/>
+                                        <create string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                    </control>
+
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="display_type" invisible="1"/>
+                                    <field name="estimation_id" invisible="1"/>
+                                    <field name="estimation_type" invisible="1"/>
+                                    <field
+                                            name="product_id"
+                                            attrs="{
+                                                'required': [('display_type', '=', False)],
+                                            }"
+                                            force_save="1"
+                                            context="{
+                                                'default_description_sale': name
+                                            }"
+                                            domain="[('type', '=', 'service'), ('estimation_type', '!=',False )]"
+                                            options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="name"/>
+                                    <field
+                                            name="product_uom"
+                                            force_save="1"
+                                            attrs="{
+                                            'required': [('display_type', '=', False)],
+                                        }"
+                                            groups="uom.group_uom"
+                                            options='{"no_open": True}'
+                                    />
+                                    <field name="product_qty"/>
+                                    <field name="unit_man_hour_installation" optional="hide"
+                                           sum="Unit Man Hour For Installation"/>
+                                    <field name="total_man_hour_installation" optional="hide"
+                                           sum="Total Man Hour For Installation"/>
+                                    <field name="unit_price_material" optional="show"
+                                           sum="Unit rate Material Cost Price (AED)"/>
+                                    <field name="total_price_material" optional="hide"
+                                           sum="Total rate Material Cost Price (AED)"/>
+                                    <field name="unit_rate_man_hour_tf" optional="hide"
+                                           sum="Unit Rate Manhour *TF(AED)"/>
+                                    <field name="total_rate_man_hour" optional="hide" sum="Total Rate Manhour (AED)"/>
+                                    <field name="unit_rate_material_supply" optional="hide"
+                                           sum="Unit rate Material Supply (AED)"/>
+                                    <field name="total_rate_material_supply" optional="hide"
+                                           sum="Total Rate Material Supply  (AED)"/>
+                                    <field name="unit_rate_installation" optional="hide"
+                                           sum="Unit Rate Installation (AED)"/>
+                                    <field name="total_rate_installation" optional="hide"
+                                           sum="Total Rate Installation (AED) "/>
+                                    <field name="remarks"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="display_type" invisible="1"/>
+                                        <group attrs="{'invisible': [('display_type', '!=', False)]}">
+
+                                            <field name="estimation_id" invisible="1"/>
+                                            <field name="estimation_type" invisible="1"/>
+                                            <field name="product_id"
+                                                   options="{'no_create': True, 'no_create_edit':True}"/>
+                                            <field name="product_uom"/>
+                                            <field name="product_qty"/>
+                                        </group>
+                                        <group attrs="{'invisible': [('display_type', '!=', False)]}">
+                                            <field name="unit_man_hour_installation"/>
+                                            <field name="total_man_hour_installation"/>
+                                            <field name="unit_price_material"/>
+                                            <field name="total_price_material"/>
+                                            <field name="unit_rate_man_hour_tf"/>
+                                            <field name="total_rate_man_hour"/>
+                                            <field name="unit_rate_material_supply"/>
+                                            <field name="total_rate_material_supply"/>
+                                            <field name="unit_rate_installation"/>
+                                            <field name="total_rate_installation"/>
+                                            <field name="remarks"/>
+
+                                        </group>
+                                        <field name="name"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Calculations" name="calculations">
+                            <strong style="text-align:center">
+                                MAN HOURS
+                            </strong>
+                            <br/>
+                            <field name="man_hour_ids">
+                                <tree editable="bottom">
+                                    <field name="name" required="1"/>
+                                    <field name="man_hours"/>
+                                    <field name="rate"/>
+                                    <field name="total"/>
+                                    <field name="estimation_id" invisible="1"/>
+                                </tree>
+                            </field>
+                            <strong style="text-align:center">
+                                MATERIALS
+                            </strong>
+                            <br/>
+                            <field name="material_ids">
+                                <tree editable="bottom">
+                                    <field name="name" required="1"/>
+                                    <field name="total"/>
+                                    <field name="estimation_id" invisible="1"/>
+
+                                </tree>
+                            </field>
+                            <strong style="text-align:center">
+                                MAN POWERS
+                            </strong>
+                            <br/>
+                            <field name="man_power_ids">
+                                <tree editable="bottom">
+                                    <field name="name" required="1"/>
+                                    <field name="man_hours"/>
+                                    <field name="hours_per_day"/>
+                                    <field name="days_per_month"/>
+                                    <field name="month"/>
+                                    <field name="man_power"/>
+                                    <field name="estimation_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="expenses" string="Expenses">
+                            <field name="calculation_ids">
+                                <tree string="Estimation Lines">
+                                    <field name="item_type"/>
+                                    <field name="total" sum="Total"/>
+                                </tree>
+                                <form string="Expenses">
+                                    <group>
+                                        <group>
+                                            <field name="item_type" required="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="total"/>
+                                        </group>
+                                    </group>
+                                    <notebook>
+                                        <page name="calculation_lines" string="Expense Lines">
+                                            <field name="calculation_line_ids" nolabel="1">
+                                                <tree editable="bottom">
+                                                    <field name="name" required="1"/>
+                                                    <field name="product_qty"
+                                                           attrs="{'column_invisible': [('parent.item_type', 'in', ('bank_charges'))]}"/>
+                                                    <field name="unit_price_material"
+                                                           attrs="{'column_invisible': [('parent.item_type', 'in', ('bank_charges'))]}"/>
+                                                    <!--                                bank -->
+                                                    <field name="bond_value"
+                                                           attrs="{'column_invisible': [('parent.item_type', 'not in', ('bank_charges'))]}"/>
+                                                    <field name="validity_monthly"
+                                                           attrs="{'column_invisible': [('parent.item_type', 'not in', ('bank_charges'))]}"/>
+                                                    <!--                                <field name="validity_days" attrs="{'column_invisible': [('parent.item_type', 'not in', ('bank_charges'))]}"/>-->
+                                                    <field name="bank_charges"
+                                                           attrs="{'column_invisible': [('parent.item_type', 'not in', ('bank_charges'))]}"/>
+
+                                                    <field name="duration_days"
+                                                           attrs="{'column_invisible': [('parent.item_type', 'not in', 'fd_accommodation')]}"/>
+                                                    <field name="duration_month" attrs="{'column_invisible': [('parent.item_type', 'in', ('admin_cost','fd_accommodation','bank_charges','material_transport_to_site','scaffolding',
+                                'civil_power_tools','additional_mob_demob','consumables'))]}"/>
+                                                    <field name="total" sum="Total"/>
+                                                    <field name="calculation_id" invisible="1"/>
+                                                </tree>
+                                            </field>
+                                        </page>
+                                    </notebook>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Project Management">
+                            <field name="expense_line_ids" editable="bottom" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="expense_type_id" required="1"/>
+                                    <field name="name" string="Department"/>
+                                    <field name="month"/>
+                                    <field name="qty"/>
+                                    <field name="salary"/>
+                                    <field name="total" sum="Total"/>
+                                    <field name="estimation_id" invisible="1"/>
+                                </tree>
+
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_estimation_lines" model="ir.ui.view">
+        <field name="model">crm.estimation.line</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Estimation Lines" default_order="id desc">
+                <field
+                        name="product_id"
+                        required="1"
+                        force_save="1"
+                        context="{
+                                                'default_description_sale': name
+                                            }"
+                        domain="[('type', '=', 'service'), ('estimation_type', '!=',False )]"
+                        options="{'no_create': True, 'no_create_edit':True}"/>
+                <field name="name"/>
+                <field
+                        name="product_uom"
+                        force_save="1"
+                        groups="uom.group_uom"
+                        options='{"no_open": True}'
+                />
+                <field name="product_qty"/>
+                <field name="unit_man_hour_installation" optional="hide" sum="Unit Man Hour For Installation"/>
+                <field name="total_man_hour_installation" optional="hide" sum="Total Man Hour For Installation"/>
+                <field name="unit_price_material" optional="show" sum="Unit rate Material Cost Price (AED)"/>
+                <field name="total_price_material" optional="hide" sum="Total rate Material Cost Price (AED)"/>
+                <field name="unit_rate_man_hour_tf" optional="hide" sum="Unit Rate Manhour *TF(AED)"/>
+                <field name="total_rate_man_hour" optional="hide" sum="Total Rate Manhour (AED)"/>
+                <field name="unit_rate_material_supply" optional="hide" sum="Unit rate Material Supply (AED)"/>
+                <field name="total_rate_material_supply" optional="hide" sum="Total Rate Material Supply  (AED)"/>
+                <field name="unit_rate_installation" optional="hide" sum="Unit Rate Installation (AED)"/>
+                <field name="total_rate_installation" optional="hide" sum="Total Rate Installation (AED) "/>
+                <field name="remarks"/>
+
+            </tree>
+        </field>
+    </record>
+    <menuitem action="act_estimation_view" id="menu_estimation_view" parent="crm.crm_menu_sales" sequence="2"/>
+</odoo>

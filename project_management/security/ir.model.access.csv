@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+project_manager_project_order_line_crud,project_manager.project.project.orderline.crud,model_project_project_orderline,,1,1,1,1
+project_user_project_purchase_line_crud,project_user.project.purchase.line.crud,model_project_purchase_line,,1,1,1,1
+project_user_project_delivery_line_crud,project_user.project.delivery.line.crud,model_project_delivery_line,,1,1,1,1
+project_sale_project_assign_wizard,sale.project.assign.wizard,model_sale_project_assign_wizard,,1,1,1,1
+project_delivery_wizard,project.delivery.wizard,model_project_delivery_wizard,,1,1,1,1
+project_purcahase_wizard,project.purcahase.wizard,model_project_purcahase_wizard,,1,1,1,1
+project_manager_delivery_indent_crud,project_manager.project.project.indents.crud,model_project_delivery_indent,project.group_project_manager,1,1,1,1
+project_user_delivery_indent_cru,project_user.project.project.indents.cru,model_project_delivery_indent,project.group_project_user,1,1,1,0
+project_delivery_indent_wizard_crud,project.delivery.indent.wizard.crud,model_project_delivery_indent_wizard,,1,1,1,1
+
+
+
+

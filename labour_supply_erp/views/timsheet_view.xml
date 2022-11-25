@@ -1,0 +1,30 @@
+<odoo>
+    <record id="timesheet_extend" model="ir.ui.view">
+        <field name="inherit_id" ref="stranbys_timesheet.view_project_timesheet_form"/>
+        <field name="model">project.timesheet</field>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]/field[@name='project_timesheet_line_ids']/tree/field[@name='total_hour']" position="after">
+                <field name="overtime_per_hour"/>
+                <field name="total_hour_rate" string="Total Rate" sum="Total Hour Rate"/>
+            </xpath>
+            <xpath expr="//notebook/page[1]/group/group[2]/field[@name='total_hours']" position="after">
+                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                    <label for="total_hour_rates"/>
+                </div>
+                <field name="total_hour_rates" nolabel="1" class="oe_subtotal_footer_separator"
+                />
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="timesheet_extend_list_view" model="ir.ui.view">
+        <field name="inherit_id" ref="stranbys_timesheet.view_project_timesheet_list"/>
+        <field name="model">project.timesheet</field>
+        <field name="arch" type="xml">
+            <xpath expr="field[@name='total_hours']" position="after">
+                <field name="total_hour_rates" string="Total Cost" sum="Total Cost"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

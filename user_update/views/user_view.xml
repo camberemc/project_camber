@@ -1,0 +1,12 @@
+<odoo>
+    <record id="custom_res_users_tree_view_extend_hiba" model="ir.ui.view">
+            <field name="name">res.users.tree.view.inherited</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='login']" position="after">
+                    <field name="job_position"/>
+                </xpath>
+            </field>
+        </record>
+</odoo>

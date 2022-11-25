@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+        <xpath expr="//head" position="inside">
+            <link rel="stylesheet" href="/stevok_customisation/static/src/css/all.css"/>
+            <link rel="stylesheet" href="/stevok_customisation/static/src/css/print.css"/>
+        </xpath>
+    </template>
+    <data>
+        <report
+                id="action_reports_amc_quotation"
+                model="quotation.order"
+                string="Quotation"
+                name="stevok_customisation.custom_report_amc_quotation"
+                file="stevok_customisation.custom_report_amc_quotation"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Quotation - %s' % (object.name)) "
+
+        />
+        <report
+                id="action_report_amc_contract"
+                model="contract.order"
+                string="Contract"
+                name="stevok_customisation.custom_report_amc_contract"
+                file="stevok_customisation.custom_report_amc_contract"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Contract - %s' % (object.name)) "
+        />
+        <report
+                id="action_for_invoice_report"
+                model="account.move"
+                string="Invoice"
+                name="stevok_customisation.custom_report_account_invoice_stevok"
+                file="stevok_customisation.custom_report_account_invoice_stevok"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Invoice - %s' % (object.name)) "
+        />
+
+        <template id="report_header_minimal">
+            <div class="header">
+                <img t-att-src="'stevok_customisation/static/src/header.png'" style="max-height: 200px;"
+                     width="1100px"/>
+                <hr style="height:2px; border:none; background-color:black;"/>
+
+
+            </div>
+
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <img t-att-src="'stevok_customisation/static/src/footer.png'" width="1200px"
+                     style="max-height: 40px;"/>
+                <br/>
+                <div class="text-muted" style="text-align:center">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </template>
+        <template id="report_header_minimals">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-8 text-left mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-4">
+                        <br/>
+                        <br/>
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>QT NO</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <span t-field="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>QT Date</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <span t-field="o.date_order" widget="date"
+                                          t-options='{"format": "MM/dd/yyyy"}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Company TRN</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="res_company.vat">
+                                        <span t-field="res_company.vat"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#EE4723;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <table width="100%" height="100%" style="background-color: #F24723;color: white;">
+                    <tr>
+                        <td width="40%">
+                            <span style="padding-left:15px">Your Safety is Our Concern</span>
+                        </td>
+                        <td width="20%" style="text-align:center">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </td>
+                        <td width="40%" style="text-align:right;padding-right:5px">
+                            <span>Tel :
+                                <t t-if="res_company.phone">
+                                    <span t-field="res_company.phone"/>
+                                </t>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+
+        <template id="report_header_minimal_amc_quot">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-8 text-left mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-4">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>QT NO</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="o.name">
+                                        <span t-field="o.name"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <t t-if="o.quotation_date">
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span>QT Date</span>
+                                    </td>
+                                    <td style="text-align:left">
+                                        <span t-field="o.quotation_date"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Company TRN</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="user.company_id.vat">
+                                        <span t-field="user.company_id.vat"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#EE4723;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <table width="100%" height="100%" style="background-color: #F24723;color: white;">
+                    <tr>
+                        <td width="40%">
+                            <span style="padding-left:15px">Your Safety is Our Concern</span>
+                        </td>
+                        <td width="20%" style="text-align:center">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </td>
+                        <td width="40%" style="text-align:right;padding-right:5px">
+                            <span>Tel :
+                                <t t-if="res_company.phone">
+                                    <span t-field="res_company.phone"/>
+                                </t>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="report_header_minimal_amc_contract">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-8 text-left mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-4">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Contract No.</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="o.name">
+                                        <span t-field="o.name"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <t t-if="o.contract_date">
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span>Contract Date</span>
+                                    </td>
+                                    <td style="text-align:left">
+                                        <span t-field="o.contract_date"/>
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <t t-if="o.quotation_id">
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span>QT NO</span>
+                                    </td>
+                                    <td style="text-align:left">
+                                        <span t-field="o.quotation_id.name"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Company TRN</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="user.company_id.vat">
+                                        <span t-field="user.company_id.vat"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#EE4723;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <table width="100%" height="100%" style="background-color: #F24723;color: white;">
+                    <tr>
+                        <td width="40%">
+                            <span style="padding-left:15px">Your Safety is Our Concern</span>
+                        </td>
+                        <td width="20%" style="text-align:center">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </td>
+                        <td width="40%" style="text-align:right;padding-right:5px">
+                            <span>Tel :
+                                <t t-if="res_company.phone">
+                                    <span t-field="res_company.phone"/>
+                                </t>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="report_header_minimal_invoice">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-4 text-left mb4">
+                        <img t-att-src="'stevok_customisation/static/src/images/logo2.jpeg'" class="pull-left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-4">
+                    </div>
+                    <div class="col-4">
+                        <strong t-field="res_company.name"/>
+                        <span t-if="res_company.street">
+                            <br/>
+                            <span t-field="res_company.street"/>
+                        </span>
+                        <span t-if="res_company.street2">
+                            <span t-field="res_company.street2"/>
+                        </span>
+                        <span t-if="res_company.city">
+                            <span t-field="res_company.city"/>
+                        </span>
+                        <span t-if="res_company.state_id">
+                            <br/>
+                            <span t-field="res_company.state_id.name"/>
+                        </span>
+                        <!--                    </span>-->
+                        <span t-if="res_company.zip or res_company.country_id">
+                            <br/>
+                            <span t-field="res_company.zip"/>
+
+                            <span t-field="res_company.country_id.name"/>
+                        </span>
+                        <br/>
+                        <span t-if="res_company.vat">
+                            <strong>TRN :</strong>
+                            <strong t-field="res_company.vat"/>
+                        </span>
+
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#EE4723;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <!--                <table width="100%" height="100%" style="background-color: #F24723;color: white;">-->
+                <!--                    <tr>-->
+                <!--                        <td width="40%">-->
+                <!--                            <span style="padding-left:15px">Your Safety is Our Concern</span>-->
+                <!--                        </td>-->
+                <!--                        <td width="20%" style="text-align:center">-->
+                <!--                            <span>Page</span>-->
+                <!--                            <span class="page"/>-->
+                <!--                            of-->
+                <!--                            <span class="topage"/>-->
+                <!--                        </td>-->
+                <!--                        <td width="40%" style="text-align:right;padding-right:5px">-->
+                <!--                            <span>Tel :-->
+                <!--                                <t t-if="res_company.phone">-->
+                <!--                                    <span t-field="res_company.phone"/>-->
+                <!--                                </t>-->
+                <!--                            </span>-->
+                <!--                        </td>-->
+                <!--                    </tr>-->
+                <!--                </table>-->
+            </div>
+        </template>
+
+    </data>
+</openerp>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="quote_approver" model="res.groups">
+            <field name="name">AMC Quote Approver</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="sale_approval" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//t[@t-set='address']" position="replace">
+                <t t-if="doc.approval_state == 'approved' ">
+                    <t t-set="address">
+                        <div t-field="doc.partner_id"
+                             t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                        <p t-if="doc.partner_id.vat"><t t-esc="doc.company_id.country_id.vat_label or 'Tax ID'"/>:
+                            <span t-field="doc.partner_id.vat"/>
+                        </p>
+                    </t>
+                </t>
+                <t t-else=""><span style="font-size:30px;margin-left:300px;">No Approval</span></t>
+
+            </xpath>
+        </template>
+    </data>
+</odoo>

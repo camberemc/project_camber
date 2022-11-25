@@ -1,0 +1,22 @@
+<odoo>
+    <record id="project_task_form_edit" model="ir.ui.view">
+        <field name="inherit_id" ref="project.view_task_form2" />
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='description_page']" position="before">
+                <page name="employee_lines" string="Overtime Details">
+                <field name="task_employee_lines" nolabel="1">
+                        <tree>
+                            <field name="project_id"/>
+                            <field name="task_id" />
+                            <field name="employee_id"/>
+                            <field name="ot_hours"/>
+                            <field name="total_cost"/>
+                        </tree>
+                </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

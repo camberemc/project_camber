@@ -1,0 +1,22 @@
+<odoo>
+    <record id="action_estimation_reject_wizard" model="ir.ui.view">
+        <field name="name">Revision</field>
+        <field name="model">estimation.reject.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Estimation Rejection">
+                <group>
+                    <field name="reason"/>
+                </group>
+
+                <footer>
+                    <button name="create_rejection" string="_Apply" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <act_window id="action_reject_estimation" name="Estimation Reject" res_model="estimation.reject.wizard"
+                view_mode="form" target="new"/>
+
+
+</odoo>

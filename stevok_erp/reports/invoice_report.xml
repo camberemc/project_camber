@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_report_invoice">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="stevok_erp.custom_report_stevok_invoice"
+                   t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="custom_report_stevok_invoice">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="stevok_erp.report_header_minimal"/>
+            <t t-call="web.external_layout" id="layout">
+                <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page">
+                    <table class="table table-sm o_main_table header1">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <span>TAX INVOICE</span>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span>TRN :
+                                        <span t-field="o.company_id.vat"/>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table header2">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>M/S</strong>
+                                    <strong t-field="o.partner_id.name"/>
+                                </td>
+                                <td width="15%">
+                                    <strong>INVOICE NO</strong>
+                                </td>
+                                <td>
+
+                                    <strong t-field="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">
+                                    <span t-field="o.partner_id.street"/>
+                                    <span t-field="o.partner_id.street2"/>
+                                    <br/>
+                                    <span t-field="o.partner_id.city"/>
+                                    <t t-if="o.partner_id.state_id.name">
+                                        <span t-field="o.partner_id.state_id.name"/>
+                                    </t>
+                                    <t t-if="o.partner_id.country_id.name">
+                                        <br/>
+                                        <span t-field="o.partner_id.country_id.name"/>
+                                    </t>
+                                    <t t-if="o.partner_id.phone">
+                                        <br/>
+                                        <span>Phone :</span>
+                                        <span t-field="o.partner_id.phone"/>
+                                    </t>
+
+                                    <t t-if="o.partner_id.email">
+                                        <br/>
+                                        <span>Email :</span>
+                                        <span t-field="o.partner_id.email"/>
+                                    </t>
+
+                                    <t t-if="o.partner_id.vat">
+                                        <br/>
+                                        <span>TRN</span>
+                                        <span t-field="o.partner_id.vat"/>
+                                    </t>
+
+
+                                </td>
+                                <td>
+                                    <strong>DATE</strong>
+                                </td>
+                                <td>
+                                    <t t-if="o.invoice_date">
+                                        <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>LPO NO.</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.ref"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>QTN. REF.</strong>
+                                </td>
+                                <td>
+                                    <span t-field="o.invoice_origin"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                            </tr>
+
+                            <tr>
+                                <td>
+
+                                </td>
+
+                                <td>
+                                    <strong>JOB NO</strong>
+                                </td>
+                                <td>
+<!--                                    <span t-field="o.job_no"/>-->
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <br/>
+
+                    <table class="table header2">
+                        <thead>
+                            <tr>
+                                <th width="7%">
+                                    <span>SL NO</span>
+                                </th>
+                                <th width="55%" class="text-center">
+                                    <span>DESCRIPTION</span>
+                                </th>
+                                <th width="10%" class="text-center">
+                                    <span>QTY</span>
+                                </th>
+                                <th width="13%" class="text-right ">
+                                    <span>UNIT PRICE</span>
+                                </th>
+                                <th width="15%" class="text-right ">
+                                    <span>TOTAL</span>
+                                    <span>( AED )</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <t t-set="current_subtotal" t-value="0"/>
+                            <t t-set="sl_no" t-value="1"/>
+                            <t t-set="grand_total" t-value="0"/>
+                            <t t-set="total_vat" t-value="0"/>
+                            <t t-set="discount" t-value="False"/>
+                            <t t-set="discount_amount" t-value="0"/>
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                                <tr >
+                                    <t t-if="not line.display_type">
+                                        <t t-if="line.product_id.default_code != 'DISC'">
+                                            <td class="text-center">
+                                                <span t-esc="sl_no"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.quantity"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(float(line.price_unit))"/>
+
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(float(line.price_subtotal))"/>
+                                            </td>
+                                            <t t-set="sl_no" t-value="sl_no+1"/>
+                                            <t t-set="grand_total" t-value="grand_total+line.price_subtotal"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="discount" t-value="True"/>
+                                            <t t-set="discount_amount" t-value="line.price_subtotal"/>
+                                        </t>
+
+                                    </t>
+
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <td >
+                                            <span></span>
+                                        </td>
+                                        <td class="bg-200 font-weight-bold o_line_section">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <td >
+                                            <span></span>
+                                        </td>
+                                        <td >
+                                            <span></span>
+                                        </td>
+                                        <td >
+                                            <span></span>
+                                        </td>
+
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_note'">
+<!--                                        <td colspan="99">-->
+<!--                                            <span style="padding-left:2px" t-field="line.name"/>-->
+<!--                                        </td>-->
+                                        <td >
+                                            <span></span>
+                                        </td>
+                                        <td>
+                                            <span class="note" t-field="line.name"/>
+                                        </td>
+                                        <td >
+                                            <span></span>
+                                        </td>
+                                        <td >
+                                            <span></span>
+                                        </td>
+                                        <td >
+                                            <span></span>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <!--                                <t t-if="current_section and (line_last or doc.invoice_line_ids[line_index+1].display_type == 'line_section')">-->
+                                <!--                                    <tr class="is-subtotal text-right">-->
+                                <!--                                        <td colspan="99">-->
+                                <!--                                            <strong class="mr16">Subtotal</strong>-->
+                                <!--                                            <span style="padding-left:2px"-->
+                                <!--                                                  t-esc="'{0:,.2f}'.format(float(current_subtotal))"/>-->
+                                <!--                                        </td>-->
+                                <!--                                    </tr>-->
+                                <!--                                </t>-->
+                            </t>
+
+
+                            <tr class="text-right">
+                                <td colspan="4">
+                                    <strong>GROSS TOTAL</strong>
+                                </td>
+                                <td>
+                                    <t t-if="discount">
+                                        <strong t-esc="'{0:,.2f}'.format(float((doc.amount_untaxed - discount_amount)))"/>
+                                    </t>
+                                    <t t-if="not discount">
+                                        <strong t-esc="'{0:,.2f}'.format(float(doc.amount_untaxed))"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="4">
+                                    <strong>DISCOUNT</strong>
+                                </td>
+                                <td>
+                                    <strong t-esc="'{0:,.2f}'.format(float(discount_amount))"/>
+                                </td>
+                            </tr>
+
+                            <tr class="text-right">
+                                <td colspan="4">
+                                    <strong>VAT (5%)</strong>
+                                </td>
+                                <td>
+                                    <strong t-esc='"%.2f" % (doc.amount_total - doc.amount_untaxed)'/>
+                                </td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="4">
+                                    <strong>TOTAL INC. VAT</strong>
+                                </td>
+                                <td>
+                                    <strong t-esc="'{0:,.2f}'.format(float(doc.amount_total))"/>
+                                </td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="5" class="text-left">
+                                    <strong>TOTAL AED IN WORDS :</strong>
+                                    <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(doc.amount_total)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+<!--                    <t t-foreach="doc.invoice_line_ids" t-as="line">-->
+<!--                            <span t-field="line.name"/>-->
+<!--                        <br/><hr/>-->
+<!--                    </t>-->
+                    <span class="footnote">
+                        <strong>Note :</strong>Any correction, shall be done within 7 working days from the
+                        date of submission of the invoice. Otherwise shall be considered as final
+                    </span>
+                </div>
+                <br/>
+                <div style="page-break-inside: avoid;">
+                    <div class="row" style="page-break-inside: avoid;line-height: 80%;">
+                        <div class="col-12">
+                            <strong style="font-size:14px">BANK DETAILS</strong>
+                            <br/>
+                            <span style="font-size:10px" t-field="doc.bank_details"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row bottom1" style="page-break-inside: avoid;">
+                        <div class="col-4">
+                            <t t-if="doc.user_id">
+                                <span style="padding-left:5px;" t-field="doc.user_id.name"/>
+                            </t>
+                            <br/>
+                            <strong>PREPARED BY</strong>
+                        </div>
+                        <div class="col-4 ">
+                            <span style="padding-left:50px;">S SABU</span>
+                            <br/>
+                            <strong>AUTHORISED SIGNATORY</strong>
+                        </div>
+                        <div class="col-4 ">
+                            <br/>
+                            <strong>RECEIVER STAMP &amp; SIGN</strong>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <!--                <div class="row" style="page-break-inside: avoid;line-height: 80%;">-->
+                <!--                    <div class="col-12">-->
+                <!--                        <strong style="font-size:14px">BANK DETAILS</strong>-->
+                <!--                        <br/>-->
+                <!--                        <span style="font-size:10px" t-field="doc.bank_details"/>-->
+                <!--                    </div>-->
+
+                <!--                </div>-->
+            </t>
+        </t>
+    </template>
+</odoo>

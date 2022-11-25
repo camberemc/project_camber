@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report
+                id="stevok_customisation.action_report_custom_saleorder"
+                model="sale.order"
+                string="Print"
+                name="stevok_customisation.custom_report_saleorder"
+                file="stevok_customisation.custom_report_saleorder"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Stevok-' + object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+                menu="False"
+        />
+        <report
+                id="stevok_customisation.action_report_custom_saleorder_lumpsum"
+                model="sale.order"
+                string="Print Lumpsum"
+                name="stevok_customisation.custom_report_saleorder_lympsum"
+                file="stevok_customisation.custom_report_saleorder_lympsum"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Stevok-' + object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+                menu="False"
+        />
+        <report
+                id="stevok_customisation.action_report_custom_purchase_order"
+                model="purchase.order"
+                string="Purchase Order"
+                name="stevok_customisation.custom_report_purchase_order"
+                file="stevok_customisation.custom_report_purchase_order"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="(object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+                menu="False"
+        />
+        <report
+                id="stevok_customisation.action_report_custom_rfq"
+                model="purchase.order"
+                string="Request for Quotation"
+                name="stevok_customisation.custom_report_purchase_order"
+                file="stevok_customisation.custom_report_purchase_order"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="'Request for Quotation - %s' % (object.name)"
+                menu="False"
+        />
+        <report
+                id="stevok_customisation.action_reports_amc_quotation"
+                model="quotation.order"
+                string="Quotation"
+                name="stevok_customisation.custom_report_amc_quotation"
+                file="stevok_customisation.custom_report_amc_quotation"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Quotation - %s' % (object.name)) "
+                menu="False"
+
+        />
+        <report
+                id="stevok_customisation.action_report_amc_contract"
+                model="contract.order"
+                string="Contract"
+                name="stevok_customisation.custom_report_amc_contract"
+                file="stevok_customisation.custom_report_amc_contract"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Contract - %s' % (object.name)) "
+                menu="False"
+        />
+    </data>
+</odoo>

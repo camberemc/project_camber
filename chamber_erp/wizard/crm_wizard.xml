@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_assign_to_estimation_wizard" model="ir.ui.view">
+        <field name="name">Assign to Estimation</field>
+        <field name="model">crm.estimation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Assign to Estimation">
+                <group>
+                    <h3>
+                        <field name="lead_id" widget="selection" readonly="1" domain="[('id', '=', context.get('default_lead_id'))]" />
+                    </h3>
+                    <group></group>
+                    <group>
+                        <field name="estimator_id" />
+                        <field name="crm_type" readonly="1"/>
+                    </group>
+                    <group></group>
+                    <group>
+                        <field name="estimation_id" options="{'no_create': True, 'no_create_edit':True}" domain="[('lead_id', '=', lead_id)]" attrs="{'required':[('lead_id','=',True)]}" />
+                    </group>
+                    <group>
+                        <field name="create_revison" attrs="{'invisible': [('estimation_id', '=', False)]}" />
+                    </group>
+                    <h4>Message</h4>
+                    <field name="requirement" required="1" placeholder="Write the requirement/message to estimator here.."/>
+                </group>
+                <footer>
+                    <button name="create_estimation" string="_Apply" type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <act_window id="act_assign_to_estimation_wizard" name="Assign to Estimation" res_model="crm.estimation.wizard" view_mode="form" target="new" />
+</odoo>

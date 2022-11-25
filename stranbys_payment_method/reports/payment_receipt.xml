@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="account_cheque_template">
+            <t t-call="web.html_container">
+                <t t-call="stranbys_pdc.report_header_minimal"/>
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page" >
+                            <div class="text-center">
+                                <span style="text-align:center; font-size:22px;" t-if="o.cheque_type == 'pay'">PAID </span>
+                                <span style="text-align:center; font-size:22px;" t-if="o.cheque_type == 'receive'">RECEIVED </span>
+                                <span style="text-align:center; font-size:22px;" t-if="o.payment_method == 'cash'">CASH</span>
+                                <span style="text-align:center; font-size:22px;" t-if="o.payment_method != 'cash'">Cheque/Bank</span>
+                            </div>
+                            <br/>
+                            <div class="row" style="font-size:14px">
+                                <table width="90%" height="100%" class="text-center"
+                                       style="margin-left:25px;margin-right:20px;border: 1pt solid black;">
+                                    <tr width="100%" height="100%">
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span><b>Customer :</b>
+                                                <t t-if="o.partner_id">
+                                                    <span t-field="o.partner_id.name"/>
+                                                </t>
+                                            </span>
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span>Date : </span>
+                                            <span t-field="o.entry_date"/>
+                                            
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span><b>Voucher Number :</b>
+                                                <span t-field="o.cheque_sequence"/>
+                                            </span>
+                                        </td>
+
+                                    </tr>
+                                    <tr width="100%" height="100%">
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span t-if="o.payment_method == 'cash'">Name : </span>
+                                            <span t-if="o.payment_method != 'cash'">Cheque Number/Trns : </span>
+                                            <span t-field="o.name"/>
+  
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                                <span><b>Voucher :</b>
+                                                    <span t-field="o.voucher_no"/>
+                                                </span>
+                                        </td>
+                                        <td style="border: 1px solid black;padding-left: 8px" width="15%" height="100%"
+                                            class="text-left">
+                                            <span><b>Transaction Details :</b>
+                                                <span t-field="o.transaction"/>
+                                            </span>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <br/>
+                            <br/>
+                            <t t-if="o.payment_method != 'cash'">
+
+                                <div class="row">
+                                    <table width="90%" height="100%" class="text-center"
+                                           style="margin-left:25px;margin-right:20px;border: 1pt solid black;color:black;">
+                                        <thead>
+                                            <tr >
+                                                <th style="border: 1px solid black;padding-left: 8px;color:black" width="8%"
+                                                    height="100%"
+                                                    class="text-center" name="th_label">
+                                                    <strong>Bank</strong>
+                                                </th>
+                                                <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                    height="100%"
+                                                    class="text-center" name="th_account">
+    
+                                                    <strong>Cheque Date</strong>
+                                                </th>
+                                                <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                    height="100%"
+                                                    name="th_amount" class="text-center">
+                                                    <strong>Issue Date</strong>
+                                                </th>
+                                                <th style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                    height="100%"
+                                                    name="th_vat" class="text-center">
+                                                    <strong>Amount</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr width="100%" height="100%">
+                                                    <td style="border: 1px solid black;padding-left: 8px" width="8%"
+                                                        height="100%"
+                                                        class="text-center">
+                                                        <span t-field="o.journal_id.name"/>
+                                                    </td>
+                                                    <td style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                        height="100%"
+                                                        class="text-center">
+    
+                                                        <span t-field="o.date"/>
+                                                    </td>
+                                                    <td style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                        height="100%"
+                                                        class="text-ceter">
+                                                        <span t-field="o.issue_date" />
+                                                    </td>
+                                                    <td style="border: 1px solid black;padding-left: 8px" width="15%"
+                                                        height="100%"
+                                                        class="text-right">
+                                                        <span t-field="o.amount" style="padding-right:5px"/>
+                                                    </td>
+    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+    
+                                </div>
+
+
+                            </t>
+                            
+                            <br/>
+                            <br/>
+                            <strong>Comments</strong>
+                            <p t-field="o.narration"/>
+                            <div class="oe_structure"/>
+                        </div>
+
+
+                    </t>
+                </t>
+            </t>
+
+        </template>
+
+
+    </data>
+
+
+</odoo>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_technical_outsourcing">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="chamber_erp.report_technical_outsourcing_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+        <template id="report_technical_outsourcing_document">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="chamber_erp.camber_technical_outsourcing_report_header"/>
+                <t t-call="web.external_layout" id="layout">
+                    <div class="page" style="font-size: 14px;font-family:Roboto;">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>
+                                    <font color="#6CAE6C">To</font>
+                                </strong>
+                                <br/>
+                                <strong t-field="o.partner_id"/>
+                                <br/>
+                                <span t-field="o.partner_id.street"/>
+                                <span t-field="o.partner_id.street2"/>
+                                <span t-field="o.partner_id.city"/>
+                                <br/>
+                                <t t-if="o.partner_id.zip">
+                                    <span t-field="o.partner_id.zip"/>
+                                    <br/>
+                                </t>
+                                <t t-if="o.partner_id.state_id.name">
+                                    <span t-field="o.partner_id.state_id.name"/>
+                                </t>
+                                <t t-if="o.partner_id.country_id.name">
+                                    <span t-field="o.partner_id.country_id.name"/>
+                                </t>
+
+                                <t t-if="o.partner_id.phone">
+                                    <br/>
+                                    <span>Phone :</span>
+                                    <span t-field="o.partner_id.phone"/>
+                                </t>
+
+                                <t t-if="o.partner_id.email">
+                                    <br/>
+                                    <span>Email :</span>
+                                    <span t-field="o.partner_id.email"/>
+                                </t>
+
+                                <t t-if="o.partner_id.vat">
+                                    <br/>
+                                    <span>TRN</span>
+                                    <span t-field="o.partner_id.vat"/>
+                                </t>
+                            </div>
+                            <div class="col-6 pull-right" style="text-align:right">
+                                <strong>
+                                    <font color="#6CAE6C">Address</font>
+                                </strong>
+                                <br/>
+                                <strong t-field="res_company.name"/>
+                                <br/>
+                                <span t-if="res_company.street">
+                                    <span t-field="res_company.street"/>
+                                </span>
+                                <span t-if="res_company.street2">
+                                    <span t-field="res_company.street2"/>
+                                </span>
+                                <span t-if="res_company.city">
+                                    <span t-field="res_company.city"/>
+                                </span>
+                                <br/>
+                                <span t-if="res_company.state_id">
+                                    <span t-field="res_company.state_id.name"/>
+                                </span>
+                                <span t-if="res_company.zip or res_company.country_id">
+                                    <span t-field="res_company.country_id.name"/>
+                                </span>
+                                <t t-if="res_company.phone">
+                                    <br/>
+                                    <span>Phone :</span>
+                                    <span t-field="res_company.phone"/>
+                                </t>
+
+                                <t t-if="res_company.email">
+                                    <br/>
+                                    <span>Email :</span>
+                                    <span t-field="res_company.email"/>
+                                </t>
+                                <br/>
+                                <span>TRN :
+                                    <span t-field="res_company.vat"/>
+                                </span>
+                            </div>
+                        </div>
+                        <br/>
+                        <table width="100%" style="border:1px solid black;padding-left:7px;padding-right:7px">
+
+                            <thead style="background-color:#6CAE6C">
+                                <th width="10%" class="text-left"
+                                    style="border:1px solid black;text-align:center;padding-left:7px;padding-right:7px">
+                                    S.
+                                    No
+                                </th>
+                                <th width="60%" class="text-left"
+                                    style="border:1px solid black;text-align:center;padding-left:7px;padding-right:7px">
+                                    Description
+                                </th>
+                                <th width="10%"
+                                    style="border:1px solid black;text-align:center;padding-left:7px;padding-right:7px">
+                                    Qty
+                                </th>
+                                <t t-if="o.price_type == 'day'">
+                                    <th width="20%"
+                                        style="border:1px solid black;text-align:center;padding-left:7px;padding-right:7px">
+                                        <span>Rate / Day ( <span t-field="o.currency_id"/> )</span>
+                                    </th>
+                                </t>
+                                <t t-else="">
+                                    <th width="20%"
+                                        style="border:1px solid black;text-align:center;padding-left:7px;padding-right:7px">
+                                        <span>Rate / Hour ( <span t-field="o.currency_id"/> )</span>
+                                    </th>
+
+                                </t>
+
+                            </thead>
+                            <t t-set="electro_sl_no" t-value="0"/>
+                            <!--                            <t t-set="grand_total" t-value="0"/>-->
+                            <tbody>
+                                <t t-set="current_subtotal" t-value="0"/>
+                                <t t-foreach="o.technical_outsourcing_line_ids" t-as="line">
+                                    <!--                                    <t t-set="current_subtotal" t-value="current_subtotal + line.total_rate"-->
+                                    <!--                                    />-->
+
+                                    <!--                                    <tr>-->
+                                    <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+
+                                        <t t-if="not line.display_type">
+                                            <t t-set="electro_sl_no" t-value="electro_sl_no + 1"/>
+                                            <td class="text-left"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px;padding-left:7px;padding-right:7px">
+                                                <span t-esc="electro_sl_no"/>
+                                            </td>
+                                            <td class="text-left"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px;padding-left:7px;padding-right:7px">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td class="text-center"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px;padding-left:7px;padding-right:7px">
+                                                <span t-field="line.qty"/>
+                                            </td>
+
+                                            <td class="text-right"
+                                                style="border:1px solid black;padding-left:7px;padding-right:7px;padding-left:7px;padding-right:7px">
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format(float(line.price_unit))"
+                                                />
+                                            </td>
+                                        </t>
+                                        <t t-if="line.display_type == 'line_section'">
+                                            <td name="td_section_line" colspan="4">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <t t-set="current_section" t-value="line"/>
+                                            <t t-set="current_subtotal" t-value="0"/>
+                                        </t>
+                                        <t t-if="line.display_type == 'line_note'">
+                                            <td name="td_note_line" colspan="4">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                        </t>
+                                        <!--                                        <t t-set="grand_total" t-value="grand_total + line.total_rate"/>-->
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+
+                        <table width="100%" style="border:1px #4BD0EA;padding-left:7px;padding-right:7px">
+                            <thead>
+                                <th colspan="4" style="background-color:#6CAE6C;padding-left:7px;">
+                                    <strong>Terms &amp; Conditions</strong>
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding-left:7px;border:1px solid black;" width="25%">
+                                        <span>
+                                            <b>Contract Period</b>
+                                        </span>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;"
+                                        width="25%">
+                                        <span t-field="o.t_contract_period"/>
+                                    </td>
+                                    <td style="padding-left:7px;border:1px solid black;" width="25%">
+                                        <strong>Food</strong>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;" width="25%">
+                                        <span t-field="o.t_food"/>
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:7px;border:1px solid black;" width="25%">
+                                        <span>
+                                            <b>Normal Working Hours</b>
+                                        </span>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;"
+                                        width="25%">
+                                        <span t-field="o.t_normal_working_hours"/>
+                                    </td>
+                                    <td style="padding-left:7px;border:1px solid black;" width="25%">
+                                        <strong>Accommodation</strong>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;" width="25%">
+                                        <span t-field="o.t_accommodation"/>
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td style="padding-left:7px;border:1px solid black;" width="25%">
+                                        <span>
+                                            <b>Over Time</b>
+                                        </span>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;"
+                                        width="25%">
+                                        <span t-field="o.t_over_time"/>
+                                    </td>
+                                    <td style="padding-left:7px;border:1px solid black;" width="25%">
+                                        <strong>Transportation</strong>
+                                    </td>
+                                    <td style="text-align:left;padding-left:7px;border:1px solid black;" width="25%">
+                                        <span t-field="o.t_transportation"/>
+                                    </td>
+
+
+                                </tr>
+                                <t t-foreach="o.technical_terms_ids" t-as="line">
+                                    <tr>
+                                        <td style="padding-left:7px;border:1px solid black;">
+                                            <strong t-field="line.name"/>
+                                        </td>
+                                        <td style="text-align:left;padding-left:7px;border:1px solid black;"
+                                            colspan="3">
+                                            <span t-field="line.description"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+
+
+                        </table>
+                        <br/>
+                        <br/>
+                        <div class="row" style="page-break-inside: avoid;">
+                            <div class="col-6">
+                                <strong>Payment Terms</strong>
+                                <br/>
+                                <br/>
+                                <span t-field="o.payment_term_id"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>For Camber Electromechanical</strong>
+                                <br/>
+                                <br/>
+                                <span t-field="o.user_id"/>
+                                <br/>
+                                <strong>Mobile</strong>
+                                <span t-field="o.user_id.phone"/>
+                                <br/>
+                                <strong>Email</strong>
+                                <span t-field="o.user_id.email"/>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

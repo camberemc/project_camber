@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+manage_account_payment_matching_line_crud,manage_account_payment_matching_line_crud,model_account_payment_matching_line,,1,1,1,1
+manage_account_invoice_matching_wizard_crud,manage_account_invoice_matching_wizard_crud,model_account_invoice_matching_wizard,,1,1,1,1
+manage_account_partner_bank,account_partner_bank,model_account_partner_bank,,1,1,1,1
+
+
+
+
+

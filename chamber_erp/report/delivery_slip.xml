@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_delivery_note">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="chamber_erp.report_delivery_note_document" t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+    <template id="report_delivery_note_document">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="chamber_erp.report_header_minimal_po_camber"/>
+            <t t-call="web.external_layout" id="layout">
+                <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page" style="font-size: 13px;font-family:Roboto;">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <strong
+                                    style="text-align:center;font-size:20px">
+                                Good Received Note
+                            </strong>
+
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <table
+                                width="100%">
+                            <tr width="100%">
+                                <td style="padding-left: 8px;font-size:13px" width="60%"
+                                    class="text-left">
+                                    <t t-if="doc.partner_id">
+                                        <t t-if="doc.picking_type_id.code =='incoming'">
+                                            <b>
+                                            <span>Supplier : </span>
+                                        </b>
+                                        </t>
+                                        <t t-if="doc.picking_type_id.code =='outgoing'">
+                                            <b>
+                                            <span>Customer : </span>
+                                        </b>
+                                        </t>
+                                        <strong t-field="doc.partner_id"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr width="100%">
+                                <td style="padding-left: 80px;font-size:13px" width="60%"
+                                    class="text-left">
+                                    <t t-if="doc.partner_id">
+                                        <span t-field="doc.partner_id.street"/>
+                                        <span t-field="doc.partner_id.street2"/>
+                                        <span t-field="doc.partner_id.city"/>
+                                        <t t-if="doc.partner_id.state_id">
+                                            <span t-field="doc.partner_id.state_id.name"/>
+                                        </t>
+                                        <t t-if="doc.partner_id.country_id">
+                                            <span t-field="doc.partner_id.country_id.name"/>
+                                        </t>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-4 ">
+                            <strong style="font-size:17px">GRN No.</strong><br/>
+                            <span t-field="doc.name"/>
+                        </div>
+                        <div class="col-4 ">
+                            <strong style="font-size:17px">Order No.</strong><br/>
+                            <span t-field="doc.origin"/>
+                        </div>
+                        <div class="col-4 ">
+                            <strong style="font-size:17px">Shipping Date</strong><br/>
+                            <span>
+                                <t t-if="o.state == 'done'">
+                                    <p t-field="o.date_done"/>
+                                </t>
+                                <t t-if="o.state != 'done'">
+                                    <p t-field="o.scheduled_date"/>
+                                </t>
+                            </span>
+                        </div>
+
+                    </div>
+                    <br/>
+
+                    <br/>
+                    <div class="row">
+                        <table class="table"
+                               width="100%" style="border:1px solid black;border-top:1px solid black">
+                            <tr width="100%">
+                                <td style="border: 1px solid black;"
+                                    width="10%" class="text-center">
+                                    <b>
+                                        <span>NO.</span>
+                                    </b>
+                                </td>
+                                <td style="border: 1px solid black;"
+                                    width="40%" class="text-center">
+                                    <b>
+                                        <span>Product</span>
+                                    </b>
+                                </td>
+                                <td style="border: 1px solid black;"
+                                    width="10%" class="text-center">
+                                    <b>
+                                        <span>Ordered Qty</span>
+                                    </b>
+                                </td>
+                                <td style="border: 1px solid black;"
+                                    width="10%" class="text-center">
+                                    <b>
+                                        <span>Received Qty</span>
+                                    </b>
+                                </td>
+                            </tr>
+                            <t t-set="sl_no" t-value="1"/>
+                            <t t-set="total_qty" t-value="0"/>
+                            <t t-foreach="doc.move_ids_without_package" t-as="line">
+                                <t t-set="total_qty" t-value="total_qty + float(line.quantity_done)"/>
+                                <tr width="100%" style="border: 1px solid black;">
+
+                                    <td style="border: 1px solid black;" class="text-center">
+                                        <span t-esc="sl_no"/>
+                                    </td>
+                                    <td style="border: 1px solid black;" name="td_name" class="text-left">
+                                            <span t-field="line.name"/>
+                                    </td>
+                                    <td style="border: 1px solid black;" name="td_quantity" class="text-center">
+                                        <span t-field=" line.product_uom_qty"/>
+                                    </td>
+                                    <td style="border: 1px solid black;" name="td_quantity" class="text-center">
+                                        <span t-field="line.quantity_done"/>
+                                    </td>
+                                    <t t-set="sl_no" t-value="sl_no+1"/>
+                                </tr>
+                            </t>
+                            <!--                            <tr width="100%" style="border: 1px solid black;">-->
+                            <!--                                <td colspan="3" style="border: 1px solid black;" class="text-center">-->
+                            <!--                                    <b>-->
+                            <!--                                        <span>Total</span>-->
+                            <!--                                    </b>-->
+                            <!--                                </td>-->
+                            <!--                                <td style="border: 1px solid black;" class="text-center">-->
+                            <!--                                    <span t-esc="total_qty"/>-->
+                            <!--                                </td>-->
+                            <!--                                <td style="border: 1px solid black;" class="text-center">-->
+                            <!--                                </td>-->
+                            <!--                            </tr>-->
+
+                        </table>
+                    </div>
+                    <br/>
+                    <div class="row" style="margin-top:100px;page-break-inside: avoid;">
+                        <div class="col-12 text-left">
+                            <span>
+                                ..........................................................................................
+                            </span>
+                            <br/>
+                            <span style="padding-left:15px">Signature ( Storage in charge )</span>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="portrait_paper_format" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="portrait_paper_format_electro" model="report.paperformat">
+            <field name="name">European A4 low margin Electro</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">28</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="portrait_paper_format_electro_outsource" model="report.paperformat">
+            <field name="name">European A4 low margin Electro Outsource</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">35</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+        <template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+            <xpath expr="//head" position="inside">
+                <link rel="stylesheet" href="/chamber_erp/static/src/css/all.css"/>
+                <link rel="stylesheet" href="/chamber_erp/static/src/css/print.css"/>
+            </xpath>
+        </template>
+
+        <report
+                id="action_reports_amc_quotation_camber"
+                model="quotation.order"
+                string="Quotation"
+                name="chamber_erp.custom_report_amc_quotation_camber"
+                file="chamber_erp.custom_report_amc_quotation_camber"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Quotation - %s' % (object.name)) "
+
+        />
+        <report
+                id="action_reports_sale_techno_commercial"
+                model="sale.order"
+                string="Electro Mechanical"
+                name="chamber_erp.report_techno_commercial_camber"
+                file="chamber_erp.report_techno_commercial_camber"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format_electro"
+                print_report_name="('Electro Mechanical - %s' % (object.name)) "
+
+        />
+        <report
+                id="action_reports_em_sale_techno_commercial"
+                model="sale.order"
+                string="EM Technical"
+                name="chamber_erp.report_em_techno_commercial_camber"
+                file="chamber_erp.report_em_techno_commercial_camber"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format_electro"
+                print_report_name="('EM Technical - %s' % (object.name)) "
+
+        />
+        <report
+                id="action_reports_em_sale_technical_outsourcing"
+                model="sale.order"
+                string="EM Technical Outsourcing"
+                name="chamber_erp.report_technical_outsourcing"
+                file="chamber_erp.report_technical_outsourcing"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format_electro_outsource"
+                print_report_name="('EM Technical Outsourcing- %s' % (object.name)) "
+
+        />
+        <report
+                id="action_reports_em_lympsum_sale_techno_commercial"
+                model="sale.order"
+                string="EM Lympsum"
+                name="chamber_erp.report_em_techno_commercial_lympsum_camber"
+                file="chamber_erp.report_em_techno_commercial_lympsum_camber"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format_electro"
+                print_report_name="('EM Technical - %s' % (object.name)) "
+
+        />
+        <report
+                id="action_report_amc_contract_camber"
+                model="contract.order"
+                string="Contract"
+                name="chamber_erp.custom_report_amc_contract_camber"
+                file="chamber_erp.custom_report_amc_contract_camber"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="('Contract - %s' % (object.name)) "
+        />
+        <report
+                id="action_report_custom_camber_saleorder"
+                model="sale.order"
+                string="Print"
+                name="chamber_erp.custom_report_camber_sale_order"
+                file="chamber_erp.custom_report_camber_sale_order"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+        <report
+                id="action_report_custom_camber_sale_order_lumpsum"
+                model="sale.order"
+                string="Print Lumpsum"
+                name="chamber_erp.custom_report_camber_sale_order_lympsum"
+                file="chamber_erp.custom_report_camber_sale_order_lympsum"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+        <report
+                id="action_report_custom_purchase_order_camber"
+                model="purchase.order"
+                string="Purchase Order"
+                name="chamber_erp.custom_report_purchase_order_camber"
+                file="chamber_erp.custom_report_purchase_order_camber"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="(object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+        />
+        <report
+                id="action_report_custom_rfq_camber"
+                model="purchase.order"
+                string="Request for Quotation"
+                name="chamber_erp.custom_report_purchase_order_camber"
+                file="chamber_erp.custom_report_purchase_order_camber"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="'Request for Quotation - %s' % (object.name)"
+        />
+        <report id="action_report_delivery_note" model="stock.picking" string="Delivery Slip"
+                name="chamber_erp.report_delivery_note" file="chamber_erp.report_delivery_note" report_type="qweb-pdf"
+                paperformat="portrait_paper_format" print_report_name="'Delivery Slip - %s' % (object.name)"/>
+
+        <report
+                id="action_report_estimation"
+                model="crm.estimation"
+                string="Print"
+                name="chamber_erp.camber_estimation_report"
+                file="chamber_erp.camber_estimation_report"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="'Estimation - %s' % (object.name)"
+        />
+        <report id="report_estimation_print" model="crm.estimation" string="Estimation Report" report_type="xlsx"
+            name="estimation.report.xlsx" file="Estimation Report" attachment_use="False" menu="False"/>
+
+
+        <template id="camber_report_header_minimal">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-8 text-left mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-4">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>QT NO</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="o.name">
+                                        <span t-field="o.name"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Date</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="o.date_order">
+                                        <span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Company TRN</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="o.company_id.vat">
+                                        <span t-field="o.company_id.vat"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#053674;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <table width="100%" height="100%" style="background-color: #053674;color: white;">
+                    <tr>
+                        <td width="40%">
+                            <span style="padding-left:15px">
+                                <i>Innovative . Reliable .Secure</i>
+                            </span>
+                        </td>
+                        <td width="20%" style="text-align:center">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </td>
+                        <td width="40%" style="text-align:right;padding-right:5px">
+                            <span>Tel :
+                                <t t-if="res_company.phone">
+                                    <span t-field="res_company.phone"/>
+                                </t>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+        <template id="custom_subtotal">
+            <div class="clearfix">
+                <div id="total" class="row" name="total" style="page-break-inside: avoid;">
+                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                        <table class="table table-sm">
+                            <t t-if="doc.discount">
+                                <tr class="border-black o_subtotal" style="">
+                                    <td>
+                                        <strong>Total (<span t-field="doc.currency_id"/>)</strong>
+                                    </td>
+                                    <td>
+                                        <strong>:</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float((doc.amount_undiscounted - doc.discount)))"/>
+                                        <!--                                                t-esc="'{:,}'.format((doc.amount_undiscounted - doc.discount)) "/>-->
+                                        <!--                                        <span t-esc="'%.2f'% (doc.amount_undiscounted - doc.discount)" t-options="{'widget': 'monetary'}"/>-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Discount (<span t-field="doc.currency_id"/>)</strong>
+                                    </td>
+                                    <td>
+                                        <strong>:</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc.discount))"/>
+                                        <!--                                                t-esc="'{:,}'.format(doc.discount) "/>-->
+                                        <!--                                        <span t-esc="'%.2f'% doc.discount" t-options="{'widget': 'monetary'}"/>-->
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-else="">
+                                <tr class="border-black o_subtotal" style="">
+                                    <td>
+                                        <strong>Total (<span t-field="doc.currency_id"/>)</strong>
+                                    </td>
+                                    <td>
+                                        <strong>:</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc.amount_undiscounted))"/>
+                                        <!--                                                t-esc="'{:,}'.format(doc.amount_undiscounted) "/>-->
+                                        <!--                                    <span t-esc="'%.2f'% doc.amount_undiscounted" t-options="{'widget': 'monetary'}"/>-->
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td>
+                                    <strong>Vat (<span t-field="doc.currency_id"/>)</strong>
+                                </td>
+                                <td>
+                                    <strong>:</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(float(doc.amount_tax))"/>
+                                    <!--                                            t-esc="'{:,}'.format(doc.amount_tax) "/>-->
+                                    <!--                                    <span t-esc="'%.2f'% doc.amount_tax" t-options="{'widget': 'monetary'}"/>-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Net Total <span t-field="doc.currency_id"/></strong>
+                                </td>
+                                <td>
+                                    <strong>:</strong>
+                                </td>
+                                <td class="text-right" style="border-bottom: 1px solid black">
+                                    <span t-esc="'{0:,.2f}'.format(float(doc.amount_total))"/>
+                                    <!--                                            t-esc="'{:,}'.format(doc.amount_total) "/>-->
+                                    <!--                                    <span t-esc="'%.2f'% doc.amount_total" t-options="{'widget': 'monetary'}"/>-->
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <strong>In words :
+                            <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(doc.amount_total)"/>
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="report_header_minimal_amc_camber">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-8 text-left mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-4">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>QT NO</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="o.name">
+                                        <span t-field="o.name"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <t t-if="o.quotation_date">
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span>QT Date</span>
+                                    </td>
+                                    <td style="text-align:left">
+                                        <span t-field="o.quotation_date"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Company TRN</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="user.company_id.vat">
+                                        <span t-field="user.company_id.vat"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#053674;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <table width="100%" height="100%" style="background-color: #053674;color: white;">
+                    <tr>
+                        <td width="40%">
+                            <span style="padding-left:15px">
+                                <i>Innovative . Reliable .Secure</i>
+                            </span>
+                        </td>
+                        <td width="20%" style="text-align:center">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </td>
+                        <td width="40%" style="text-align:right;padding-right:5px">
+                            <span>Tel :
+                                <t t-if="res_company.phone">
+                                    <span t-field="res_company.phone"/>
+                                </t>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="report_header_minimal_amc_contract_camber">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-8 text-left mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-4">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Contract No.</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="o.name">
+                                        <span t-field="o.name"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <t t-if="o.contract_date">
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span>Contract Date</span>
+                                    </td>
+                                    <td style="text-align:left">
+                                        <span t-field="o.contract_date"/>
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <t t-if="o.quotation_id">
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span>QT NO</span>
+                                    </td>
+                                    <td style="text-align:left">
+                                        <span t-field="o.quotation_id.name"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Company TRN</span>
+                                </td>
+                                <td style="text-align:left">
+                                    <t t-if="user.company_id.vat">
+                                        <span t-field="user.company_id.vat"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#053674;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <table width="100%" height="100%" style="background-color: #053674;color: white;">
+                    <tr>
+                        <td width="40%">
+                            <span style="padding-left:15px">
+                                <i>Innovative . Reliable .Secure</i>
+                            </span>
+                        </td>
+                        <td width="20%" style="text-align:center">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </td>
+                        <td width="40%" style="text-align:right;padding-right:5px">
+                            <span>Tel :
+                                <t t-if="res_company.phone">
+                                    <span t-field="res_company.phone"/>
+                                </t>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="report_header_minimal_po_camber">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-8 text-left mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                             style="max-height: 100px;"/>
+                    </div>
+                    <div class="col-4">
+                        <br/>
+                        <strong style="font-size:14px" t-field="res_company.name"/>
+                        <span t-if="res_company.street">
+                            <br/>
+                            <span t-field="res_company.street"/>
+                        </span>
+                        <span t-if="res_company.street2">
+                            <br/>
+                            <span t-field="res_company.street2"/>
+                        </span>
+                        <span t-if="res_company.city">
+                            <span t-field="res_company.city"/>
+                        </span>
+                        <span t-if="res_company.state_id">
+                            <span t-field="res_company.state_id.name"/>
+                        </span>
+                        <!--                    </span>-->
+                        <span t-if="res_company.zip or res_company.country_id">
+                            <br/>
+                            <span t-field="res_company.zip"/>
+
+                            <span t-field="res_company.country_id.name"/>
+                        </span>
+                        <br/>
+                        <span t-if="res_company.phone">
+                            <span>Tel:</span>
+                            <span t-field="res_company.phone"/>
+                        </span>
+                        <br/>
+                        <span t-if="res_company.email">
+                            <span>Email:</span>
+                            <span t-field="res_company.email"/>
+                        </span>
+                        <br/>
+                        <span t-if="res_company.website">
+                            <span>Web:</span>
+                            <span t-field="res_company.website"/>
+                        </span>
+
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#053674;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <table width="100%" height="100%" style="background-color: #053674;color: white;">
+                    <tr>
+                        <td width="40%">
+                            <span style="padding-left:15px">
+                                <i>Innovative . Reliable .Secure</i>
+                            </span>
+                        </td>
+                        <td width="20%" style="text-align:center">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                        </td>
+                        <td width="40%" style="text-align:right;padding-right:5px">
+                            <span>Tel :
+                                <t t-if="res_company.phone">
+                                    <span t-field="res_company.phone"/>
+                                </t>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+
+        <template id="camber_technical_report_header">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-8 text-left mb4">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                             style="max-height: 80px;"/>
+                    </div>
+                    <div class="col-4">
+                        <br/>
+                        <table width="100%" style="border:1px solid black;">
+                            <tr>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <span>QT NO</span>
+                                </td>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <t t-if="o.name">
+                                        <span t-field="o.name"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <span>Date</span>
+                                </td>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <t t-if="o.date_order">
+                                        <span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <span>Page</span>
+                                </td>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <span class="page"/>
+                                    of
+                                    <span class="topage"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr style="height:2px; border:none; background-color:#053674;"/>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <img t-att-src="'chamber_erp/static/src/footer2.jpg'"
+                     style="max-height: 70px;"/>
+            </div>
+        </template>
+        <template id="camber_technical_outsourcing_report_header">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-4">
+                        <br/>
+                        <table width="100%" style="border:1px solid black;">
+                            <tr>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <span>Date</span>
+                                </td>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <t t-if="o.date_order">
+                                        <span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <span>Quote</span>
+                                </td>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <t t-if="o.name">
+                                        <span t-field="o.name"/>
+                                    </t>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <span>Validity</span>
+                                </td>
+                                <td style="text-align:left;border:1px solid black;padding-left:5px">
+                                    <t t-if="o.t_validity">
+                                        <span t-field="o.t_validity" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                    <div class="col-4 text-right">
+                        <img t-att-src="'/chamber_erp/static/src/images/camber-footer.png'"  class="pull-right"
+                        />
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer" style="font-size: 15px;font-family:Roboto;">
+<!--                <img t-att-src="'chamber_erp/static/src/footer2.jpg'"-->
+<!--                     style="max-height: 70px;"/>-->
+                <div class="row">
+                <div class="col-12" style="text-align: left">
+                    <span style="font-size: 15px;">Camber Electromechanical| Abu Dhabi | PO Box 114954 | Phone 026733310 | www.camberme.com | info@camberme.com</span>
+<!--                    <span style="font-size: 13px;" t-field="res_company.phone"/>-->
+<!--                    |-->
+<!--                    <i class="fa fa-envelope"/>-->
+<!--                    <span style="font-size: 13px;" t-field="res_company.email"/>-->
+<!--                    |-->
+<!--                    <i class="fa fa-globe"/>-->
+<!--                    <span style="font-size: 13px;" t-field="res_company.website"/>-->
+
+                </div>
+            </div>
+            </div>
+        </template>
+
+    </data>
+</openerp>

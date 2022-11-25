@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_report_account_invoice_stevok">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="stevok_reports.custom_report_stevok_account_invoice_document"
+                   t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="custom_report_stevok_account_invoice_document">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="stevok_reports.report_header_minimal"/>
+            <t t-call="web.external_layout" id="layout">
+                <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page">
+                    <table class="table table-sm o_main_table header1">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <span>TAX INVOICE</span>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span>TRN :
+                                        <span t-field="o.company_id.vat"/>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table header2">
+                        <tbody>
+                            <tr>
+                                <td width="15%">
+                                    <strong>Customer Name</strong>
+                                </td>
+                                <td width="55%">
+                                    <span t-field="o.partner_id"/>
+                                </td>
+                                <td width="15%">
+                                    <strong>Invoice No</strong>
+                                </td>
+                                <td width="15%">
+
+                                    <span t-field="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="15%" rowspan="2">
+                                    <strong>Address</strong>
+                                </td>
+                                <td width="55%" rowspan="2">
+                                    <span t-field="o.partner_id.street"/>
+                                    <span t-field="o.partner_id.street2"/>
+                                    <span t-field="o.partner_id.city"/>
+                                    <t t-if="o.partner_id.state_id.name">
+                                        <span t-field="o.partner_id.state_id.name"/>
+                                    </t>
+                                    <t t-if="o.partner_id.country_id.name">
+                                        <span t-field="o.partner_id.country_id.name"/>
+                                    </t>
+
+                                </td>
+                                <td width="15%">
+                                    <strong>Invoice Date</strong>
+                                </td>
+                                <td width="15%">
+
+                                    <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </td>
+                            </tr>
+
+                            <tr >
+                                <td width="15%">
+                                    <strong>LPO NO</strong>
+                                </td>
+                                <td width="55%">
+                                    <span t-field="o.payment_reference"/>
+
+                                </td>
+<!--                                <td width="15%">-->
+<!--                                    <strong>DO NO</strong>-->
+<!--                                </td>-->
+<!--                                <td width="15%">-->
+<!--                                    <span t-field="o.ref"/>-->
+<!--                                </td>-->
+                            </tr>
+                            <tr>
+                                <td width="15%">
+                                    <strong>Customer TRN</strong>
+                                </td>
+                                <td width="55%">
+                                    <span t-field="o.partner_id.vat"/>
+                                </td>
+                                <td width="15%">
+                                    <strong>QTN NO</strong>
+                                </td>
+                                <td width="15%">
+
+                                    <strong t-field="o.invoice_origin"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+
+                    <table class="table header2">
+                        <thead>
+                            <tr>
+                                <th width="7%">
+                                    <span>SL NO</span>
+                                </th>
+                                <th width="50%" class="text-center">
+                                    <span>Description</span>
+                                </th>
+                                <th width="10%" class="text-center">
+                                    <span>QTY</span>
+                                </th>
+                                <th width="10%" class="text-right ">
+                                    <span>Unit Price</span>
+                                </th>
+                                <th width="10%" class="text-right ">
+                                    <span>VAT 5%</span>
+                                </th>
+                                <th width="12%" class="text-right ">
+                                    <span>Total</span>
+                                    <span>( AED )</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+                            <t t-set="sl_no" t-value="1"/>
+                            <t t-set="grand_total" t-value="0"/>
+                            <t t-set="total_vat" t-value="0"/>
+                            <t t-set="discount" t-value="False"/>
+                            <t t-set="discount_amount" t-value="0"/>
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type">
+                                        <t t-if="line.product_id.default_code != 'DISC'">
+                                            <td class="text-center">
+                                                <span t-esc="sl_no"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.quantity"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(float(line.price_unit))"/>
+
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(float(line.price_total - line.price_subtotal))"/>
+
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(float(line.price_subtotal))"/>
+                                            </td>
+                                            <t t-set="sl_no" t-value="sl_no+1"/>
+                                            <t t-set="grand_total" t-value="grand_total+line.price_subtotal"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="discount" t-value="True"/>
+                                            <t t-set="discount_amount" t-value="line.price_subtotal"/>
+                                        </t>
+
+                                    </t>
+
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <td colspan="99">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_note'">
+                                        <td colspan="99">
+                                            <span style="padding-left:2px" t-field="line.name"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+
+
+                            <tr class="text-right">
+                                <td colspan="5">
+                                    <strong>GROSS TOTAL</strong>
+                                </td>
+                                <td>
+                                    <t t-if="discount">
+                                        <strong t-esc="'{0:,.2f}'.format(float((doc.amount_untaxed - discount_amount)))"/>
+                                    </t>
+                                    <t t-if="not discount">
+                                        <strong t-esc="'{0:,.2f}'.format(float(doc.amount_untaxed))"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="5">
+                                    <strong>DISCOUNT</strong>
+                                </td>
+                                <td>
+                                    <strong t-esc="'{0:,.2f}'.format(float(discount_amount))"/>
+                                </td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="5">
+                                    <strong>VAT (5%)</strong>
+                                </td>
+                                <td>
+                                    <strong t-esc='"%.2f" % (doc.amount_total - doc.amount_untaxed)'/>
+                                </td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="5">
+                                    <strong>TOTAL INC. VAT</strong>
+                                </td>
+                                <td>
+                                    <strong t-esc="'{0:,.2f}'.format(float(doc.amount_total))"/>
+                                </td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="6" class="text-left">
+                                    <strong>TOTAL AED IN WORDS :</strong>
+                                    <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(doc.amount_total)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="page-break-inside: avoid;">
+                        <div class="row" style="page-break-inside: avoid;line-height: 80%;">
+                            <div class="col-12">
+                                <strong style="font-size:14px">BANK DETAILS</strong>
+                                <br/>
+                                <span style="font-size:10px" t-field="doc.bank_details"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row bottom1" style="page-break-inside: avoid;">
+                        <div class="col-4">
+                            <br/>
+                            <strong>Received By - </strong>
+                            <strong style="padding-left:20px"> Name :</strong><br/>
+                            <strong style="padding-left:111px"> Signature :</strong><br/>
+                            <strong style="padding-left:111px"> Date :</strong><br/>
+                        </div>
+                        <div class="col-4 ">
+                        </div>
+                        <div class="col-4">
+                            <br/>
+                            <hr style="height:1px; border:none; background-color:black;"/>
+
+                            <strong style="padding-left:70px">Authorised Signature</strong>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

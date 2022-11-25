@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data >
+         <template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+            <xpath expr="//head" position="inside">
+                <link rel="stylesheet" href="/stevok_erp/static/src/css/all.css"/>
+                <link rel="stylesheet" href="/stevok_erp/static/src/css/print.css"/>
+            </xpath>
+        </template>
+        <record id="portrait_paper_format" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">40</field>
+            <field name="margin_left">8</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">33</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="action_for_invoice_report"
+                model="account.move"
+                string="Invoice Stevok"
+                name="stevok_erp.custom_report_invoice"
+                file="stevok_erp.custom_report_invoice"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+        />
+
+          <template id="report_header_minimal">
+            <div class="header">
+                <img t-att-src="'stevok_erp/static/src/header.png'" style="max-height: 200px;"
+                     width="1200px"/>
+
+            </div>
+
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <img t-att-src="'stevok_erp/static/src/footer.png'" width="1200px"
+                     style="max-height: 300px;"/>
+                <br/>
+                <div class="text-muted" style="text-align:center">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </template>
+    </data>
+</openerp>
+

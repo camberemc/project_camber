@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="triton_purchase_order_kpis_tree" model="ir.ui.view">
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="sheet/group/group[1]/field[@name='partner_ref']" position="after">
+                <field name="job_number"/>
+            </xpath>
+            <xpath expr="sheet/notebook/page[@name='purchase_delivery_invoice']/group/group[@name='invoice_info']"
+                   position="inside">
+                <field name="delivery_term_id"/>
+            </xpath>
+            <xpath expr="sheet/notebook/page[@name='products']/field[@name='order_line']/tree/field[@name='product_id']"
+                   position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True, 'delete': False}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

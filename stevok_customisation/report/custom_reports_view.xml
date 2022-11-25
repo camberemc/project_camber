@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <report
+            id="action_report_custom_saleorder"
+            model="sale.order"
+            string="Print"
+            name="stevok_customisation.custom_report_saleorder"
+            file="stevok_customisation.custom_report_saleorder"
+            report_type="qweb-pdf"
+            paperformat="portrait_paper_format"
+            print_report_name="('Stevok-' + object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+    />
+    <report
+            id="action_report_custom_saleorder_lumpsum"
+            model="sale.order"
+            string="Print Lumpsum"
+            name="stevok_customisation.custom_report_saleorder_lympsum"
+            file="stevok_customisation.custom_report_saleorder_lympsum"
+            report_type="qweb-pdf"
+            paperformat="portrait_paper_format"
+            print_report_name="('Stevok-' + object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+    />
+    <report
+            id="action_report_custom_purchase_order"
+            model="purchase.order"
+            string="Purchase Order"
+            name="stevok_customisation.custom_report_purchase_order"
+            file="stevok_customisation.custom_report_purchase_order"
+            report_type="qweb-pdf"
+            paperformat="portrait_paper_format"
+            print_report_name="(object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+    />
+    <report
+            id="action_report_custom_rfq"
+            model="purchase.order"
+            string="Request for Quotation"
+            name="stevok_customisation.custom_report_purchase_order"
+            file="stevok_customisation.custom_report_purchase_order"
+            report_type="qweb-pdf"
+            paperformat="portrait_paper_format"
+            print_report_name="'Request for Quotation - %s' % (object.name)"
+    />
+    <!--        />-->
+<!--    <template id="report_header_minimal">-->
+<!--        <div class="header">-->
+<!--            <div class="row" style="font-size: 13px;font-family:Roboto;">-->
+<!--                <div class="col-8 text-left mb4">-->
+<!--                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"-->
+<!--                         style="max-height: 100px;"/>-->
+<!--                </div>-->
+<!--                <div class="col-4">-->
+<!--                    <table width="100%">-->
+<!--                        <tr>-->
+<!--                            <td style="text-align:left">-->
+<!--                                <span>QT NO</span>-->
+<!--                            </td>-->
+<!--                            <td style="text-align:left">-->
+<!--                                <t t-if="o.name">-->
+<!--                                    <span t-field="o.name"/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td style="text-align:left">-->
+<!--                                <span>Date</span>-->
+<!--                            </td>-->
+<!--                            <td style="text-align:left">-->
+<!--                                <t t-if="o.date_order">-->
+<!--                                    <span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                            &lt;!&ndash;                                <td style="text-align:right"><t t-if="o.date_order"><span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/> </t> </td>&ndash;&gt;-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td style="text-align:left">-->
+<!--                                <span>Company TRN</span>-->
+<!--                            </td>-->
+<!--                            <td style="text-align:left">-->
+<!--                                <t t-if="o.company_id.vat">-->
+<!--                                    <span t-field="o.company_id.vat"/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <hr style="height:2px; border:none; background-color:#EE4723;"/>-->
+<!--        </div>-->
+<!--        <div class="footer" style="font-size: 13px;font-family:Roboto;">-->
+<!--            <table width="100%" height="100%" style="background-color: #F24723;color: white;">-->
+<!--                <tr>-->
+<!--                    <td width="40%">-->
+<!--                        <span style="padding-left:15px">Your Safety is Our Concern</span>-->
+<!--                    </td>-->
+<!--                    <td width="20%" style="text-align:center">-->
+<!--                        <span>Page</span>-->
+<!--                        <span class="page"/>-->
+<!--                        of-->
+<!--                        <span class="topage"/>-->
+<!--                    </td>-->
+<!--                    <td width="40%" style="text-align:right;padding-right:5px">-->
+<!--                        <span>Tel :-->
+<!--                            <t t-if="res_company.phone">-->
+<!--                                <span t-field="res_company.phone"/>-->
+<!--                            </t>-->
+<!--                        </span>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </template>-->
+    <!--        purchase    -->
+    <template id="report_header_minimal_po">
+        <div class="header">
+            <div class="row" style="font-size: 13px;font-family:Roboto;">
+                <div class="col-9 text-left mb4">
+                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                         style="max-height: 100px;"/>
+                </div>
+                <div class="col-3">
+                    <br/>
+                    <strong style="font-size:14px" t-field="res_company.name"/>
+                    <span t-if="res_company.street">
+                        <br/>
+                        <span t-field="res_company.street"/>
+                    </span>
+                    <span t-if="res_company.street2">
+                        <br/>
+                        <span t-field="res_company.street2"/>
+                    </span>
+                    <span t-if="res_company.city">
+                        <span t-field="res_company.city"/>
+                    </span>
+                    <span t-if="res_company.state_id">
+                        <span t-field="res_company.state_id.name"/>
+                    </span>
+                    <!--                    </span>-->
+                    <span t-if="res_company.zip or res_company.country_id">
+                        <br/>
+                        <span t-field="res_company.zip"/>
+
+                        <span t-field="res_company.country_id.name"/>
+                    </span>
+                    <br/>
+                    <span t-if="res_company.phone">
+                        <span>Tel:</span>
+                        <span t-field="res_company.phone"/>
+                    </span>
+                    <br/>
+                    <span t-if="res_company.email">
+                        <span>Email:</span>
+                        <span t-field="res_company.email"/>
+                    </span>
+                    <br/>
+                    <span t-if="res_company.website">
+                        <span>Web:</span>
+                        <span t-field="res_company.website"/>
+                    </span>
+
+                </div>
+            </div>
+            <h1 style="text-align:center;font-size:18px" t-if="o.state == 'draft'">Request for Quotation
+
+            </h1>
+            <h1 style="text-align:center;font-size:18px" t-if="o.state in ['sent', 'to approve']">Purchase Order
+            </h1>
+            <h1 style="text-align:center;font-size:18px" t-if="o.state in ['purchase', 'done']">Purchase Order
+            </h1>
+            <h1 style="text-align:center;font-size:18px" t-if="o.state == 'cancel'">Cancelled Purchase Order
+            </h1>
+
+            <hr style="height:2px; border:none; background-color:#EE4723;"/>
+        </div>
+        <div class="footer" style="font-size: 13px;font-family:Roboto;">
+            <table width="100%" height="100%" style="background-color: #F24723;color: white;">
+                <tr>
+                    <td width="40%">
+                        <span style="padding-left:15px">Your Safety is Our Concern</span>
+                    </td>
+                    <td width="20%" style="text-align:center">
+                        <span>Page</span>
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </td>
+                    <td width="40%" style="text-align:right;padding-right:5px">
+                        <span>Tel :
+                            <t t-if="res_company.phone">
+                                <span t-field="res_company.phone"/>
+                            </t>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+    <template id="camber_report_header_minimal">
+        <div class="header">
+            <div class="row" style="font-size: 13px;font-family:Roboto;">
+                <div class="col-8 text-left mb4">
+                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                         style="max-height: 100px;"/>
+                </div>
+                <div class="col-4">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align:left">
+                                <span>QT NO</span>
+                            </td>
+                            <td style="text-align:left">
+                                <t t-if="o.name">
+                                    <span t-field="o.name"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left">
+                                <span>Date</span>
+                            </td>
+                            <td style="text-align:left">
+                                <t t-if="o.date_order">
+                                    <span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </t>
+                            </td>
+                            <!--                                <td style="text-align:right"><t t-if="o.date_order"><span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/> </t> </td>-->
+                        </tr>
+                        <tr>
+                            <td style="text-align:left">
+                                <span>Company TRN</span>
+                            </td>
+                            <td style="text-align:left">
+                                <t t-if="o.company_id.vat">
+                                    <span t-field="o.company_id.vat"/>
+                                </t>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr style="height:2px; border:none; background-color:#053674;"/>
+        </div>
+        <div class="footer" style="font-size: 13px;font-family:Roboto;">
+            <table width="100%" height="100%" style="background-color: #053674;color: white;">
+                <tr>
+                    <td width="40%">
+                        <span style="padding-left:15px">Innovative . Reliable .Secure</span>
+                    </td>
+                    <td width="20%" style="text-align:center">
+                        <span>Page</span>
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </td>
+                    <td width="40%" style="text-align:right;padding-right:5px">
+                        <span>Tel :
+                            <t t-if="res_company.phone">
+                                <span t-field="res_company.phone"/>
+                            </t>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+    <template id="custom_subtotal">
+        <div class="clearfix">
+            <div id="total" class="row" name="total">
+                <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                    <table class="table table-sm">
+                        <t t-if="doc.discount">
+                            <tr class="border-black o_subtotal" style="">
+                                <td>
+                                    <strong>Total (AED)</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span
+                                            t-esc="'{0:,.2f}'.format(float((doc.amount_undiscounted - doc.discount)))"/>
+                                    <!--                                        <span t-esc="'%.2f'% (doc.amount_undiscounted - doc.discount)" t-options="{'widget': 'monetary'}"/>-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Discount (AED)</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span
+                                            t-esc="'{0:,.2f}'.format(float(doc.discount))"/>
+                                    <!--                                        <span t-esc="'%.2f'% doc.discount" t-options="{'widget': 'monetary'}"/>-->
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-else="">
+                            <tr class="border-black o_subtotal" style="">
+                                <td>
+                                    <strong>Total (AED)</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span
+                                            t-esc="'{0:,.2f}'.format(float(doc.amount_undiscounted))"/>
+                                    <!--                                    <span t-esc="'%.2f'% doc.amount_undiscounted" t-options="{'widget': 'monetary'}"/>-->
+                                </td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td>
+                                <strong>Vat (AED)</strong>
+                            </td>
+                            <td class="text-right">
+                                <span
+                                        t-esc="'{0:,.2f}'.format(float(doc.amount_tax))"/>
+                                <!--                                    <span t-esc="'%.2f'% doc.amount_tax" t-options="{'widget': 'monetary'}"/>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Net Total AED</strong>
+                            </td>
+                            <td class="text-right" style="border-bottom: 1px solid black">
+                                <span
+                                        t-esc="'{0:,.2f}'.format(float(doc.amount_total))"/>
+                                <!--                                    <span t-esc="'%.2f'% doc.amount_total" t-options="{'widget': 'monetary'}"/>-->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <strong>In words :
+                        <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(doc.amount_total)"/>
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+    <template id="report_header_minimal_amc">
+        <div class="header">
+            <div class="row" style="font-size: 13px;font-family:Roboto;">
+                <div class="col-8 text-left mb4">
+                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="pull-left"
+                         style="max-height: 100px;"/>
+                </div>
+                <div class="col-4">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align:left">
+                                <span>QT NO</span>
+                            </td>
+                            <td style="text-align:left">
+                                <t t-if="o.name">
+                                    <span t-field="o.name"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left">
+                                <span>Company TRN</span>
+                            </td>
+                            <td style="text-align:left">
+                                <t t-if="user.company_id.vat">
+                                    <span t-field="user.company_id.vat"/>
+                                </t>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr style="height:2px; border:none; background-color:#EE4723;"/>
+        </div>
+        <div class="footer" style="font-size: 13px;font-family:Roboto;">
+            <table width="100%" height="100%" style="background-color: #F24723;color: white;">
+                <tr>
+                    <td width="40%">
+                        <span style="padding-left:15px">Your Safety is Our Concern</span>
+                    </td>
+                    <td width="20%" style="text-align:center">
+                        <span>Page</span>
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </td>
+                    <td width="40%" style="text-align:right;padding-right:5px">
+                        <span>Tel :
+                            <t t-if="res_company.phone">
+                                <span t-field="res_company.phone"/>
+                            </t>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+</openerp>

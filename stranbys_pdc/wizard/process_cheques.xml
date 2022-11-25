@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_modal_clear_cheques" model="ir.ui.view">
+        <field name="name">account.cheque.clear.wizard.form</field>
+        <field name="model">account.cheque.clear.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Clear PDC Cheques">
+                <field name="line_ids" nolabel="1">
+                    <tree editable="top">
+                        <field name="cheque_type" invisible="1" />
+                        <field name="date" readonly="1" />
+                        <field name="name" readonly="1" />
+                        <field name="partner_id" readonly="1" />
+                        <field name="bank_name" readonly="1" attrs="{'invisible': [('cheque_type', '!=', 'receive')]}" />
+                        <field name="amount" readonly="1" />
+                        <field name="cleared_date" required="1" attrs="{'readonly': [('state', 'not in', ('issued', 'received'))]}"/>
+                        <field name="transaction" attrs="{'readonly': [('state', 'not in', ('issued', 'received'))]}"/>
+                        <field name="state" readonly="1" />
+                    </tree>
+                </field>
+                <footer>
+                    <button name="clear_cheques" string="Clear Cheques" type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <act_window id="action_clear_pdc_cheques"
+                name="Clear Cheques"
+                res_model="account.cheque.clear.wizard"
+                binding_model="account.cheque"
+                target="new" />
+
+</odoo>

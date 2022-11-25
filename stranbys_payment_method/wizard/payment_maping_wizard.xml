@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_payment_mapping_wizard" model="ir.ui.view">
+        <field name="name">account.invoice.matching.wizard.form</field>
+        <field name="model">account.invoice.matching.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Payment Maping">
+                <field name="move_type" invisible="1" />
+                <field name="state" invisible="1"/>
+                <field name="move_id" invisible="1" />
+                <!-- <field name="move_line_id" invisible="1"/> -->
+                <field name="move_line_ids" >
+                    <tree editable="bottom">
+                        <field name="payment_selection_ok" />
+                        <field name="date" />
+                        <field name="move_id" readonly="1"/>
+                        <field name="account_id" readonly="1"/>
+                        <field name="amount_residual" />
+                        <field name="allocated_amount" />
+                    </tree>
+                </field>
+                
+                <footer>
+                    <button name="action_vaidate" string="Apply" type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="act_payment_maping_wizard" model="ir.actions.act_window">
+        <field name="name">Payment Mapping</field>
+        <field name="res_model">account.invoice.matching.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="stranbys_payment_method.view_payment_mapping_wizard" />
+        <field name="target">new</field>
+    </record>
+</odoo>

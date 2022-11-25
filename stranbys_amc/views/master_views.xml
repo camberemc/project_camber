@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_amc_system_form" model="ir.ui.view">
+        <field name="name">amc.system.type.form</field>
+        <field name="model">amc.system.type</field>
+        <field name="arch" type="xml">
+            <form string="System Type">
+                <sheet string="AMC System Types">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="number"/>
+                        </group>
+                        <group>
+                            <field name="times"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" widget="html"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_amc_system_type_list" model="ir.ui.view">
+        <field name="model">amc.system.type</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="AMC System Types" default_order="id desc">
+                <field name="name"/>
+                <field name="number"/>
+                <field name="times"/>
+            </tree>
+        </field>
+    </record>
+    <record id="act_amc_system_types_view" model="ir.actions.act_window">
+        <field name="name">AMC System Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">amc.system.type</field>
+        <field name="view_mode">tree,form</field>
+<!--        <field name="view_type">tree</field>-->
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Contract
+            </p>
+        </field>
+    </record>
+
+
+
+    <record id="view_amc_terms_condition" model="ir.ui.view">
+        <field name="name">amc.terms.condition.form</field>
+        <field name="model">amc.terms.condition</field>
+        <field name="arch" type="xml">
+            <form string="AMC Terms and Condition">
+                <sheet string="AMC Terms and Condition">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" widget="html"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_amc_terms_condition_tree" model="ir.ui.view">
+        <field name="model">amc.terms.condition</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="AMC Terms and Condition" default_order="id desc">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="act_amc_terms_condition_view" model="ir.actions.act_window">
+        <field name="name">AMC Terms and Condition</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">amc.terms.condition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Contract
+            </p>
+        </field>
+    </record>
+
+
+    <record id="view_sale_order_validity" model="ir.ui.view">
+        <field name="name">sale.order.validity.form</field>
+        <field name="model">sale.order.validity</field>
+        <field name="arch" type="xml">
+            <form string="Sale Order Validity">
+                <sheet string="Sale Order Validity">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_sale_order_validity_tree" model="ir.ui.view">
+        <field name="model">sale.order.validity</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Sale Order Validity" default_order="id desc">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="act_sale_order_validity" model="ir.actions.act_window">
+        <field name="name">Sale Order Validity</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order.validity</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Contract
+            </p>
+        </field>
+    </record>
+
+
+
+<!--    menu for contract -->
+    <menuitem id="menu_amc_contracts_settings" name="Settings" parent="stranbys_amc.amc" sequence="20" />
+
+    <menuitem action="act_amc_terms_condition_view" id="menu_amc_terms_condition" parent="menu_amc_contracts_settings" sequence="10" />
+    <menuitem action="act_amc_system_types_view" id="menu_amc_system_types" parent="menu_amc_contracts_settings" sequence="20" />
+    <menuitem action="act_sale_order_validity" id="menu_amc_sale_order_validity" parent="menu_amc_contracts_settings" sequence="30" />
+</odoo>

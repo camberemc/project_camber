@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_project_inventory_return_form" model="ir.ui.view">
+        <field name="name">project.inventory.return.wizard.form</field>
+        <field name="model">project.inventory.return.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Inventory Return">
+                <group>
+                    <field name="partner_id" options="{'no_create': True, 'no_create_edit':True}" required="1"/>
+                </group>
+                <group string="Order Line">
+                    <field name="orderline_ids" nolabel="1">
+                        <tree editable="top" create="false">
+                            <field name="product_id" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="order_id" readonly="1"/>
+                            <field name="quantity" readonly="1" string="Quantity"/>
+<!--                            <field name="qty_delivered" readonly="1" string="Delivered"/>-->
+                             <field name="total_qty_delivered" readonly="1"/>
+                            <field name="qty_on_hand" string="Stock On Hand"/>
+                            <field name="qty_balance_delivery" string="Balance to Deliver"/>
+                            <field name="qty_added_inventory_return" string="Add+"/>
+                            <field name="uom_id" readonly="1" string="Unit"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="project_inventory_return_request" string="Add/Create" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_project_inventory_return"
+                name="Inventory Return"
+                res_model="project.inventory.return.wizard"
+                view_mode="form"
+                target="new"/>
+
+</odoo>

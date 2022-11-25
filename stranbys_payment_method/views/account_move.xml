@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_move_payment_inherit_form" model="ir.ui.view">
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_info']" position="before">
+                <page id="payment_tab" string="Payments" name="payment_tab" attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}">
+                    <button string="Invoice Matching" type="object" name="action_invoice_matching_wizard" class="oe_highlight" 
+                    attrs="{'invisible': [
+                    ('move_type', 'in', ['out_invoice', 'in_invoice'])]}"/>
+                    <field name="payment_matching_ids">
+                        <tree create="false" editable="bottom">
+                            <field name="name" readonly="1"/>
+                            <field name="date" />
+                            <field name="amount" attrs="{
+                                'readonly': [('invoice_matching', '=', True)]}" />
+                            <field name="currency_id" invisible="1" />
+                            <field name="invoice_matching" invisible="1"/>
+                        </tree>
+                    </field>
+                    <group string='Unallocated Payments'>
+                        
+                    </group>
+                    <field name="un_payment_ids" >
+                        <tree>
+                            <field name="company_currency_id" invisible="1"/>
+                            <field name="payment_type" />
+                            <field name="date"/>
+                            <field name="name"/>
+                            <field name="journal_id" invisible="1"/>
+<!--                            <field name="payment_method_line_id"/>-->
+                            <field name="partner_id" string="Customer" invisible="1"/>
+<!--                            <field name="amount_signed" string="Amount in Currency" groups="base.group_multi_currency" optional="hide"/>-->
+                            <field name="currency_id" string="Payment Currency" groups="base.group_multi_currency" optional="hide"/>
+<!--                            <field name="amount_company_currency_signed" widget="monetary" string="Amount" sum="Total"/>-->
+                            <field name="balance_amount" />
+                            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'"/>
+                        </tree>    
+                    </field>
+                </page>
+                
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+contract_order_sales_manager_crud,contract.order.sales.manager.crud,model_contract_order,sales_team.group_sale_salesman_all_leads,1,1,1,1
+quotation_order_sales_manager_crud,quotation.order.sales.manager.crud,model_quotation_order,sales_team.group_sale_salesman_all_leads,1,1,1,1
+master_system_types_sales_manager_crud,master.system.types.sales.manager.crud,model_amc_system_type,sales_team.group_sale_salesman_all_leads,1,1,1,1
+master_contract_system_types,master.contract.system.type,model_contract_system_type,sales_team.group_sale_salesman_all_leads,1,1,1,1
+contract_invoice_line,contract.invoice.line,model_contract_invoice_line,sales_team.group_sale_salesman_all_leads,1,1,1,1
+contract_order_service,contract.order.service,model_contract_order_service,sales_team.group_sale_salesman_all_leads,1,1,1,1
+amc_terms_condition,amc.terms.condition,model_amc_terms_condition,sales_team.group_sale_salesman_all_leads,1,1,1,1
+sale_order_validity,sale.order.validity,model_sale_order_validity,sales_team.group_sale_salesman_all_leads,1,1,1,1
+amc_order_lines,amc.order.lines,model_amc_order_lines,sales_team.group_sale_salesman_all_leads,1,1,1,1
+access_amc_quotation_revision_crud,amc.quotation.revision,model_amc_quotation_revision,,1,1,1,1
+access_quotation_order_revision_wizard_crud,quotation.order.revision.wizard,model_quotation_order_revision_wizard,,1,1,1,1
+access_contract_order_followup,contract.order.followup,model_contract_order_followup,,1,1,1,1

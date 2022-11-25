@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+manage_account_cheque_crud,manage.account.cheque.crud,model_account_cheque,stranbys_pdc.pdc_management,1,1,1,1
+manage_account_cheque_clear_wizard,manage.account.cheque.clear.wizard,model_account_cheque_clear_wizard,stranbys_pdc.pdc_management,1,1,1,1
+manage_account_payment_line,manage_account_payment_line,model_cheque_account_payment_line,,1,1,1,1
+access_account_payment_allocation_wizard_all,access_account_payment_allocation_wizard_all,model_account_payment_allocation_wizard,,1,1,1,1
+manage_account_payment_mapping_wizard,manage_account_payment_mapping_wizard,model_account_payment_mapping_wizard,stranbys_pdc.pdc_management,1,1,1,1
+

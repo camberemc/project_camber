@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_amc_quotation_form" model="ir.ui.view">
+        <field name="name">quotation.order.form</field>
+        <field name="model">quotation.order</field>
+        <field name="arch" type="xml">
+            <form string="Quotation">
+                <header>
+                    <button string="Request Quote Approval" type="object" name="request_quote_approval"
+                            class="oe_highlight" attrs="{'invisible':[('state','!=','draft')]}"/>
+
+                    <button string="Approve Quotation" type="object" name="confirm_draft"
+                            class="oe_highlight" groups="stranbys_amc.quote_approver"
+                            attrs="{'invisible':[('state','!=','waiting_approval')]}"/>
+
+                    <button string="Reject " type="object" name="reject_quotation"
+                            class="oe_highlight" groups="stranbys_amc.quote_approver"
+                            attrs="{'invisible':[('state','!=','waiting_approval')]}"/>
+
+                    <button string="Confirm Quotation" type="object" name="confirm_quotation"
+                            class="oe_highlight" attrs="{'invisible':[('state','!=','quote_send')]}"/>
+                    <button string="Quotation Send" type="object" name="quotation_send"
+                            class="oe_highlight" attrs="{'invisible':[('state','!=','quote')]}"/>
+                    <button name="create_new_version" string="Revision"
+                            type="object" class="btn-primary" attrs="{'invisible':[('state','not in',('quote','quote_send'))]}"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="AMC Quotation">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" string="Contract"
+                                name="view_contracts" type="object" icon="fa-tasks"
+                                attrs="{'invisible': [('state','!=', 'confirmed')]}">
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_revisions" icon="fa-bars"
+                                attrs="{'invisible':[('revision_id','=', False)]}">
+                            <field string="Revisions" name="revision_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <group>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </group>
+                    </div>
+
+
+                    <group>
+                        <group>
+                            <field name="partner_id" required="1"/>
+                            <field name="project_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <field name="contact_id" options="{'no_create': True, 'no_create_edit':True}" domain="[('parent_id', '=', partner_id)]" attrs="{'readonly': [('partner_id', '=', False)]}"/>
+                            <field name="user_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <field name="revision_id" invisible="1"/>
+                        </group>
+
+                    </group>
+                    <notebook>
+                        <page name="sale_details" string="Quotation Details">
+                            <group>
+                                <group>
+                                    <field name="heading" string="Subject"/>
+                                    <field name="validity_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="payment_term_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                </group>
+                                <group>
+                                    <field name="no_schedules"/>
+                                    <field name="callouts"/>
+                                    <field name="quote_amount"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="registration" string="Registration Details">
+                            <group>
+                                <group>
+                                    <field name="lpo_number" attrs="{'readonly': [('state', '=', 'confirmed')]}"/>
+                                    <field name="lpo_date" attrs="{'readonly': [('state', '=', 'confirmed')]}"/>
+                                    <field name="lpo_attach_file" filename="lpo_attach_filename"
+                                           attrs="{'readonly': [('state', '=', 'confirmed')]}"/>
+                                    <field name="lpo_attach_filename" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="terms" string="Terms and Condition">
+                            <h3>Terms and Condition</h3>
+                            <field name="terms_and_condition_id" nolabel="1"/>
+                            <br/>
+                            <field name="terms_and_condition" widget="html"/>
+                        </page>
+                        <page name="ams_service_types" string="Types of Services">
+                            <field name="amc_system_type_ids" string="Type of Services">
+                                <tree string="Lines">
+                                    <field name="contract_id" invisible="1"/>
+                                    <field name="amc_service_type"/>
+                                    <field name="number"/>
+                                    <field name="times"/>
+                                </tree>
+                                <form string="Lines" editable="bottom">
+                                    <group>
+                                        <group>
+                                            <field name="quotation_id" invisible="1"/>
+                                            <field name="amc_service_type"/>
+                                            <field name="number"/>
+
+                                        </group>
+                                        <group>
+                                            <field name="times"/>
+                                        </group>
+
+                                    </group>
+                                    <notebook>
+                                        <page string="Description">
+                                            <group>
+                                                <field name="description" widget="html"/>
+                                            </group>
+                                        </page>
+                                    </notebook>
+
+                                </form>
+                            </field>
+                            <field name="amc_order_line_ids" string="Annual Maintenance"
+                                   groups="stranbys_amc.allow_annual_maintenance">
+                                <tree editable="bottom" string="Annual Maintenance">
+                                    <field name="quotation_id" invisible="1"/>
+                                    <field name="building_name"/>
+                                    <field name="location"/>
+                                    <field name="unit_price"/>
+                                </tree>
+                            </field>
+                            <button string="Generate" type="object" name="generate_scope_of_work"
+                                    class="oe_highlight"/>
+                            <h3>Scope of Work</h3>
+                            <br/>
+                            <field name="scope" widget="html"/>
+                        </page>
+
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_amc_quotation_list" model="ir.ui.view">
+        <field name="model">quotation.order</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="AMC Quotation" default_order="id desc">
+                <field name="name" string="Quotation"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_quotation_order_search" model="ir.ui.view">
+        <field name="name">quotation.order.search</field>
+        <field name="model">quotation.order</field>
+        <field name="arch" type="xml">
+            <search string="Amc Quotation">
+                <field name="name" string="Quotation"/>
+                <separator/>
+                <field name="partner_id"/>
+                <separator/>
+                <field name="project_id"/>
+                <filter string="Quotation" name="quotes" domain="[('state','=','quote')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state','=','confirmed')]"/>
+            </search>
+        </field>
+    </record>
+    <record id="act_amc_quotation_view" model="ir.actions.act_window">
+        <field name="name">AMC Quotation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">quotation.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Contract
+            </p>
+        </field>
+    </record>
+    <record id="action_view_revised_quote_amc" model="ir.actions.act_window">
+        <field name="name">Revisions</field>
+        <field name="res_model">quotation.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="stranbys_amc.view_amc_quotation_list"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Revisions
+            </p>
+        </field>
+    </record>
+    <!--    menu for contract -->
+    <menuitem action="act_amc_quotation_view" id="menu_amc_quotation_amc_view"
+              parent="stranbys_amc.menu_amc_contracts_main" sequence="10"/>
+</odoo>

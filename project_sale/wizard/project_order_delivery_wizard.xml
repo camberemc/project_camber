@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_project_delivery_form_wizard" model="ir.ui.view">
+        <field name="name">project.delivery.wizard.form</field>
+        <field name="model">project.delivery.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Delivery Order">
+                <group>
+                    <field name="partner_id" options="{'no_create': True, 'no_create_edit':True}" required="1"/>
+                </group>
+                <group string="Order Line">
+                    <field name="orderline_ids" nolabel="1">
+                        <tree editable="top" create="false">
+                            <field name="product_id" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="order_id" readonly="1"/>
+<!--                            <field name="shop_qty" readonly="1" string="Quantity"/>-->
+                            <field name="quantity" readonly="1" string="Quantity"/>
+                            <field name="qty_purchased" readonly="1" string="Purchased"/>
+                            <field name="qty_on_hand" string="Stock On Hand"/>
+                            <field name="qty_balance_delivery" string="Balance to Deliver"/>
+                            <field name="qty_added_delivery" string="Add+"/>
+                            <field name="uom_id" readonly="1" string="Unit"/>
+<!--                            <field name="state" readonly="1"/>-->
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="project_delivery_request" string="Add/Create" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="project_delivery_form_wizard"
+                groups="purchase.group_purchase_manager"
+                name="Create Delivery"
+                res_model="project.delivery.wizard"
+                view_mode="form"
+                target="new"/>
+
+</odoo>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_list_receive_pdc" model="ir.ui.view">
+        <field name="name">account.cheque.tree</field>
+        <field name="model">account.cheque</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1" />
+        <field name="arch" type="xml">
+            <tree string="Cheques" default_order="date desc">
+                <field name="date" />
+                <field name="cheque_sequence"/>
+                <field name="name"/>
+                <field name="partner_id" />
+                <field name="journal_id" />
+                <field name="amount" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_form_receive_pdc" model="ir.ui.view">
+        <field name="model">account.cheque</field>
+        <field name="name">account.cheque.form</field>
+        <field name="arch" type="xml">
+            <form string="Cheque">
+                <header>
+                    <button string="Confirm" type="object" name="create_pdc" class="oe_highlight" attrs="{'invisible':[('state', '!=', 'draft')]}" />
+                    <button string="Cleared" type="object" name="clear_pdc" class="oe_highlight" attrs="{'invisible':[('state', 'not in', ['received', 'issued'])]}" />
+                    <button string="Return" type="object" name="reverse_pdc" class="oe_highlight" attrs="{'invisible':[('state', 'not in', ['received', 'issued'])]}" />
+                    <field name="state" widget="statusbar" />
+
+                </header>
+                <sheet string="Cheque">
+
+                    <div name="button_box" class="oe_button_box">
+                        <!-- Invoice stat button -->
+                            <button name="button_open_invoices" type="object"
+                                    class="oe_stat_button" icon="fa-bars"
+                                    attrs="{'invisible': [('reconciled_invoices_count','=', 0)]}">
+                                <field name="reconciled_invoices_count"/>
+                                <span attrs="{'invisible': [('reconciled_invoices_count','&gt;', 1)]}">Invoice</span>
+                                <span attrs="{'invisible': [('reconciled_invoices_count','&lt;=', 1)]}">Invoices</span>
+                            </button>
+
+                            <!-- Bill stat button -->
+                            <button name="button_open_bills" type="object"
+                                    class="oe_stat_button" icon="fa-bars"
+                                    attrs="{'invisible': [('reconciled_bills_count','=', 0)]}">
+                                <field name="reconciled_bills_count"/>
+                                <span attrs="{'invisible': [('reconciled_bills_count','&gt;', 1)]}">Bill</span>
+                                <span attrs="{'invisible': [('reconciled_bills_count','&lt;=', 1)]}">Bills</span>
+                            </button>
+
+                            <!-- Statement stat button -->
+                            <button name="button_open_statements" type="object"
+                                    class="oe_stat_button" icon="fa-bars"
+                                    attrs="{'invisible': [('reconciled_statements_count','=', 0)]}">
+                                <field name="reconciled_statements_count"/>
+                                <span attrs="{'invisible': [('reconciled_statements_count','&gt;', 1)]}">Statement</span>
+                                <span attrs="{'invisible': [('reconciled_statements_count','&lt;=', 1)]}">Statements</span>
+                            </button>
+<!--                        <button class="oe_stat_button" attrs="{'invisible': [('state', '=', 'draft')]}" icon="fa-bars" type="object" name="open_payment_matching_screen" string="Payment Matching"/>-->
+                        
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="cheque_sequence" readonly="1" />
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="name" string="Cheque Number"/>
+                            <field name="partner_id" options="{'no_create': True, 'no_create_edit':True}" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" context="{'default_is_company': True, 'default_supplier': cheque_type == 'pay', 'default_customer': cheque_type == 'receive'}" />
+                            <field name="bank_name" attrs="{'required': [('cheque_type', '=', 'receive')], 'invisible': [('cheque_type', '!=', 'receive')], 'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="amount" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="date" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="issue_date" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+<!--                            <field name="reconciled_invoices_count"/>-->
+<!--                            <field name="reconciled_bills_count"/>-->
+<!--                            <field name="reconciled_statements_count"/>-->
+                        </group>
+                        <group>
+                            <field name="journal_id" widget="selection" required="1" attrs="{'readonly': [('state', 'not in', ('draft', 'issued','received'))]}" />
+                            <field name="cleared_date" attrs="{'readonly': [('state', 'not in', ('issued', 'received'))], 'invisible': [('state', 'in', ('draft', 'return'))]}" />
+                            <field name="returned_date" attrs="{'readonly': [('state', 'not in', ('issued', 'received'))], 'invisible': [('state', 'in', ('draft', 'cleared'))]}" />
+                            <field name="voucher_no" />
+                            <field name="pdc_entry_id" readonly="1" attrs="{'invisible': [('state', '=', 'draft')]}" />
+                            <field name="payment_entry_id" readonly="1" attrs="{'invisible': [('state', '!=', 'cleared')]}" />
+                            <field name="reverse_entry_id" readonly="1" attrs="{'invisible': [('state', '!=', 'return')]}" />
+                            <field name="transaction" placeholder="Transaction Details.." attrs="{'readonly': [('state', '=', 'cleared')]}" />
+<!--                            <field name="reconciled_invoice_ids"/>-->
+<!--                            <field name="reconciled_bill_ids"/>-->
+<!--                            <field name="reconciled_statement_ids"/>-->
+                        </group>
+                    </group>
+                    <field name="narration" placeholder="Narration.." />
+
+                    <field name="cheque_type" invisible="1" />
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_account_cheque_search" model="ir.ui.view">
+            <field name="name">account.cheque.search</field>
+            <field name="model">account.cheque</field>
+            <field name="arch" type="xml">
+                <search string="Cheque">
+                    <field name="partner_id" string="Partner"/>
+                    <field name="cheque_sequence" string="Voucher Number"/>
+                    <field name="name" string="Cheque Number"/>
+                    <separator/>
+                    <filter string="Voucher Number"
+                            name="voucher_number"
+                            domain="[('cheque_sequence', '!=', False)]"/>
+                    <filter string="Cheque Number"
+                            name="cheque_number"
+                            domain="[('name', '!=', False)]"/>
+                </search>
+            </field>
+    </record>
+
+
+
+    <record id="action_pay_pdc" model="ir.actions.act_window">
+        <field name="name">Pay Cheque</field>
+        <field name="res_model">account.cheque</field>
+<!--        <field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_cheque_type': 'pay'}</field>
+        <field name="domain">[('cheque_type', '=', 'pay')]</field>
+        <field name="view_id" ref="view_list_receive_pdc" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Pay A Cheque
+            </p>
+            <p>
+                Register a cheque here
+            </p>
+        </field>
+    </record>
+
+
+    <record id="action_receive_pdc" model="ir.actions.act_window">
+        <field name="name">Receive Cheque</field>
+        <field name="res_model">account.cheque</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_cheque_type': 'receive'}</field>
+        <field name="domain">[('cheque_type', '=', 'receive')]</field>
+        <field name="view_id" ref="view_list_receive_pdc" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Receive A Cheque
+            </p>
+            <p>
+                Register a cheque here
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_pdc_management" name="Cheque Management" parent="account.menu_finance_entries" sequence="2" />
+    <menuitem action="action_receive_pdc" name="Receive Cheque" id="menu_receive_pdc" parent="menu_pdc_management" sequence="10" />
+    <menuitem action="action_pay_pdc" name="Pay Cheque" id="menu_pay_pdc" parent="menu_pdc_management" sequence="20" />
+</odoo>

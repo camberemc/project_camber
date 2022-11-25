@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_header_extend">
+        <div class="header">
+            <div class="row" style="font-size: 13px;font-family:Roboto;">
+                <div class="col-12 ">
+<!--                    <img t-att-src="'hiba_erp/static/header.jpeg'" style="max-height: 200px;"/>-->
+                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="left"
+                             style="max-height: 100px;"/>
+                </div>
+            </div>
+        </div>
+        <div class="footer" style="font-size: 13px;font-family:Roboto;">
+            <div class="row" style="font-size: 13px;font-family:Roboto;text-align:center">
+                <div class="col-12 ">
+                    <strong t-field="res_company.name"/>
+                    <span t-if="res_company.street">
+                        <br/>
+                        <span t-field="res_company.street"/>
+                    </span>
+                    <span t-if="res_company.street2">
+                        <span t-field="res_company.street2"/>
+                    </span>
+                    <span t-if="res_company.city">
+                        <span t-field="res_company.city"/>
+                    </span>
+                    <span t-if="res_company.state_id">
+                        <br/>
+                        <span t-field="res_company.state_id.name"/>
+                    </span>
+                    <!--                    </span>-->
+                    <span t-if="res_company.zip or res_company.country_id">
+                        <br/>
+                        <span t-field="res_company.zip"/>
+                        ,
+                        <span t-field="res_company.country_id.name"/>
+                    </span>
+                    <br/>
+                    <span t-if="res_company.vat">
+                        <strong>TRN :</strong>
+                        <strong t-field="res_company.vat"/>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_stock_template">
+        <t t-call="web.html_container">
+            <t t-call="stranbys_stock_report.report_header_extend"/>
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <h1 style="text-align:center"><strong>Stock Report</strong></h1>
+                    <div id="informations" class="row mt32 mb32" style="font-size:14px">
+                        <div class="col-3 bm-2">
+                            <strong>From</strong>
+                            <p t-esc="start_dt" class="m-0" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div class="col-3 bm-2">
+                            <strong>To</strong>
+                            <p t-esc="end_dt" class="m-0" t-options='{"widget": "date"}'/>
+                        </div>
+                    </div>
+                    <br/>
+                    <table class="table table-sm table-statement">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;" width="5%">Sl.No.</th>
+                                <th style="text-align:center;" width="35%">Product</th>
+                                <th style="text-align:center;" width="10%">Opening Stock</th>
+                                <th style="text-align:center;" width="10%">Purchase</th>
+                                <th style="text-align:center;" width="10%">Sales</th>
+                                <th style="text-align:center;" width="10%">Adjustments In</th>
+                                <th style="text-align:center;" width="10%">Adjustments Out</th>
+                                <th style="text-align:center;" width="10%">Stock in Hand</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="sl_no" t-value="1"/>
+                            <t t-foreach="in_data" t-as="u">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <span t-esc="sl_no"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['product']" />
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['op_on_hand_qty']"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['supplied_qty']"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['delivered_qty']"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['inventory_adj']"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['out_inventory_adj']"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['on_hand_qty']"/>
+                                    </td>
+                                    <t t-set="sl_no" t-value="sl_no+1"/>
+                                </tr>
+                            </t>
+<!--                            <tr>-->
+<!--                                <td colspan="4">-->
+<!--                                    <strong>Total</strong>-->
+
+<!--                                </td>-->
+<!--                                <td style="text-align:right;">-->
+<!--                                    <strong>-->
+<!--                                        <span t-esc="'%.2f'% grand_total_amount"/>-->
+<!--                                    </strong>-->
+<!--                                </td>-->
+<!--                                <td style="text-align:right;">-->
+<!--                                    <strong>-->
+<!--                                        <span t-esc="'%.2f'% grand_total_balance"/>-->
+<!--                                    </strong>-->
+<!--                                </td>-->
+<!--                                <td style="text-align:right;">-->
+<!--                                    <strong>-->
+<!--                                        <span t-esc="'%.2f'% grand_total_residue"/>-->
+<!--                                    </strong>-->
+<!--                                </td>-->
+
+<!--                            </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+    <report
+            id="action_print_stock_report"
+            model="stock.movement.wizard"
+            report_type="qweb-pdf"
+            menu="False"
+            string="Stock Report"
+            name="stranbys_stock_report.report_stock_template"
+            file="stranbys_stock_report.report_stock_template"
+    />
+    <report
+            id="action_print_stock_report_html"
+            model="stock.movement.wizard"
+            report_type="qweb-html"
+            menu="False"
+            string="Stock Report"
+            name="stranbys_stock_report.report_stock_template"
+            file="stranbys_stock_report.report_stock_template"
+    />
+</odoo>

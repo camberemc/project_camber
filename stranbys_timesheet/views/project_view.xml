@@ -1,0 +1,33 @@
+<odoo>
+
+    <record id="act_project_timesheet" model="ir.actions.act_window">
+            <field name="name">Timesheets</field>
+            <field name="res_model">project.timesheet</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="stranbys_timesheet.view_project_timesheet_list"/>
+            <field name="domain">[('project_id', '!=', active_id)]</field>
+            <field name="context">{"default_project_id": active_id,}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Record a new activity
+              </p><p>
+                Track your working hours by projects every day
+              </p>
+            </field>
+        </record>
+
+    <record id="project_timesheet_form_extend" model="ir.ui.view">
+        <field name="name">Inherit project Timesheet</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="priority">24</field>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object"
+                            name="show_timesheet"
+                            icon="fa-tasks" string="Timesheet"/>
+            </div>
+        </field>
+    </record>
+
+</odoo>

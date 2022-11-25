@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="project_sale_order_form_view" model="ir.ui.view">
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='action_cancel']" position="before">
+                <field name="approval_state" invisible="1"/>
+                <button name="send_approve_quotation" type="object" string="Send for Approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'draft')]}"
+                />
+
+                <button name="approve_quotation" type="object" string="Approve Quotation"
+                        groups="project_management.group_show_send_approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'pending')]}"/>
+                <button name="reject_quotation" type="object" string="Reject"
+                        groups="project_management.group_show_send_approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'pending')]}"/>
+                <button name="release_quotation" type="object" string="Release"
+                        groups="project_management.group_edit_quotation_approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'draft_quot')]}"/>
+                <button string="Assign Project" type="object" name="assign_project" class="oe_highlight"
+                        attrs="{'invisible':['|', ('state','!=','sale'), ('is_project_assigned','=', True)]}"/>
+
+            </xpath>
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft_quot,pending,draft,sent,sale"/>
+            </xpath>
+<!--            <xpath expr="//button[@name='action_confirm']" position="replace"/>-->
+
+<!--            </xpath>-->
+            <xpath expr="//button[@name='action_confirm']" position="replace">
+                <button name="action_confirm" string="Confirm" type="object" class="btn-primary" states="draft_quot,sent"/>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send']" position="replace">
+                <button name="action_quotation_send" string="Send by Email" type="object" states="draft_quot" class="btn-primary"/>
+            </xpath>
+
+            <xpath expr="//field[@name='validity_date']" position="before">
+                <field name="project_id" readonly="1"/>
+                <field name="is_project_assigned" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+
+<!--    <record id="view_order_project_tree" model="ir.ui.view">-->
+<!--        <field name="name">sale.order.project.tree</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="type">tree</field>-->
+<!--        <field name="inherit_id" ref="sale.view_order_tree"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="/tree/field[@name='partner_id']" position="after">-->
+<!--                <field name="project_id"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+    <record id="sale_order_search_extend" model="ir.ui.view">
+        <field name="name">sale.order.search.extend</field>
+        <field name="model">sale.order</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="arch" type="xml">
+                <xpath expr="//filter[@name='draft']" position="replace">
+                        <filter string="Quotations" name="draft" domain="[('state','in',('draft_quot','sent'))]"/>
+                </xpath>
+        </field>
+    </record>
+
+
+</odoo>

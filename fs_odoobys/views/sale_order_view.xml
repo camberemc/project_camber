@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_order_form_view_extend" model="ir.ui.view">
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <!--                <field name="quotation_ref"/>-->
+                <field name="quotation_reverse"/>
+                <field name="attention"/>
+                <field name="discount" invisible="1"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='other_information']" position="before">
+                <page string="Additional Details" name="additional_details">
+                    <group>
+                        <group>
+                            <field name="project_name"/>
+                            <field name="work_location"/>
+                        </group>
+                        <br/>
+                        <strong>Scope of Work</strong>
+                        <br/>
+                        <field name="scope_of_work"/>
+                        <strong>Safety, HSE &amp; Quality</strong>
+                        <br/>
+                        <field name="safety_hse_quality"/>
+                        <strong>Reference Drawings</strong>
+                        <br/>
+                        <field name="reference_drawing"/>
+                        <strong>Notes</strong>
+                        <br/>
+                        <field name="notes" placeholder="Notes"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']"
+                   position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True, 'delete': False}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_quotation_tree_extend" model="ir.ui.view">
+            <field name="name">sale.order.tree.inherit.sale.stock</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                        <field name="project_name"/>
+                </xpath>
+            </field>
+    </record>
+    <record id="view_so_tree_extend" model="ir.ui.view">
+            <field name="name">sale.order.tree.inherit.sale.stock</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                        <field name="project_name"/>
+                </xpath>
+            </field>
+    </record>
+</odoo>

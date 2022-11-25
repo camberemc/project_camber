@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="partner_statement_template">
+        <t t-call="web.html_container">
+            <t t-call="stranbys_partner_statement.report_header_minimal"/>
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <h4>Outstanding Report</h4>
+                    <div class="row" style="padding-left:10px;font-size:14px">
+                        <strong>Customers : </strong>
+                        <br/>
+                        <t t-foreach="customers" t-as="cus">
+                            <span t-esc="cus"/>
+                            <span> , </span>
+                        </t>
+                    </div>
+                    <div id="informations" class="row mt32 mb32" style="font-size:14px">
+                        <div class="col-3 bm-2">
+                            <strong>From</strong>
+                            <p t-esc="start_dt" class="m-0" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div class="col-3 bm-2">
+                            <strong>To</strong>
+                            <p t-esc="end_dt" class="m-0" t-options='{"widget": "date"}'/>
+                        </div>
+                    </div>
+                    <br/>
+                    <table class="table table-sm table-statement">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;" width="10%">Sl.No</th>
+                                <th style="text-align:center;" width="10%">Date</th>
+                                <th style="text-align:center;" width="10%">Invoice Number</th>
+                                <th style="text-align:center;" width="10%">LPO No.</th>
+                                <th style="text-align:right;" width="10%">Total Amount</th>
+                                <th style="text-align:right;" width="10%">Paid</th>
+                                <th style="text-align:right;" width="10%">Balance</th>
+                                <th style="text-align:center;" width="10%">Due Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="sl_no" t-value="1"/>
+                            <t t-foreach="in_data" t-as="u">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <span t-esc="sl_no"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['date']" t-options='{"widget": "date"}'/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['reference']"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['lpo']"/>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <span t-esc="u['total_amount']"/>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <span t-esc="u['balance']"/>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <span t-esc="u['amount_residue']"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-esc="u['due_date']"/>
+                                    </td>
+                                    <t t-set="sl_no" t-value="sl_no+1"/>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td colspan="4">
+                                    <strong>Total</strong>
+
+                                </td>
+                                <td style="text-align:right;">
+                                    <strong>
+                                        <span t-esc="'%.2f'% grand_total_amount"/>
+                                    </strong>
+                                </td>
+                                <td style="text-align:right;">
+                                    <strong>
+                                        <span t-esc="'%.2f'% grand_total_balance"/>
+                                    </strong>
+                                </td>
+                                <td style="text-align:right;">
+                                    <strong>
+                                        <span t-esc="'%.2f'% grand_total_residue"/>
+                                    </strong>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <table class="table table-sm table-statement">
+                        <thead>
+                            <tr>
+                                <th><span t-esc="h_ageing_30"/> </th>
+                                <th><span t-esc="h_ageing_60"/> </th>
+                                <th><span t-esc="h_ageing_90"/> </th>
+                                <th><span t-esc="h_ageing_120"/> </th>
+                                <th><span t-esc="h_ageing_150"/> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span t-esc="ageing_30"/>
+                                </td>
+                                <td>
+                                    <span t-esc="ageing_60"/>
+                                </td>
+                                <td>
+                                    <span t-esc="ageing_90"/>
+                                </td>
+                                <td>
+                                    <span t-esc="ageing_120"/>
+                                </td>
+                                <td>
+                                    <span t-esc="ageing_150"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </t>
+        </t>
+    </template>
+    <report
+            id="action_print_partner_statement"
+            model="partner.statement.wizard"
+            report_type="qweb-pdf"
+            menu="False"
+            string="Outstanding Report"
+            name="stranbys_partner_statement.partner_statement_template"
+            file="stranbys_partner_statement.partner_statement_template"
+    />
+</odoo>

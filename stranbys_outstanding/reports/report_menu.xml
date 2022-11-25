@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+            <xpath expr="//head" position="inside">
+                <link rel="stylesheet" href="/stranbys_outstanding/static/src/css/all.css"/>
+                <link rel="stylesheet" href="/stranbys_outstanding/static/src/css/print.css"/>
+            </xpath>
+        </template>
+<!--        <record id="report_paperformat" model="report.paperformat">-->
+<!--            <field name="name">Custom Paper Format</field>-->
+<!--            <field name="default" eval="True"/>-->
+<!--            <field name="format">A4</field>-->
+<!--            <field name="page_height">0</field>-->
+<!--            <field name="page_width">0</field>-->
+<!--            <field name="margin_top">5</field>-->
+<!--            <field name="margin_bottom">5</field>-->
+<!--            <field name="margin_left">5</field>-->
+<!--            <field name="margin_right">5</field>-->
+<!--            <field name="header_line" eval="False"/>-->
+<!--            <field name="header_spacing">5</field>-->
+<!--            <field name="dpi">90</field>-->
+<!--            <field name="orientation">Portrait</field>-->
+<!--        </record>-->
+
+
+        <template id="report_header_minimal">
+            <div class="header" style="font-size: 13px;font-family:Roboto;">
+                <div class="row">
+                    <div class="col-6">
+                        <br/>
+                        <br/>
+                        <div class="name-box" style="text-align:center">
+                        <strong>BILLING STATEMENT</strong><br/>
+
+                        <strong t-esc="start_dt" class="m-0" t-options='{"widget": "date"}'/> - <strong t-esc="end_dt" class="m-0" t-options='{"widget": "date"}'/>
+                        </div>
+                    </div>
+                    <div class="col-6 pull-right text-right" style="padding-top:20px;font-size: 15px;">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="left"
+                             style="max-height: 100px;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+                <strong t-field="res_company.name"/>
+                |
+                <i class="fa fa-phone-alt"></i>
+                <span t-field="res_company.phone"/>
+                |
+                <i class="fa fa-envelope"></i>
+                <span t-field="res_company.email"/>
+                |
+                <i class="fa fa-globe"></i>
+                <span t-field="res_company.website"/>
+                <div class="row" style="border-top: 1px solid gray;">
+                    <div class="col-10"></div>
+                    <div class="col-2 pull-right">
+                        <small class="pull-right">
+                            <span>Page</span>
+                            <span class="page"/>
+                            of
+                            <span class="topage"/>
+                            <br/>
+                            <br/>
+                            <span style="font-size:8px;"></span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <report
+                id="report_partner_statement_xlsx"
+                model="partner.statements.wizard"
+                string="Partner Statement Report"
+                report_type="xlsx"
+                name="partner.statement.report.xlsx"
+                file="Partner Statement"
+                attachment_use="False"
+                menu="False"
+        />
+        <report
+                id="action_print_partner_statements"
+                model="partner.statements.wizard"
+                report_type="qweb-pdf"
+                menu="False"
+                string="Outstanding Report"
+                name="stranbys_outstanding.partner_statement_templates"
+                file="stranbys_outstanding.partner_statement_templates"
+
+        />
+    </data>
+</odoo>

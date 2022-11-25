@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+crm_estimation_crud,crm.estimation.crud,model_crm_estimation,sales_estimation.sales_estimator,1,1,1,1
+crm_estimation_line_crud,crm.estimation.line.crud,model_crm_estimation_line,sales_estimation.sales_estimator,1,1,1,1
+crm_estimation_etd_crud,crm.estimation.etd.crud,model_crm_estimation_etd,sales_estimation.sales_estimator,1,1,1,1
+crm_consumable_estimation_etd_crud,crm.consumable_estimation.etd.crud,model_crm_estimation_consumable_line,sales_estimation.sales_estimator,1,1,1,1
+crm_estimation_wizard_crud,crm.estimation.wizard.crud,model_crm_estimation_wizard,sales_estimation.sales_estimator,1,1,1,1
+estimation_reject_wizard_crud,estimation.reject.wizard.crud,model_estimation_reject_wizard,sales_estimation.sales_estimator,1,1,1,1
+estimation_expense_line_crud,estimation.expense.line.crud,model_estimation_expense_line,,1,1,1,1
+
+

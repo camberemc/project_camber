@@ -1,0 +1,210 @@
+<odoo>
+    <record id="project_sale_edit_view_camber" model="ir.ui.view">
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="replace"/>
+            <xpath expr="//div[@class='oe_title']/h1" position="before">
+                    <field name="code" readonly="1"/>
+            </xpath>
+            <xpath expr="//div[@class='oe_title']/h1" position="after">
+<!--                <div name="options_active">-->
+                            <div>
+                                <label for="project_type" class="oe_inline" string="Project Type"/>
+                                <field name="project_type" class="oe_inline oe_input_align"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </div>
+<!--                        </div>-->
+            </xpath>
+            <xpath expr="//field[@name='total_income']" position="after">
+                <field name="total_labour_expense"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='project_summary']" position="after">
+                <page name="inventory_return" string="Inventory Return">
+                    <field name="project_return_ids" nolabel="1">
+                        <tree readonly="1" create="false">
+                            <field name="project_id" invisible="1" />
+                            <field name="inventory_id" />
+                            <field name="project_id" />
+                            <field name="product_id" />
+                            <field name="quantity" />
+                        </tree>
+                        <form>
+                            <field name="project_id" invisible="1" />
+                            <group>
+                                <group>
+                                    <field name="inventory_id" />
+                                    <field name="project_id" />
+                                    <field name="quantity" />
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+                <page name="delivery_lines" string="Delivery">
+                    <field name="project_delivery_ids" nolabel="1">
+                        <tree readonly="1" create="false">
+                            <field name="project_id" invisible="1"/>
+                            <field name="picking_id" string="Picking" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="product_uom_qty" string="quantity" readonly="1"/>
+
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="act_project_sales_view" model="ir.actions.act_window">
+        <field name="name">Sale Order Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.sales.line</field>
+        <field name="view_mode">list,form</field>
+<!--        <field name="view_type">tree</field>-->
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Estimation Lines
+            </p>
+        </field>
+    </record>
+
+    <record id="view_project_sales_list_view" model="ir.ui.view">
+        <field name="model">project.sales.line</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1" />
+        <field name="arch" type="xml">
+            <tree string="Estimated Sales Lines" default_order="id desc">
+                <field name="project_id" />
+                <field name="product_id" />
+                <field name="name" />
+                <field name="product_qty"  string="Product Quantity"/>
+<!--                <field name="total_shop_qty" />-->
+                <field name="remarks" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_project_sales_form_view" model="ir.ui.view">
+        <field name="name">project.sales.line.form</field>
+        <field name="model">project.sales.line</field>
+        <field name="arch" type="xml">
+            <form string="Project Sales Estimations">
+                <sheet string="Project Sales Estimations">
+                    <div class="oe_title">
+                        <group>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </group>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id" readonly="1"/>
+                            <field name="uom_id" readonly="1"/>
+                            <field name="product_qty" readonly="1" groups="account.group_account_manager"/>
+                        </group>
+                        <group>
+                            <field name="order_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="order_line_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="products" string="Products">
+                            <field name="project_order_line_ids" context="{'default_order_line_id': order_line_id,'default_order_id': order_id, 'default_project_id': project_id,}">
+                                <tree string="Purchase Order Lines" editable="bottom" delete="false">
+                                    <field name="name" invisible="1"/>
+                                    <field name="order_line_id" invisible="1"/>
+                                    <field name="project_id" invisible="1"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id" required="1" options="{'no_create': True, 'no_create_edit':True}" domain="[('type', '=', 'product')]"  />
+<!--                                    <field name="dcd_qty" attrs="{'readonly':['|', ('state','=','confirm'), ('dcd_access','=', False)]}" />-->
+                                    <field name="product_uom_qty" />
+<!--                                    <field name="shop_qty" attrs="{'readonly':['|', ('state','=','confirm'),'&amp;', ('shop_access','=', False), ('id','>',0)]}" />-->
+<!--                                    <field name="indented_qty" />-->
+                                    <field name="state" invisible="1"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="state" invisible="1"/>
+                                            <field name="project_id" invisible="1"/>
+                                            <field name="order_id" invisible="1"/>
+                                            <field name="order_line_id" invisible="1"/>
+                                            <field name="product_id" required="1" options="{'no_create': True, 'no_create_edit':True}" />
+                                        </group>
+                                        <group>
+<!--                                            <field name="dcd_qty" attrs="{'readonly':['|', ('state','=','confirm'), ('dcd_access','=', False)]}" />-->
+<!--                                            <field name="shop_qty" attrs="{'readonly':['|', ('state','=','confirm'), ('shop_access','=', False)]}" />-->
+                                            <field name="product_uom_qty" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+
+                            <field name="remarks" placeholder="Enter remarks here"/>
+
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="o_attachment_preview"/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_management.act_project_project_orderline_list_view" model="ir.actions.act_window">
+        <field name="name">Project Order Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.project.orderline</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_project': 1,'search_default_sale_line': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new orderline
+            </p>
+        </field>
+    </record>
+
+    <record id="project_management.act_my_project_project_orderline_list_view" model="ir.actions.act_window">
+        <field name="name">My Project Order Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.project.orderline</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('project_id.user_id', '=', uid)]</field>
+        <field name="context">{'search_default_group_project': 1,'search_default_sale_line': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new orderline
+            </p>
+        </field>
+    </record>
+    <record id="project_order_line_list_extend" model="ir.ui.view">
+        <field name="inherit_id" ref="project_management.project_project_orderline_list_view"/>
+        <field name="model">project.project.orderline</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="replace"/>
+        </field>
+    </record>
+
+    <record id="project_order_line_form_extend" model="ir.ui.view">
+        <field name="inherit_id" ref="project_management.project_project_orderline_form_view"/>
+        <field name="model">project.project.orderline</field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='l1_approval']" position="replace"/>
+            <xpath expr="//button[@name='set_confirm']" position="replace"/>
+            <xpath expr="//button[@name='set_draft']" position="replace"/>
+            <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+            </xpath>
+
+
+
+        </field>
+    </record>
+
+
+<!--    estimation-->
+    <menuitem action="act_project_sales_view"  id="menu_project_sales_view" parent="project.menu_projects" sequence="30" />
+</odoo>

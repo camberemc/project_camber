@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="custom_report_amc_contract_camber">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="chamber_erp.custom_report_amc_contract_document_camber" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+        <template id="custom_report_amc_contract_document_camber">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="chamber_erp.report_header_minimal_amc_contract_camber"/>
+                <t t-call="web.external_layout" id="layout">
+                    <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                    <div class="page" style="font-size: 14px;font-family:Roboto;">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <strong style="text-align:center;font-size:20px">
+                                    <u>ANNUAL MAINTENANCE CONTRACT</u>
+                                    <t t-if="doc.contract_location">
+                                        <br/>
+                                        <u>
+                                            <span t-field="doc.contract_location"/>
+                                        </u>
+                                    </t>
+                                </strong>
+                            </div>
+                        </div>
+                        <br/>
+                        <!--                        <div class="row">-->
+                        <span>This agreement is made on
+                            <span t-field="doc.contract_date"/>
+                            between;
+                        </span>
+                        <br/>
+                        <br/>
+                        <strong t-field="res_company.name"/>
+                        <br/>
+                        <span t-if="res_company.street">
+                            <span t-field="res_company.street"/>
+                        </span>
+                        <span t-if="res_company.street2">
+                            <span t-field="res_company.street2"/>
+                        </span>
+                        <span t-if="res_company.city">
+                            <span t-field="res_company.city"/>
+                        </span>
+                        <br/>
+                        <span t-if="res_company.state_id">
+                            <span t-field="res_company.state_id.name"/>
+                        </span>
+                        <span t-if="res_company.zip or res_company.country_id">
+                            <span t-field="res_company.country_id.name"/>
+                        </span>
+                        <br/>
+
+                        <span>TRN :
+                            <span t-field="res_company.vat"/>
+                        </span>
+                        <br/>
+                        <span>(Being the first party and herein after called STEVOK)</span>
+                        <br/>
+                        <br/>
+                        <span>AND</span>
+                        <br/>
+                        <br/>
+                        <strong t-field="doc.partner_id.name"/>
+                        <br/>
+                        <span t-if="doc.partner_id">
+                            <span t-field="doc.partner_id.street"/>
+                        </span>
+                        <span t-if="doc.partner_id.street2">
+                            <span t-field="doc.partner_id.street2"/>
+                        </span>
+                        <span t-if="doc.partner_id.city">
+                            <span t-field="doc.partner_id.city"/>
+                        </span>
+                        <br/>
+                        <span t-if="doc.partner_id.state_id">
+                            <span t-field="doc.partner_id.state_id.name"/>
+                        </span>
+                        <span t-if="doc.partner_id.zip or doc.partner_id.country_id">
+
+                            <span t-field="doc.partner_id.country_id.name"/>
+                        </span>
+                        <br/>
+                        <span>TRN :
+                            <span t-field="doc.partner_id.vat"/>
+                        </span>
+                        <br/>
+                        <span>(Being the second party and herein after called the CLIENT)</span>
+                        <br/>
+                        <!--                        </div>-->
+                        <!--                        <div class="row">-->
+                        <br/>
+                        <strong>BOTH PARTIES HEREBY AGREED UPON</strong>
+                        <br/>
+                        <br/>
+                        <span>The First Party agrees to carryout periodic maintenance and inspection of fire
+                            detection / protection systems for
+                            <span t-field="doc.agreed_upon"/>
+                            . The Equipment is owned by the Client and already installed in the
+                            premises.
+                        </span>
+                        <br/>
+                        <br/>
+                        <strong>VALIDITY OF AGREEMENT</strong>
+                        <br/>
+                        <br/>
+                        <span>This agreement shall commence from
+                            <span t-field="doc.start_date"/>
+                            and expire on
+                            <span t-field="doc.end_date"/>
+                            and
+                            shall be valid for a period of one year from the date thereof.
+                        </span>
+                        <br/>
+                        <br/>
+                        <strong>MAINTENANCE CHARGE</strong>
+                        <br/>
+                        <br/>
+                        <span><span t-field="doc.maintenance_charge"/>&#160;&#160;&#160;with an amount of AED: (
+                            <strong
+                                    t-esc="user.currency_id.with_context(lang='en_US').amount_to_text(doc.total_amount)"/>
+                            ) (+5%
+                            VAT).
+                        </span>
+                        <!--                        </div>-->
+                        <br/>
+                        <br/>
+                        <!--                        <div class="row">-->
+                        <strong>SCOPE OF WORK</strong>
+                        <br/>
+                        <br/>
+                        <span>With reference to the instructions given to us by the Second Party, the First Party
+                            will undertake this job under the scope of work and conditions.
+                        </span>
+                        <br/>
+                        <br/>
+                        <span>1. Maintenance will be provided by the First Party to keep the equipment in good
+                            working order while it is being used in accordance with specification and duty cycles,
+                            NFPA and Dubai Civil Defense
+                        </span>
+                        <br/>
+                        <br/>
+                        <span>2. This maintenance service will begin from the date mentioned above and will include
+                            the following:
+                            <br/>
+                            <span style="padding-left:30px">a. Fire protection systems repairs</span>
+                            <br/>
+                            <span style="padding-left:30px">b. Preventive maintenance</span>
+                            <br/>
+                            <span style="padding-left:30px">c. Complete inspection with reporting.</span>
+                            <br/>
+                            <span style="padding-left:30px">d. All necessary work and engineering support.</span>
+                            <br/>
+
+                        </span>
+                        <br/>
+
+                        <span>3. Perform four periodical preventive maintenance and inspection visits during the
+                            duration of this agreement, once every three months.
+                            <br/>
+                            <br/>
+                        </span>
+                        <!--                        </div>-->
+                        <!--                        </div>-->
+                        <t t-if="doc.amc_system_type_ids">
+                            <table width="90%">
+                                <t t-foreach="doc.amc_system_type_ids" t-as="line">
+                                    <tr>
+                                        <td width="5%" class="text-center">
+                                            <strong>*</strong>
+                                        </td>
+                                        <td width="50%" class="text-left">
+                                            <span t-field="line.amc_service_type.name"/>
+                                        </td>
+                                        <td width="10%" class="text-right">
+                                            <span t-field="line.number"/>
+                                            <span>-</span>
+                                        </td>
+                                        <td width="25%" class="text-left">
+                                            <span t-field="line.times"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </t>
+                        <br/>
+                        <span>4. The First Party undertakes to attend call outs within maximum period of 4 hours in
+                            working days from Saturday to Thursday. On Fridays and Holidays the call outs will be
+                            attended immediately. All emergency calls will be attended 24 hours at telephone number
+                            058 2235123.
+                        </span>
+                        <br/>
+                        <br/>
+                        <table width="90%">
+                            <t t-foreach="doc.amc_system_type_ids" t-as="line">
+                                <div style="page-break-inside: avoid;">
+                                    <b>
+                                        <span t-field="line.amc_service_type.name"/>
+                                    </b>
+                                    <br/>
+                                    <span t-raw="line.description"/>
+                                </div>
+                            </t>
+                        </table>
+                        <br/>
+                        <br/>
+                        <span>
+                            <b>MODE OF PAYMENT</b>
+                        </span>
+                        <br/>
+                        <t t-if="doc.payment_term_id">
+                            <span style="padding-left:50px" t-field="doc.payment_term_id.name"/>
+                        </t>
+                        <br/>
+                        <br/>
+                        <!--                                                <p style="page-break-after:always;"></p>-->
+                        <span>
+                            <u>
+                                <b>TERMS &amp; CONDITIONS</b>
+                            </u>
+                        </span>
+                        <br/>
+                        <br/>
+                        <div style="margin-left:15px;">
+                            <span t-raw="doc.terms_and_condition"/>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="row">
+
+
+                            <div class="col-6">
+                                <span>
+                                    Accepted on Behalf of:
+                                </span>
+                                <br/>
+                                <br/>
+                                <strong t-field="res_company.name"/>
+                                <br/>
+                                <span t-if="res_company.street">
+                                    <span t-field="res_company.street"/>
+                                </span>
+                                <span t-if="res_company.street2">
+                                    <span t-field="res_company.street2"/>
+                                </span>
+                                <span t-if="res_company.city">
+                                    <span t-field="res_company.city"/>
+                                </span>
+                                <br/>
+                                <span t-if="res_company.state_id">
+                                    <span t-field="res_company.state_id.name"/>
+                                </span>
+                                <!--                    </span>-->
+                                <span t-if="res_company.country_id">
+                                    <span t-field="res_company.country_id.name"/>
+                                </span>
+                                <br/>
+                                <br/>
+
+                                <span>
+                                    Signature /Company Seal:
+                                </span>
+                            </div>
+
+
+                            <div class="col-6 pull-right text-right">
+                                <span>
+                                    Accepted on Behalf of:
+                                </span>
+                                <br/>
+                                <br/>
+                                <strong t-field="doc.partner_id.name"/>
+                                <br/>
+                                <span t-if="doc.partner_id">
+                                    <span t-field="doc.partner_id.street"/>
+                                </span>
+                                <span t-if="doc.partner_id.street2">
+                                    <span t-field="doc.partner_id.street2"/>
+                                </span>
+                                <span t-if="doc.partner_id.city">
+                                    <span t-field="doc.partner_id.city"/>
+                                </span>
+                                <br/>
+                                <span t-if="doc.partner_id.state_id">
+
+                                    <span t-field="doc.partner_id.state_id.name"/>
+                                </span>
+                                <!--                    </span>-->
+                                <span t-if="doc.partner_id.country_id">
+
+                                    <span t-field="doc.partner_id.country_id.name"/>
+                                </span>
+                                <br/>
+                                <br/>
+
+                                <span>
+                                    Signature /Company Seal:
+                                </span>
+
+                            </div>
+                        </div>
+                        <!--                        </div>-->
+
+                    </div>
+
+                </t>
+            </t>
+
+        </template>
+
+
+    </data>
+</openerp>

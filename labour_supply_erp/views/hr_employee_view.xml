@@ -1,0 +1,14 @@
+<odoo>
+
+
+    <record model="ir.ui.view" id="hr_employee_document_extend_hiba">
+        <field name="name">hr.employee.form.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="overtime_per_hour"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

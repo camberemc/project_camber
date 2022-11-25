@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+manage_account_expense_voucher,manage.account.expense.voucher,model_account_expense_voucher,,1,1,1,1
+manage_account_expense_voucher_line,manage.account.expense.voucher.line,model_account_expense_voucher_line,,1,1,1,1

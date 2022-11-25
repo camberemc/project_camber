@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_paymentt_move_line_tree">
+        <field name="name">account.move.line.tree.inherit.payment</field>
+        <field name="model">account.move.line</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="account.view_move_line_tree_grouped"/>
+        <field name="arch" type="xml">
+                <xpath expr="/tree/field[@name='parent_state']" position="before">
+                    <field name="amount_residual" optional="show" sum="Residual"/>
+                </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_stranbys_account_payment_tree">
+        <field name="name">account.payment.tree.inherit.payment</field>
+        <field name="model">account.payment</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+
+<!--                <xpath expr="/tree/header" position="inside">-->
+<!--                    <button name="action_clear_cheque_wizard" type="object" string="Clear Cheques"/>-->
+<!--                </xpath>-->
+                <xpath expr="/tree/field[@name='state']" position="before">
+                    <field name="balance_amount" />
+<!--                    <field name="clear_status" />-->
+                </xpath>
+
+        </field>
+    </record>
+
+
+    <record id="view_account_payment_form" model="ir.ui.view">
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            
+
+<!--            <xpath expr="//field[@name='name']" position="replace">-->
+<!--                <field name="name" invisible="1" />-->
+<!--                <field name="voucher_number" readonly="1"/>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//field[@name='ref']" position="before">-->
+<!--                <field name="cheque_number" attrs="{'readonly': [('state', '=', 'posted')]}" />-->
+<!--            </xpath>-->
+
+
+<!--            <xpath expr="//header" position="inside">-->
+<!--                <button name="action_clear" string="Clear" type="object" class="oe_highlight" attrs="{'invisible': [('hide_clearence', '=', True)]}"/>-->
+<!--                <field name="hide_clearence" invisible="1" />-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//field[@name='payment_type']" position="attributes">-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//field[@name='is_internal_transfer']" position="replace">-->
+<!--                <field name="is_internal_transfer" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('payment_type', '=', 'outbound')]}"/>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//field[@name='destination_journal_id']" position="after">-->
+<!--                <field name="hide_dest_payment_method_line" invisible="1"/>-->
+<!--                <field name="dest_method_ids" invisible="1" />-->
+<!--                <field name="dest_payment_method_line_id" -->
+<!--                domain="[('id', 'in', dest_method_ids)]" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('hide_dest_payment_method_line', '=', True)]}"/>-->
+
+<!--            </xpath>-->
+
+
+            <xpath expr="//field[@name='journal_id']" position="before">
+<!--                <field name="clearence_state" invisible="1" />-->
+                <field name="balance_amount" attrs="{'invisible': [('is_internal_transfer', '=', True)]}"/>
+<!--                <field name="cleared_date" -->
+<!--                attrs="{-->
+<!--                    'invisible':[('hide_clearence', '=', True),('clearence_id', '=', False)],  'readonly': [('clearence_state', 'in', ['posted', 'cancel'])]-->
+<!--                }"/>-->
+<!--                <field name="clearence_account_id" -->
+<!--                attrs="{-->
+<!--                    'invisible':[('hide_clearence', '=', True),('clearence_id', '=', False)],'readonly': [('clearence_state', 'in', ['posted', 'cancel'])]-->
+<!--                }"-->
+<!--                domain="[('id', 'in', available_payment_method_line_ids)]"-->
+<!--                options="{'no_open': True, 'no_create': True, 'no_create_edit':True}"/>-->
+<!--                <field name="clearence_id" -->
+<!--                readonly="1"-->
+<!--                attrs="{-->
+<!--                    'invisible': [('clearence_id', '=', False)],-->
+<!--                }" />-->
+<!--                <field name="partner_bank_account_id" options="{'no_open': True, 'no_create': True, 'no_create_edit':True}"/>-->
+            </xpath>
+<!--            <xpath expr="//field[@name='partner_bank_id']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
+
+            <xpath expr="//sheet" position="inside">
+            <notebook>
+                <page name="allocation" string="Payment Allocation">
+                    <button name="auto_allocate_amount" string="Auto Allocate" type="object" class="btn btn-info"/>
+
+                    <button name="create_payment_matching" string="Reconcile" type="object" class="btn btn-success"/>
+
+                    <field name="move_line_allocate_ids" 
+                        domain="[('partner_id', '=', partner_id),('reconciled', '=', False),
+                        ('account_id.internal_type', 'in', ['receivable', 'payable']),('move_id.move_type', 'in', ['out_invoice', 'in_invoice'])]">
+                        <tree editable="bottom">
+                            <field name="date" />
+                            <field name="move_id" readonly="1"/>
+                            <field name="account_id" readonly="1"/>
+                            <field name="amount_residual" />
+                            <field name="allocated_amount" />
+                        </tree>
+                    </field>
+                    
+                </page>
+                <page name="payment_line" string="Payment Lines">
+                    <field name="partner_id" invisible="1"/>
+                        <field name="payment_line_ids" context="{'default_partner_id': partner_id }">
+                            <tree editable="bottom" create="false">
+                                <field name="partner_id" invisible="1"/>
+                                <field name="name" invisible="1" />
+                                <field name="rec_move_id" readonly="1" />
+                                <field name="rec_account_id" readonly="1" />
+                                <field name="move_line_id" invisible="1"/>
+                                <field name="date" />
+                                <field name="amount" />
+                                <field name="currency_id" invisible="1" />
+                            </tree>
+                            
+                        </field>
+                </page>
+            </notebook>
+            </xpath>
+
+
+
+        </field>
+    </record>
+
+
+<!--    <record id="view_account_journal_form" model="ir.ui.view">-->
+<!--        <field name="model">account.journal</field>-->
+<!--        <field name="inherit_id" ref="account.view_account_journal_form" />-->
+<!--        <field name="type">form</field>-->
+<!--        <field name="arch" type="xml">-->
+
+<!--            <xpath expr="//page[@id='inbound_payment_settings']/field[@name='inbound_payment_method_line_ids']/tree/field[@name='payment_account_id']" position="before">-->
+<!--                <field name="reconcile_ok" placeholder="Use this to post the clearing entry to the actual bank account once the payment is cleared, in payments and receipts" optional="hide" groups="account.group_account_readonly"/>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//page[@id='outbound_payment_settings']/field[@name='outbound_payment_method_line_ids']/tree/field[@name='payment_account_id']" position="before">-->
+<!--                <field name="reconcile_ok" placeholder="Use this to post the clearing entry to the actual bank account once the payment is cleared, in payments and receipts" optional="hide" groups="account.group_account_readonly"/>-->
+<!--            </xpath>-->
+
+
+<!--        </field>-->
+<!--    </record>-->
+
+
+
+</odoo>

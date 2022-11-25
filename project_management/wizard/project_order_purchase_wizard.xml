@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_project_purchase_form_wizard" model="ir.ui.view">
+        <field name="name">project.purcahase.wizard.form</field>
+        <field name="model">project.purcahase.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Merge Purchase Order">
+                <group>
+                    <field name="create_new" />
+                    <br />
+                    <br />
+                    <field name="purchase_order_id" options="{'no_create': True, 'no_create_edit':True}" domain="[('state', 'in', ['draft','sent','purchase'])]" attrs="{ 'required':[('create_new','=',False)],
+                        'invisible': [('create_new', '=', True)]
+                        }" />
+                    <field name="partner_id" options="{'no_create': True, 'no_create_edit':True}"  attrs="{ 'required':[('create_new','=',True)],
+                        'invisible': [('create_new', '=', False)]
+                        }" />
+                </group>
+                <group string="Order Line">
+                    <field name="orderline_ids" nolabel="1">
+                        <tree editable="top">
+                            <field name="product_id" readonly="1" />
+                            <field name="name" />
+                            <field name="order_id" readonly="1" />
+                            <field name="qty_purchased" readonly="1" string="Purchased"/>
+                            <field name="qty_balance_purchase" string="Balance"/>
+                            <field name="qty_added" string="Add+" />
+                            <field name="qty_on_hand" string="Stock On Hand"/>
+                            <field name="uom_id" readonly="1" string="Unit"/>
+                            <field name="state" readonly="1"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="project_purchase_request" string="Add/Create" type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <act_window id="project_purchase_form_wizard" groups="purchase.group_purchase_manager"  name="Create Purchase" res_model="project.purcahase.wizard"  view_mode="form" target="new" />
+    
+
+</odoo>

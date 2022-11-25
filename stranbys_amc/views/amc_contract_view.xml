@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_amc_contracts_form" model="ir.ui.view">
+        <field name="name">contract.order.form</field>
+        <field name="model">contract.order</field>
+        <field name="arch" type="xml">
+            <form string="Contracts">
+                <header>
+                    <button string="Confirm" type="object" name="confirm_contract"
+                            confirm="Do you really want to confirm the contract. (This process will start an automated invoicing towards this contract)"
+                            class="oe_highlight"
+                            attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <button string="Create Visits" type="object" name="create_visits" class="oe_highlight"
+                            attrs="{'invisible':['|', ('hide_visit_button','=', True), ('state','!=', 'draft')]}"/>
+                    <button string="Reset" type="object" name="set_draft"
+                            attrs="{'invisible':[('state','in', ['draft','quote','dr_contract'])]}"/>
+
+                    <button string="Cancel this Contract" type="object" class="btn-danger" name="cancel_contract"
+                            confirm="Do you really want to cancel the contract. This process cannot be reverted. (Cancelling the contract will stop automated invoicing)"
+                            attrs="{'invisible':[('state','not in', ['running','block'])]}"/>
+
+                    <button string="Block" type="object" name="set_block" class="btn-info"
+                            confirm="This will set a temporary block to the contract, no services can be done during this stage. Do you want to continue? (Automated invoicing will temporarly halt during this stage. All pending invoice will be created once it is unblocked)"
+                            attrs="{'invisible':[('state','!=','running')]}"/>
+
+                    <button string="Create Sale" type="object" name="create_sale_order" class="btn-info"
+                            attrs="{'invisible':[('state','!=','running')]}"/>
+
+                    <button string="Un Block" type="object" name="set_unblock" class="oe_highlight"
+                            attrs="{'invisible':[('state','!=','block')]}"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="AMC Contracts">
+                    <div class="oe_title">
+                        <group>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </group>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" required="1"/>
+                            <field name="project_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <field name="contact_id" options="{'no_create': True, 'no_create_edit':True}" domain="[('parent_id', '=', partner_id)]" attrs="{'readonly': [('partner_id', '=', False)]}"/>
+                            <field name="user_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                        </group>
+                        <group>
+                            <!--                            <field name="print_annexure"/>-->
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="number_of_visits"/>
+                            <field name="hide_visit_button" invisible="1"/>
+                            <field name="currency_id" options="{'no_create': True, 'no_create_edit':True}"
+                                   invisible="1"/>
+                            <field name="total_amount"/>
+                            <field name="pending_completion"/>
+                            <!--                            <field name="pending_completion"/>-->
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="ams_service_types" string="Types of Services">
+                            <field name="amc_system_type_ids" string="Type of Services">
+                                <tree string="Lines">
+                                    <field name="contract_id" invisible="1"/>
+                                    <field name="amc_service_type"/>
+                                    <field name="number"/>
+                                    <field name="times"/>
+                                </tree>
+                                <form string="Lines" editable="bottom">
+                                    <group>
+                                        <group>
+                                            <field name="contract_id" invisible="1"/>
+                                            <field name="amc_service_type"/>
+                                            <field name="number"/>
+
+                                        </group>
+                                        <group>
+                                            <field name="times"/>
+                                        </group>
+
+                                    </group>
+                                    <notebook>
+                                        <page string="Description">
+                                            <group>
+                                                <field name="description" widget="html"/>
+                                            </group>
+                                        </page>
+                                    </notebook>
+
+                                </form>
+                            </field>
+                            <field name="amc_order_line_ids" string="Annual Maintenance"
+                                   groups="stranbys_amc.allow_annual_maintenance">
+                                <tree editable="bottom" string="Annual Maintenance">
+                                    <field name="contract_id" invisible="1"/>
+                                    <field name="building_name"/>
+                                    <field name="location"/>
+                                    <field name="unit_price"/>
+                                </tree>
+                            </field>
+                            <button string="Generate" type="object" name="generate_scope_of_work"
+                                    class="oe_highlight"/>
+                            <h3>Scope of Work</h3>
+                            <br/>
+                            <field name="scope" widget="html"/>
+                        </page>
+                        <page name="registration" string="Registration Details">
+                            <group>
+                                <group>
+                                    <field name="lpo_number" attrs="{'readonly': [('state', '=', 'running')]}"/>
+                                    <field name="lpo_date" attrs="{'readonly': [('state', '=', 'running')]}"/>
+                                    <field name="lpo_attach_file" filename="lpo_attach_filename"
+                                           attrs="{'readonly': [('state', '=', 'running')]}"/>
+                                    <field name="lpo_attach_filename" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="contract_lines" string="Invoice Schedule">
+                            <field name="contract_line_ids">
+                                <tree string="Lines">
+                                    <field name="order_id" invisible="1"/>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                </tree>
+                                <form string="Lines" editable="bottom">
+                                    <header>
+                                        <button string="Create Invoice" type="object" name="create_invoice"
+                                                class="oe_highlight"
+                                                attrs="{'invisible':[('invoice_created_ok','=', True)]}"/>
+                                    </header>
+                                    <group>
+                                        <group>
+                                            <field name="order_id" invisible="1"/>
+                                            <field name="name"/>
+                                            <field name="date"/>
+
+                                            <field name="amount"/>
+                                        </group>
+                                        <group>
+                                            <field name="invoice_id" readonly="1"/>
+                                            <field name="invoice_status"/>
+                                            <field name="invoice_created_ok" invisible="1"/>
+                                        </group>
+                                    </group>
+
+                                </form>
+                            </field>
+                        </page>
+                        <page name="sale_details" string="Quotation Details">
+                            <group>
+                                <group>
+                                    <field name="quotation_id"/>
+                                    <field name="heading" string="Subject"/>
+                                    <field name="validity_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="payment_term_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                </group>
+                                <group>
+                                    <field name="no_schedules"/>
+                                    <field name="callouts"/>
+                                    <field name="quote_amount"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page name="contract_service_lines" string="Service Schedules">
+                            <field name="service_line_ids">
+                                <tree string="Lines">
+                                    <field name="order_id" invisible="1"/>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="document_signed"/>
+                                </tree>
+                                <form string="Lines" editable="bottom">
+                                    <group>
+                                        <group>
+                                            <field name="order_id" invisible="1"/>
+                                            <field name="name"/>
+                                            <field name="date"/>
+                                        </group>
+                                        <group>
+                                            <field name="document_signed" string="Job Completed"/>
+                                            <field name="attachments_ids" widget="many2many_binary"
+                                                   attrs="{'invisible':[('document_signed','=', False)]}"/>
+                                        </group>
+                                        <h3>Assigned Employees</h3>
+                                        <field name="employee_ids" widget="many2many_tags"
+                                               options="{'no_create': True}"/>
+                                        <h3>Type of Systems</h3>
+                                        <field name="system_type_ids" widget="many2many_tags"
+                                               options="{'no_create': True}"/>
+                                    </group>
+
+                                </form>
+                            </field>
+                        </page>
+                        <page name="contract_callout" string="Call Out">
+                            <field name="contract_followup_ids">
+                                <tree string="Lines">
+                                    <field name="order_id" invisible="1"/>
+                                    <field name="date"/>
+                                    <field name="comments"/>
+                                </tree>
+                                <form string="Lines" editable="bottom">
+                                    <group>
+                                        <group>
+                                            <field name="order_id" invisible="1"/>
+                                            <field name="date"/>
+                                        </group>
+                                        <group>
+                                            <field name="attachments_ids" widget="many2many_binary"
+                                            />
+                                        </group>
+                                        <h3>Comments</h3>
+                                        <field name="comments"/>
+                                    </group>
+
+                                </form>
+                            </field>
+                        </page>
+                        <page name="sale_orders" string="Additional Jobs">
+                            <field name="sale_order_ids"
+                                   context="{
+                                'default_partner_id': partner_id,
+                                'default_sale_oder_type': 'amc',
+                                'default_contract_id': id,
+                                'default_state': 'draft',
+                                }">
+                                <tree string="Lines" delete='false' create='false'>
+                                    <field name="name"/>
+                                    <field name="date_order"/>
+                                    <field name="partner_id"/>
+                                    <field name="amount_total" widget="monetary" sum="Total"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="invoice_status"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_amc_contracts_list" model="ir.ui.view">
+        <field name="model">contract.order</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="AMC Contracts" default_order="id desc">
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="partner_id"/>
+                <!--                <field name="pending_completion"/>-->
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_amc_tasks_list" model="ir.ui.view">
+        <field name="model">contract.order.service</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="AMC Task List" default_order="id desc">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="order_id"/>
+                <field name="partner_id"/>
+                <field name="project_name"/>
+                <field name="document_signed"/>
+                <field name="completion_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_amc_tasks_search" model="ir.ui.view">
+        <field name="name">Task Search View</field>
+        <field name="model">contract.order.service</field>
+        <field name="arch" type="xml">
+            <search string="Search Student">
+                <field name="name"/>
+                <field name="order_id"/>
+                <field name="project_name"/>
+                <field name="partner_id"/>
+                <field name="date"/>
+                <filter string="Completed" name="document_signed" domain="[('document_signed','=', True)]"/>
+                <filter string="Pending" name="document_unsigned" domain="[('document_signed','=',False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Contract" name="order_id" context="{'group_by':'order_id'}"/>
+                    <filter string="Customer" name="partner_id" context="{'group_by':'partner_id'}"/>
+                    <filter string="Date" name="date" context="{'group_by':'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_amc_tasks_form" model="ir.ui.view">
+        <field name="name">contract.order.service.form</field>
+        <field name="model">contract.order.service</field>
+        <field name="arch" type="xml">
+            <form string="AMC Task">
+                <sheet string="AMC Contracts">
+                    <div class="oe_title">
+                        <group>
+                            <h1>
+                                <field name="name" required="1"/>
+                            </h1>
+                        </group>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="order_id" required="1"/>
+                            <field name="partner_id"/>
+                            <field name="date"/>
+                            <field name="project_name"/>
+                        </group>
+                        <group>
+                            <field name="document_signed" string="Job Completed"/>
+                            <field name="attachments_ids" widget="many2many_binary"
+                                   attrs="{'invisible':[('document_signed','=', False)]}"/>
+                            <field name="completion_date"/>
+                        </group>
+                        <h3>Assigned Employees</h3>
+                        <field name="employee_ids" widget="many2many_tags" options="{'no_create': True}"/>
+
+                        <h3>Type of Systems</h3>
+                        <field name="system_type_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_amc_tasks_calendar" model="ir.ui.view">
+        <field name="name">contract.order.service.calendar</field>
+        <field name="model">contract.order.service</field>
+        <field name="arch" type="xml">
+            <calendar string="Task Calendar" color="order_id" date_start="date" event_open_popup="true" mode="month"
+                      quick_add="False">
+                <field name="order_id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+            </calendar>
+        </field>
+    </record>
+    <record id="view_contract_order_search" model="ir.ui.view">
+        <field name="name">contract.order.search</field>
+        <field name="model">contract.order</field>
+        <field name="arch" type="xml">
+            <search string="Amc Contracts">
+                <field name="name"/>
+                <separator/>
+                <field name="partner_id"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state','=','running')]"/>
+            </search>
+        </field>
+    </record>
+    <record id="act_amc_contracts_view" model="ir.actions.act_window">
+        <field name="name">AMC Contracts</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">contract.order</field>
+        <field name="view_mode">tree,form</field>
+        <!--        <field name="view_type">tree</field>-->
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Contract
+            </p>
+        </field>
+    </record>
+
+    <record id="act_amc_tasks_view" model="ir.actions.act_window">
+        <field name="name">AMC Tasks</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">contract.order.service</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Task
+            </p>
+        </field>
+    </record>
+
+
+    <record id="act_contract_sale_order_view" model="ir.actions.act_window">
+        <field name="name">AMC Sales</field>
+        <!--        <field eval="3" name="sequence"/>-->
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="domain">[('sale_oder_type', '=', 'amc')]</field>
+        <field name="context">{'default_sale_oder_type': 'amc'}</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <!--=        <field name="view_ids"-->
+        <!--                   eval="-->
+        <!--                            [-->
+        <!--                            (5, 0, 0),-->
+        <!--                            (0, 0, {'view_mode': 'tree', 'view_id': ref('sale.view_quotation_tree_with_onboarding')}),-->
+        <!--                            (0, 0, {'view_mode': 'form', 'view_id': ref('sale.view_order_form')}),-->
+        <!--                          ]"-->
+        <!--            />-->
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new AMC Sales
+            </p>
+        </field>
+    </record>
+
+
+    <!--    menu for contract -->
+    <act_window id="create_amc_sale_order" name="Create Sales" res_model="sale.order" view_mode="form" target="new"/>
+    <menuitem name="AMC" id="amc" sequence="200" web_icon="stranbys_amc,static/src/images/amc.png"/>
+    <menuitem id="menu_amc_contracts_main" name="AMC" parent="stranbys_amc.amc" sequence="20"/>
+    <menuitem action="act_amc_contracts_view" id="menu_amc_contracts_amc_view" parent="menu_amc_contracts_main"
+              sequence="20"/>
+    <menuitem action="act_amc_tasks_view" id="menu_amc_tasks_contract_view" parent="menu_amc_contracts_main"
+              sequence="30"/>
+    <menuitem action="act_contract_sale_order_view" id="menu_sale_order_contract_view" parent="menu_amc_contracts_main"
+              sequence="40"/>
+</odoo>

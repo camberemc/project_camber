@@ -1,0 +1,81 @@
+<odoo>
+    <data>
+        <record id="act_estimation_filtered_result" model="ir.actions.act_window">
+            <field name="name">Estimations</field>
+            <field name="res_model">crm.estimation</field>
+            <field name="domain">[('lead_id', '=', active_id)]</field>
+            <field name="context">{'search_default_lead_id': [active_id], 'default_lead_id': active_id}</field>
+        </record>
+        <record id="crm_lead_quick_create_extend_camber" model="ir.ui.view">
+            <field name="name">crm.quick.view.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/group/field[@name='name']" position="after">
+                    <field name="crm_type"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="crm_lead_form_extend_camber" model="ir.ui.view">
+            <field name="name">crm.form.view.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_title')]/label[@for='name']" position="before">
+                    <h1>
+                        <field name="seq"/>
+                    </h1>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="before">
+                    <field name="crm_type"/>
+                    <field name="estimatior_id" readonly="1"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Assign to Estimate" type="object" name="assign_to_estimate" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//button[@name='action_schedule_meeting']" position="before">
+                    <button class="oe_stat_button" type="action" name="%(act_estimation_filtered_result)d"
+                            icon="fa-pencil-square-o" context="{'default_lead_id': id}">
+                        <div class="o_stat_info">
+                            <field name="estimation_count" class="o_stat_value"/>
+                            <span class="o_stat_text">Estimations</span>
+                        </div>
+                    </button>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="crm_lead_list_extend_camber" model="ir.ui.view">
+            <field name="name">crm.tree.view.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='name']" position="before">
+                    <field name="seq"/>
+                </xpath>
+                <xpath expr="//tree/field[@name='name']" position="after">
+                    <field name="partner_id"/>
+                    <field name="company_id"/>
+                    <field name="crm_type"/>
+                </xpath>
+                <xpath expr="//tree/field[@name='team_id']" position="replace"/>
+                <xpath expr="//tree/field[@name='activity_date_deadline_my']" position="replace"/>
+            </field>
+        </record>
+
+        <record id="sale_crm.crm_quotation_partner_action" model="ir.actions.act_window">
+        <field name="name">New Quotation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crm.quotation.partner</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="sale_crm.crm_quotation_partner_view_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+
+    </data>
+</odoo>

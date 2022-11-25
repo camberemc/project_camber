@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_assign_project_wizard_inherit" model="ir.ui.view">
+        <field name="name">sale.project.assign.wizardview.inherit</field>
+        <field name="model">sale.project.assign.wizard</field>
+        <field name="inherit_id" ref="project_management.action_assign_project_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_id']" position="before">
+                <field name="create_new"/>
+                <field name="project_name"  attrs="{'invisible': [('create_new', '=', False)], 'required':[('create_new','!=',False)]}"/>
+                <field name="project_manager_id" attrs="{'invisible': [('create_new', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('create_new', '!=', False)], 'required':[('create_new','=',False)]}</attribute>
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

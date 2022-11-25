@@ -1,0 +1,25 @@
+<odoo>
+    <record id="project_form_extend_stevok" model="ir.ui.view">
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='settings']"
+                   position="before">
+                <page name="inventory_line" string="Inventory Line">
+                    <field name="project_inventory_ids" nolabel="1" readonly="1">
+                        <tree>
+                            <field name="product_id" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="product_uom_qty" string="Quantity" readonly="1"/>
+                            <field name="quantity_done" string="Delivered" readonly="1"/>
+                        </tree>
+                    </field>
+                </page>
+                <xpath expr="//notebook/page[@name='settings']/group/group[1]/field[@name='user_id']"
+                   position="after">
+                    <field name="work_location"/>
+                </xpath>
+            </xpath>
+        </field>
+    </record>
+</odoo>

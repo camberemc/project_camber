@@ -1,0 +1,12 @@
+<odoo>
+    <report
+                id="report_project_details_xlsx"
+                model="project.project"
+                string="Project Details"
+                report_type="xlsx"
+                name="project.details.report.xlsx"
+                file="Project Details"
+                attachment_use="False"
+                menu="False"
+        />
+</odoo>

@@ -1,0 +1,14 @@
+<odoo>
+    <record id="view_project_sale_product_extend" model="ir.ui.view">
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="before">
+                <field name="estimation_type" attrs="{'invisible':[('type', '!=', 'service'),]}"/>
+                <field name="project_consu"/>
+                <field name="is_quotation_product"/>
+                <field name="brand_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
