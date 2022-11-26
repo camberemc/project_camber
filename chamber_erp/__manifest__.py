@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Camber Customisation',
-    'version': "14.0",
+    'version': "14.0.0.1",
     'description': 'Camber Customisation',
     'author': "Siyad S",
     'depends': ['base', 'sale', 'stranbys_amc', 'project_management', 'purchase', 'crm', 'stevok_customisation',
