@@ -162,6 +162,225 @@ class CRMEstimation(models.Model):
     revision_count = fields.Integer(string='Revisions', compute='_compute_revision_count')
     is_completed = fields.Boolean(string="Completed", default=True)
 
+    # VG Code : Default value for Project Management
+    @api.model
+    def default_get(self, fields):
+        result = super(CRMEstimation, self).default_get(fields)
+        if 'expense_line_ids' in fields:
+            expense_line_list = []
+            eet_1 = self.env.ref("chamber_erp.estimation_expense_type_obj_1")
+            el_1 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_1.id,
+                'name': eet_1.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 30000,
+            })
+            expense_line_list.append(el_1.id)
+            eet_2 = self.env.ref("chamber_erp.estimation_expense_type_obj_2")
+            el_2 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_2.id,
+                'name': eet_2.department,
+                'month': 1,
+                'qty': 1,
+                'salary': 18000,
+            })
+            expense_line_list.append(el_2.id)
+            eet_3 = self.env.ref("chamber_erp.estimation_expense_type_obj_3")
+            el_3 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_3.id,
+                'name': eet_3.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 15000,
+            })
+            expense_line_list.append(el_3.id)
+            eet_4 = self.env.ref("chamber_erp.estimation_expense_type_obj_4")
+            el_4 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_4.id,
+                'name': eet_4.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 8000,
+            })
+            expense_line_list.append(el_4.id)
+            eet_5 = self.env.ref("chamber_erp.estimation_expense_type_obj_5")
+            el_5 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_5.id,
+                'name': eet_5.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 6000,
+            })
+            expense_line_list.append(el_5.id)
+            eet_6 = self.env.ref("chamber_erp.estimation_expense_type_obj_6")
+            el_6 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_6.id,
+                'name': eet_6.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 5000,
+            })
+            expense_line_list.append(el_6.id)
+            eet_7 = self.env.ref("chamber_erp.estimation_expense_type_obj_7")
+            el_7 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_7.id,
+                'name': eet_7.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 7000,
+            })
+            expense_line_list.append(el_7.id)
+            eet_8 = self.env.ref("chamber_erp.estimation_expense_type_obj_8")
+            el_8 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_8.id,
+                'name': eet_8.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 4000,
+            })
+            expense_line_list.append(el_8.id)
+            eet_9 = self.env.ref("chamber_erp.estimation_expense_type_obj_9")
+            el_9 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_9.id,
+                'name': eet_9.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 10000,
+            })
+            expense_line_list.append(el_9.id)
+            eet_10 = self.env.ref("chamber_erp.estimation_expense_type_obj_10")
+            el_10 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_10.id,
+                'name': eet_10.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 10000,
+            })
+            expense_line_list.append(el_10.id)
+            eet_11 = self.env.ref("chamber_erp.estimation_expense_type_obj_11")
+            el_11 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_11.id,
+                'name': eet_11.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 10000,
+            })
+            expense_line_list.append(el_11.id)
+            eet_12 = self.env.ref("chamber_erp.estimation_expense_type_obj_12")
+            el_12 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_12.id,
+                'name': eet_12.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 10000,
+            })
+            expense_line_list.append(el_12.id)
+            eet_13 = self.env.ref("chamber_erp.estimation_expense_type_obj_13")
+            el_13 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_13.id,
+                'name': eet_13.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 6000,
+            })
+            expense_line_list.append(el_13.id)
+            eet_14 = self.env.ref("chamber_erp.estimation_expense_type_obj_14")
+            el_14 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_14.id,
+                'name': eet_14.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 20000,
+            })
+            expense_line_list.append(el_14.id)
+            eet_15 = self.env.ref("chamber_erp.estimation_expense_type_obj_15")
+            el_15 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_15.id,
+                'name': eet_15.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 4000,
+            })
+            expense_line_list.append(el_15.id)
+            eet_16 = self.env.ref("chamber_erp.estimation_expense_type_obj_16")
+            el_16 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_16.id,
+                'name': eet_16.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 6000,
+            })
+            expense_line_list.append(el_16.id)
+            eet_17 = self.env.ref("chamber_erp.estimation_expense_type_obj_17")
+            el_17 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_17.id,
+                'name': eet_17.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 20000,
+            })
+            expense_line_list.append(el_17.id)
+            eet_18 = self.env.ref("chamber_erp.estimation_expense_type_obj_18")
+            el_18 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_18.id,
+                'name': eet_18.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 30000,
+            })
+            expense_line_list.append(el_18.id)
+            eet_19 = self.env.ref("chamber_erp.estimation_expense_type_obj_19")
+            el_19 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_19.id,
+                'name': eet_19.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 10000,
+            })
+            expense_line_list.append(el_19.id)
+            eet_20 = self.env.ref("chamber_erp.estimation_expense_type_obj_20")
+            el_20 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_20.id,
+                'name': eet_20.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 8000,
+            })
+            expense_line_list.append(el_20.id)
+            eet_21 = self.env.ref("chamber_erp.estimation_expense_type_obj_21")
+            el_21 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_21.id,
+                'name': eet_21.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 6000,
+            })
+            expense_line_list.append(el_21.id)
+            eet_22 = self.env.ref("chamber_erp.estimation_expense_type_obj_22")
+            el_22 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_22.id,
+                'name': eet_22.department,
+                'month': 1,
+                'qty': 0,
+                'salary': 6000,
+            })
+            expense_line_list.append(el_22.id)
+            eet_23 = self.env.ref("chamber_erp.estimation_expense_type_obj_23")
+            el_23 = self.env['estimation.expense.line'].create({
+                'expense_type_id': eet_23.id,
+                'name': eet_23.department,
+                'month': 3,
+                'qty': 0,
+                'salary': 5000,
+            })
+            expense_line_list.append(el_23.id)
+            if expense_line_list:
+                result.update({
+                    'expense_line_ids': [(6, 0, expense_line_list)]
+                })
+        return result
+
     def compute_line_data(self):
         for rec in self.product_line_ids:
             rec._get_amount()

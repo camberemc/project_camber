@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Camber Customisation',
-    'version': "14.0.0.1",
+    'version': "14.0",
     'description': 'Camber Customisation',
     'author': "Siyad S",
     'depends': ['base', 'sale', 'stranbys_amc', 'project_management', 'purchase', 'crm', 'stevok_customisation',
@@ -10,6 +10,7 @@
         'security/data.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/data.xml',
         'views/sale_order_view.xml',
         'views/crm_lead_view.xml',
         'wizard/crm_wizard.xml',

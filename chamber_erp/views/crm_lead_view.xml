@@ -30,10 +30,14 @@
                 </xpath>
                 <xpath expr="//field[@name='user_id']" position="before">
                     <field name="crm_type"/>
+                    <field name="is_project_created" invisible="1"/>
                     <field name="estimatior_id" readonly="1"/>
                 </xpath>
                 <xpath expr="//header" position="inside">
                     <button string="Assign to Estimate" type="object" name="assign_to_estimate" class="oe_highlight"/>
+                    <!-- VG Code: New Field ADD -->
+                    <button string="Create Project" type="object" name="action_create_project" class="oe_highlight"
+                    attrs="{'invisible':['|',('probability', '&lt;', 100),('is_project_created', '=', True)]}"/>
                 </xpath>
                 <xpath expr="//button[@name='action_schedule_meeting']" position="before">
                     <button class="oe_stat_button" type="action" name="%(act_estimation_filtered_result)d"
@@ -41,6 +45,13 @@
                         <div class="o_stat_info">
                             <field name="estimation_count" class="o_stat_value"/>
                             <span class="o_stat_text">Estimations</span>
+                        </div>
+                    </button>
+                     <button class="oe_stat_button" type="object" name="action_open_project"
+                            icon="fa-pencil-square-o" attrs="{'invisible':[('project_count','=',0)]}">
+                        <div class="o_stat_info">
+                            <field name="project_count" class="o_stat_value"/>
+                            <span class="o_stat_text">Project</span>
                         </div>
                     </button>
                 </xpath>

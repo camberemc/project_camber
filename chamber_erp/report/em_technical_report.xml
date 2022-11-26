@@ -526,6 +526,44 @@
                         </table>
                     </t>
                     <br/>
+
+                    <!--  -->
+                    <t t-if="doc.sale_order_option_ids">
+                        <table width="100%" style="border:1px solid black;padding-left:7px;padding-right:7px">
+                            <thead>
+                                <th width="7%" style="border:1px solid black;text-align:center">S. No</th>
+                                <th width="50%" style="border:1px solid black;text-align:center">Description</th>
+                                <th width="10%" style="border:1px solid black;text-align:center">Unit</th>
+                                <th width="10%" style="border:1px solid black;text-align:center">Qty</th>
+                            </thead>
+                            <t t-set="electro_sl_no_op" t-value="0"/>
+                            <tbody>
+                                <t t-foreach="doc.sale_order_option_ids" t-as="line">
+                                    <tr>
+                                        <t t-set="electro_sl_no_op" t-value="electro_sl_no_op + 1"/>
+                                        <td class="text-center"
+                                            style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                            <span t-esc="electro_sl_no_op"/>
+                                        </td>
+                                        <td class="text-left"
+                                            style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <td class="text-center"
+                                            style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                            <span t-field="line.uom_id"/>
+                                        </td>
+                                        <td class="text-center"
+                                            style="border:1px solid black;padding-left:7px;padding-right:7px">
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    <br/>
+                    <!--  -->
                     <!--                    <p style="page-break-after:always;"></p>-->
                     <strong>
                         2.

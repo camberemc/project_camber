@@ -274,8 +274,8 @@
         <field name="model">project.project</field>
         <field name="arch" type="xml">
             <header>
-                <button string="Confirm Project" type="object" name="confirm_project" class="oe_highlight"
-                        attrs="{'invisible':[('state','!=','draft')]}"/>
+<!--                <button string="Confirm Project" type="object" name="confirm_project" class="oe_highlight"-->
+<!--                        attrs="{'invisible':[('state','!=','approval')]}"/>-->
                 <button string="Complete Project" type="object" name="complete_project" class="oe_highlight"
                         attrs="{'invisible':[('state','!=','ongoing')]}"/>
                 <button string="Close Project" type="object" name="close_project" class="oe_highlight"

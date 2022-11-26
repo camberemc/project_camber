@@ -106,7 +106,7 @@
                 file="chamber_erp.report_em_techno_commercial_lympsum_camber"
                 report_type="qweb-pdf"
                 paperformat="portrait_paper_format_electro"
-                print_report_name="('EM Technical - %s' % (object.name)) "
+                print_report_name="('EM Lympsum - %s' % (object.name)) "
 
         />
         <report

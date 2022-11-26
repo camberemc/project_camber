@@ -90,6 +90,9 @@ class SaleOrderExtend(models.Model):
          ('electro_mechanical', 'Electro Mechanical'),
          ('technical_outsourcing', 'Technical Outsourcing'),
          ('facility_management', 'Facility Management')], string='Type')
+    # 
+    currency_id = fields.Many2one(related='pricelist_id.currency_id', depends=["pricelist_id"], store=True, readonly=False)
+    # 
 
     @api.depends('opportunity_id', 'contract_id')
     def _compute_so_name(self):

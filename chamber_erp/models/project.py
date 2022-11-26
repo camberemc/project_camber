@@ -16,6 +16,178 @@ class ProjectExtent(models.Model):
                                          domain=[('state', '=', 'confirm')])
     project_delivery_ids = fields.One2many('stock.move', 'project_id', string='Delivery')
     total_labour_expense = fields.Float(string="Labour Expense")
+    # VG Code: New Field ADD
+    project_code = fields.Char(string="Project code")
+    sage_code = fields.Char(string="SAGE code")
+    project_lead_id = fields.Many2one('crm.lead', string="Project Lead")
+    em_ids = fields.One2many("em.em", "project_id", string="EM",readonly=True,
+        states = {'draft': [('readonly', False)],'budgeting': [('readonly', False)],'approval': [('readonly', False)]},)
+    hvac_ids = fields.One2many("hvac.hvac", "project_id", string="HVAC",readonly=True,
+        states = {'draft': [('readonly', False)], 'budgeting': [('readonly', False)],'approval': [('readonly', False)]},)
+    fc_ids = fields.One2many("fc.fc", "project_id", string="FC",readonly=True,
+        states = {'draft': [('readonly', False)], 'budgeting': [('readonly', False)],'approval': [('readonly', False)]},)
+    it_ids = fields.One2many("it.it", "project_id", string="IT",readonly=True,
+        states = {'draft': [('readonly', False)], 'budgeting': [('readonly', False)],'approval': [('readonly', False)]},)
+    admin_ids = fields.One2many("admin.admin", "project_id", string="ADMIN",readonly=True,
+        states = {'draft': [('readonly', False)], 'budgeting': [('readonly', False)],'approval': [('readonly', False)]},)
+
+    @api.model
+    def default_get(self, fields):
+        result = super(ProjectExtent, self).default_get(fields)
+
+        if 'em_ids' in fields:
+            em_list = []
+            em_obj1 = self.env.ref("chamber_erp.em_em_obj_1")
+            em_1 = self.env['em.em'].create({
+                'code': em_obj1.code,
+                'name': em_obj1.name,
+            })
+            em_list.append(em_1.id)
+            em_obj2 = self.env.ref("chamber_erp.em_em_obj_2")
+            em_2 = self.env['em.em'].create({
+                'code': em_obj2.code,
+                'name': em_obj2.name,
+            })
+            em_list.append(em_2.id)
+            em_obj3 = self.env.ref("chamber_erp.em_em_obj_3")
+            em_3 = self.env['em.em'].create({
+                'code': em_obj3.code,
+                'name': em_obj3.name,
+            })
+            em_list.append(em_3.id)
+            em_obj4 = self.env.ref("chamber_erp.em_em_obj_4")
+            em_4 = self.env['em.em'].create({
+                'code': em_obj4.code,
+                'name': em_obj4.name,
+            })
+            em_list.append(em_4.id)
+            if em_list:
+                result.update({
+                    'em_ids': [(6, 0, em_list)]
+                })
+
+        if 'hvac_ids' in fields:
+            hv_list = []
+            hv_obj1 = self.env.ref("chamber_erp.hvac_hvac_obj_1")
+            hv_1 = self.env['hvac.hvac'].create({
+                'code': hv_obj1.code,
+                'name': hv_obj1.name,
+            })
+            hv_list.append(hv_1.id)
+            hv_obj2 = self.env.ref("chamber_erp.hvac_hvac_obj_2")
+            hv_2 = self.env['hvac.hvac'].create({
+                'code': hv_obj2.code,
+                'name': hv_obj2.name,
+            })
+            hv_list.append(hv_2.id)
+            hv_obj3 = self.env.ref("chamber_erp.hvac_hvac_obj_3")
+            hv_3 = self.env['hvac.hvac'].create({
+                'code': hv_obj3.code,
+                'name': hv_obj3.name,
+            })
+            hv_list.append(hv_3.id)
+            hv_obj4 = self.env.ref("chamber_erp.hvac_hvac_obj_4")
+            hv_4 = self.env['hvac.hvac'].create({
+                'code': hv_obj4.code,
+                'name': hv_obj4.name,
+            })
+            hv_list.append(hv_4.id)
+            if hv_list:
+                result.update({
+                    'hvac_ids': [(6, 0, hv_list)]
+                })
+
+        if 'fc_ids' in fields:
+            fc_list = []
+            fc_obj1 = self.env.ref("chamber_erp.fc_fc_obj_1")
+            fc_1 = self.env['fc.fc'].create({
+                'code': fc_obj1.code,
+                'name': fc_obj1.name,
+            })
+            fc_list.append(fc_1.id)
+            fc_obj2 = self.env.ref("chamber_erp.fc_fc_obj_2")
+            fc_2 = self.env['fc.fc'].create({
+                'code': fc_obj2.code,
+                'name': fc_obj2.name,
+            })
+            fc_list.append(fc_2.id)
+            fc_obj3 = self.env.ref("chamber_erp.fc_fc_obj_3")
+            fc_3 = self.env['fc.fc'].create({
+                'code': fc_obj3.code,
+                'name': fc_obj3.name,
+            })
+            fc_list.append(fc_3.id)
+            fc_obj4 = self.env.ref("chamber_erp.fc_fc_obj_4")
+            fc_4 = self.env['fc.fc'].create({
+                'code': fc_obj4.code,
+                'name': fc_obj4.name,
+            })
+            fc_list.append(fc_4.id)
+            if fc_list:
+                result.update({
+                    'fc_ids': [(6, 0, fc_list)]
+                })
+
+        if 'it_ids' in fields:
+            it_list = []
+            it_obj1 = self.env.ref("chamber_erp.it_it_obj_1")
+            it_1 = self.env['it.it'].create({
+                'code': it_obj1.code,
+                'name': it_obj1.name,
+            })
+            it_list.append(it_1.id)
+            it_obj2 = self.env.ref("chamber_erp.it_it_obj_2")
+            it_2 = self.env['it.it'].create({
+                'code': it_obj2.code,
+                'name': it_obj2.name,
+            })
+            it_list.append(it_2.id)
+            it_obj3 = self.env.ref("chamber_erp.it_it_obj_3")
+            it_3 = self.env['it.it'].create({
+                'code': it_obj3.code,
+                'name': it_obj3.name,
+            })
+            it_list.append(it_3.id)
+            it_obj4 = self.env.ref("chamber_erp.it_it_obj_4")
+            it_4 = self.env['it.it'].create({
+                'code': it_obj4.code,
+                'name': it_obj4.name,
+            })
+            it_list.append(it_4.id)
+            if it_list:
+                result.update({
+                    'it_ids': [(6, 0, it_list)]
+                })
+
+        if 'admin_ids' in fields:
+            admin_list = []
+            admin_obj1 = self.env.ref("chamber_erp.admin_admin_obj_1")
+            admin_1 = self.env['admin.admin'].create({
+                'code': admin_obj1.code,
+                'name': admin_obj1.name,
+                'wbs_char': admin_obj1.wbs_char,
+            })
+            admin_list.append(admin_1.id)
+            admin_obj2 = self.env.ref("chamber_erp.admin_admin_obj_2")
+            admin_2 = self.env['admin.admin'].create({
+                'code': admin_obj2.code,
+                'name': admin_obj2.name,
+                'wbs_char': admin_obj2.wbs_char,
+            })
+            admin_list.append(admin_2.id)
+            admin_obj3 = self.env.ref("chamber_erp.admin_admin_obj_3")
+            admin_3 = self.env['admin.admin'].create({
+                'code': admin_obj3.code,
+                'name': admin_obj3.name,
+                'wbs_char': admin_obj3.wbs_char,
+            })
+            admin_list.append(admin_3.id)
+
+            if admin_list:
+                result.update({
+                    'admin_ids': [(6, 0, admin_list)]
+                })
+        return result
 
     def confirm_project(self):
         if self.project_type == 'fire_consulting':
@@ -69,6 +241,16 @@ class ProjectExtent(models.Model):
                 rec.total_profit_per = (rec.total_profit * 100) / rec.total_income
             except ZeroDivisionError:
                 rec.total_profit_per = 0
+
+    def action_budgeting(self):
+        self.write({
+            'state' : 'budgeting'
+        })
+
+    def action_budget_complete(self):
+        self.write({
+            'state' : 'approval'
+        })
 
 
 class ProjectOrderLines(models.Model):

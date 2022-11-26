@@ -9,6 +9,12 @@
                 <field name="job_title"/>
                 <field name="estimation_type"/>
             </xpath>
+            <!--  -->
+            <xpath expr="//field[@name='date_order']"
+                   position="after">
+                <field name="currency_id" options="{'no_create' : True}"/>
+            </xpath>
+            <!--  -->
             <xpath expr="//form" position="attributes">
                 <attribute name="create">false</attribute>
             </xpath>
@@ -205,5 +211,25 @@
             </xpath>
         </field>
     </record>
+
+    <!--  -->
+    <record id="sale_order_form_extend_camber_optional_products" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='optional_products']" position="attributes">
+                <attribute name="attrs">{}</attribute>
+            </xpath>
+
+            <xpath expr="sheet/notebook/page[@name='optional_products']/field[@name='sale_order_option_ids']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True, 'delete': False}</attribute>
+            </xpath>
+
+            <xpath expr="sheet/notebook/page[@name='optional_products']/field[@name='sale_order_option_ids']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="domain">[('is_quotation_product', '=', True), ('type', '=', 'service')]</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!--  -->
 
 </odoo>

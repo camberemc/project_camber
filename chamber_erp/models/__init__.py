@@ -1,1 +1,1 @@
-from . import sale_order , crm_lead, project,hr_employee, product,inventory_return,stock_picking,estimation,masters
+from . import sale_order , crm_lead, project,hr_employee, product,inventory_return,stock_picking,estimation,masters, project_budget

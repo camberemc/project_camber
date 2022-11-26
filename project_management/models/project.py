@@ -19,6 +19,8 @@ class ProjectExtented(models.Model):
 
     state = fields.Selection([
         ('draft', 'New Project'),
+        ('budgeting', 'Budgeting'),
+        ('approval', 'Approval'),
         ('ongoing', 'Ongoing'),
         ('completed', 'Completed'),
         ('close', 'Closed')], string='Status', readonly=True, copy=False, index=True,

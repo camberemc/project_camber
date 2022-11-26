@@ -24,3 +24,9 @@ estimation_man_hour_profit_crud,estimation.man.hour.profit.crud,model_estimation
 crm_estimation_revision_wizard_crud,crm.estimation.revision.wizard.crud,model_crm_estimation_revision_wizard,,1,1,1,1
 crm_estimation_revision_crud,crm.estimation.revision.crud,model_crm_estimation_revision,,1,1,1,1
 estimation_quotation_wizard_crud,estimation.quotation.wizard,model_estimation_quotation_wizard,,1,1,1,1
+
+em_em_name,em_em_name,model_em_em,,1,1,1,1
+hvac_hvac_name,hvac_hvac_name,model_hvac_hvac,,1,1,1,1
+fc_fc_name,fc_fc_name,model_fc_fc,,1,1,1,1
+it_it_name,it_it_name,model_it_it,,1,1,1,1
+admin_admin_name,admin_admin_name,model_admin_admin,,1,1,1,1

@@ -17,6 +17,10 @@ class CrmLead(models.Model):
     estimatior_id = fields.Many2one('res.users', string='Estimator')
     estimation_count = fields.Integer(string='Estimation', compute='_compute_count')
 
+    # VG Code : Add New Field
+    project_count = fields.Integer(string='Project', compute='_project_count')
+    is_project_created = fields.Boolean(string='Is Project Created')
+
     partner_id = fields.Many2one(
         'res.partner', string='Customer', index=True, tracking=10, required=True,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
@@ -25,6 +29,10 @@ class CrmLead(models.Model):
     def _compute_count(self):
         for record in self:
             record.estimation_count = len(self.env['crm.estimation'].search([('lead_id', '=', record.id)]))
+
+    def _project_count(self):
+        for record in self:
+            record.project_count = len(self.env['project.project'].search([('project_lead_id', '=', record.id)]))
 
     def action_create_estimation(self):
         vals = {
@@ -59,6 +67,40 @@ class CrmLead(models.Model):
             default_lead_id=self.id,
             default_crm_type=self.crm_type
         )
+        return action
+
+    # VR Code: Project Creation & Show Function
+    def action_create_project(self):
+        project = self.env["project.project"].sudo().create({
+            'name' : self.name,
+            'project_type' : self.crm_type,
+            'project_lead_id' : self.id,
+            'project_code' : self.seq,
+        })
+        self.write({
+            'is_project_created': True
+        })
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.project',
+            'res_id': project.id,
+            'view_mode': 'form',
+            'views': [(False, 'form')],
+            'target': 'current',
+        }
+
+
+    def action_open_project(self):
+        action = {
+            'name': _("Project"),
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.project',
+            'domain': [('project_lead_id', '=', self.id)],
+            'context': {
+                'default_project_lead_id': self.id,
+            }
+        }
         return action
 
     @api.model

@@ -22,14 +22,261 @@ class EstimationCalculation(models.Model):
                                   ('temporary_site', 'TEMPORARY SITE FACILITIES'),
                                   ('tools_ppe', 'TOOLS & PPE'),
                                   ('special_tools_equipment', 'SPECIAL TOOLS & HEAVY EQUIPMENTS'),
-                                  ('material_transport_to_site', 'Material Transport to site'),
-                                  ('scaffolding', 'Scaffolding'),
-                                  ('civil_power_tools', 'Civil Power Tools'),
-                                  ('additional_mob_demob', 'Additional Mob/Demob'),
-                                  ('consumables', 'Consumables')], string="Type")
+                                  ('other_expenses', 'OTHER EXPENSES'),
+                                  # ('material_transport_to_site', 'Material Transport to site'),
+                                  # ('scaffolding', 'Scaffolding'),
+                                  # ('civil_power_tools', 'Civil Power Tools'),
+                                  # ('additional_mob_demob', 'Additional Mob/Demob'),
+                                  # ('consumables', 'Consumables')
+                                  ], string="Type")
     total = fields.Float(string="Total", compute='_compute_total', store=True)
     calculation_line_ids = fields.One2many('estimation.calculation.line', 'calculation_id', string="Calculation Lines",
                                            copy=True)
+
+    # VG Code : Get Expense Details By Selection Type
+    @api.onchange('item_type')
+    def onchange_item_type(self):
+        if self.item_type == 'admin_cost':
+            for cal_line in self.calculation_line_ids:
+                self.calculation_line_ids = [(2,cal_line.id)]
+            self.calculation_line_ids = [(0,0,{
+                'name': 'Visa',
+                'product_qty': 0,
+                'unit_price_material': 7500,
+            }),(0,0,{
+                'name': 'CNIA',
+                'product_qty': 0,
+                'unit_price_material': 110,
+            }),(0,0,{
+                'name': 'contigency',
+                'product_qty': 1,
+                'unit_price_material': 5000,
+            }),(0,0,{
+                'name': 'Medical + Redzone+BA Training',
+                'product_qty': 0,
+                'unit_price_material': 250,
+            }),(0,0,{
+                'name': 'H2S',
+                'product_qty': 0,
+                'unit_price_material': 60,
+            }),(0,0,{
+                'name': 'Covid Test',
+                'product_qty': 0,
+                'unit_price_material': 30,
+            })]
+        elif self.item_type == 'bank_charges':
+            for cal_line in self.calculation_line_ids:
+                self.calculation_line_ids = [(2,cal_line.id)]
+            self.calculation_line_ids = [(0,0,{
+                'name': 'Bid Bond',
+            }),(0,0,{
+                'name': 'Performance Bond',
+            }),(0,0,{
+                'name': 'Retention Bond',
+            }),(0,0,{
+                'name': 'LC Charges',
+            }),(0,0,{
+                'name': 'Others',
+            })]
+        elif self.item_type == 'fd_accommodation':
+            for cal_line in self.calculation_line_ids:
+                self.calculation_line_ids = [(2,cal_line.id)]
+            self.calculation_line_ids = [(0,0,{
+                'name': 'Senior (CAMBER)',
+                'product_qty': 1,
+                'duration_days': 1,
+                'unit_price_material': 75,
+            }),(0,0,{
+                'name': 'Junior (CAMBER)',
+                'product_qty': 1,
+                'duration_days': 1,
+                'unit_price_material': 50,
+            }),(0,0,{
+                'name': 'Driver',
+                'product_qty': 1,
+                'duration_days': 1,
+                'unit_price_material': 50,
+            }),(0,0,{
+                'name': 'Sub Contract',
+                'product_qty': 1,
+                'duration_days': 0,
+                'unit_price_material': 50,
+            })]
+        elif self.item_type == 'transportation':
+            for cal_line in self.calculation_line_ids:
+                self.calculation_line_ids = [(2,cal_line.id)]
+            self.calculation_line_ids = [(0,0,{
+                'name': 'Maxus',
+                'product_qty': 1,
+                'duration_month': 1,
+                'unit_price_material': 4500,
+            }),(0,0,{
+                'name': 'Fuel - Maxus',
+                'product_qty': 1,
+                'duration_month': 1,
+                'unit_price_material': 2600,
+            }),(0,0,{
+                'name': 'Driver',
+                'product_qty': 1,
+                'duration_month': 1,
+                'unit_price_material': 3000,
+            }),(0,0,{
+                'name': 'Pick Up',
+                'product_qty': 1,
+                'duration_month': 1,
+                'unit_price_material': 3000,
+            }),(0,0,{
+                'name': 'Fuel - Pick Up',
+                'product_qty': 1,
+                'duration_month': 1,
+                'unit_price_material': 2600,
+            }),(0,0,{
+                'name': 'crane',
+                'product_qty': 1,
+                'duration_month': 1,
+                'unit_price_material': 3000,
+            })]
+        elif self.item_type == 'temporary_site':
+            for cal_line in self.calculation_line_ids:
+                self.calculation_line_ids = [(2,cal_line.id)]
+            self.calculation_line_ids = [(0,0,{
+                'name': 'Office Caravan',
+                'product_qty': 1,
+                'duration_month': 2,
+                'unit_price_material': 6000,
+            }),(0,0,{
+                'name': 'Pantry',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 0,
+            }),(0,0,{
+                'name': 'Storage',
+                'product_qty': 1,
+                'duration_month': 2.5,
+                'unit_price_material': 5000,
+            }),(0,0,{
+                'name': 'Toilet',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 0,
+            }),(0,0,{
+                'name': 'Generator',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 0,
+            }),(0,0,{
+                'name': 'Fuel',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 0,
+            }),(0,0,{
+                'name': 'Mob/Demo',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 0,
+            }),(0,0,{
+                'name': 'Others',
+                'product_qty': 1,
+                'duration_month': 2.5,
+                'unit_price_material': 2000,
+            })]
+        elif self.item_type == 'tools_ppe':
+            for cal_line in self.calculation_line_ids:
+                self.calculation_line_ids = [(2,cal_line.id)]
+            self.calculation_line_ids = [(0,0,{
+                'name': 'Tool Box',
+                'product_qty': 1,
+                'duration_month': 2,
+                'unit_price_material': 2000,
+            }),(0,0,{
+                'name': 'Coverall',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 70,
+            }),(0,0,{
+                'name': 'Safety shoes',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 38,
+            }),(0,0,{
+                'name': 'Helmet',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 25,
+            }),(0,0,{
+                'name': 'Goggles',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 5,
+            }),(0,0,{
+                'name': 'H2S Detector',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 175,
+            }),(0,0,{
+                'name': 'Escape Mask',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 200,
+            }),(0,0,{
+                'name': 'BA',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 0,
+            })]
+        elif self.item_type == 'special_tools_equipment':
+            for cal_line in self.calculation_line_ids:
+                self.calculation_line_ids = [(2,cal_line.id)]
+            self.calculation_line_ids = [(0,0,{
+                'name': 'Splicing Machine',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 0,
+            }),(0,0,{
+                'name': 'HART',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 350,
+            }),(0,0,{
+                'name': 'Megger',
+                'product_qty': 1,
+                'duration_month': 0,
+                'unit_price_material': 150,
+            }),(0,0,{
+                'name': 'Hiab',
+                'product_qty': 1,
+                'duration_month': 4,
+                'unit_price_material': 1800,
+            }),(0,0,{
+                'name': '15 mtr Manlift',
+                'product_qty': 1,
+                'duration_month': 1,
+                'unit_price_material': 7200,
+            }),(0,0,{
+                'name': '8 mtr Scissor Liftg ',
+                'product_qty': 1,
+                'duration_month': 1,
+                'unit_price_material': 3400,
+            }),(0,0,{
+                'name': 'Crane',
+                'product_qty': 1,
+                'duration_month': 4,
+                'unit_price_material': 0,
+            }),(0,0,{
+                'name': 'Scaffolding',
+                'product_qty': 1,
+                'duration_month': 4,
+                'unit_price_material': 0,
+            }),(0,0,{
+                'name': 'Crane',
+                'product_qty': 1,
+                'duration_month': 4,
+                'unit_price_material': 0,
+            })]
+        elif self.item_type == 'other_expenses':
+            for cal_line in self.calculation_line_ids:
+                self.calculation_line_ids = [(2,cal_line.id)]
+
 
     @api.depends('calculation_line_ids', 'calculation_line_ids.total')
     def _compute_total(self):

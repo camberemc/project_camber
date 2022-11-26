@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- VG Code: Estimation Expense Type Data-->
+        <record id="estimation_expense_type_obj_1" model="estimation.expense.type">
+            <field name="name">Section Manager</field>
+            <field name="department">EXECUTION</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_2" model="estimation.expense.type">
+            <field name="name">Project Manager</field>
+            <field name="department">EXECUTION</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_3" model="estimation.expense.type">
+            <field name="name">Construction Manager</field>
+            <field name="department">EXECUTION</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_4" model="estimation.expense.type">
+            <field name="name">Project Engineer</field>
+            <field name="department">EXECUTION</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_5" model="estimation.expense.type">
+            <field name="name">Site Engineer</field>
+            <field name="department">EXECUTION</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_6" model="estimation.expense.type">
+            <field name="name">Supervisor</field>
+            <field name="department">EXECUTION</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_7" model="estimation.expense.type">
+            <field name="name">PTW</field>
+            <field name="department">EXECUTION</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_8" model="estimation.expense.type">
+            <field name="name">Site Co-ordinator</field>
+            <field name="department">EXECUTION</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_9" model="estimation.expense.type">
+            <field name="name">Planning Engineer</field>
+            <field name="department">PCD</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_10" model="estimation.expense.type">
+            <field name="name">Cost Control Engineer</field>
+            <field name="department">PCD</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_11" model="estimation.expense.type">
+            <field name="name">Contracts Engineer</field>
+            <field name="department">PCD</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_12" model="estimation.expense.type">
+            <field name="name">Site Administrator</field>
+            <field name="department">PCD</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_13" model="estimation.expense.type">
+            <field name="name">Project Co-ordinator</field>
+            <field name="department">PCD</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_14" model="estimation.expense.type">
+            <field name="name">Procurement Manager</field>
+            <field name="department">PROC</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_15" model="estimation.expense.type">
+            <field name="name">Procurement Engineer</field>
+            <field name="department">PROC</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_16" model="estimation.expense.type">
+            <field name="name">Procurement Co-ordinator</field>
+            <field name="department">PROC</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_17" model="estimation.expense.type">
+            <field name="name">Proposals Manager</field>
+            <field name="department">EST</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_18" model="estimation.expense.type">
+            <field name="name">Consultancy Support</field>
+            <field name="department">EST</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_19" model="estimation.expense.type">
+            <field name="name">Proposals Engineer</field>
+            <field name="department">EST</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_20" model="estimation.expense.type">
+            <field name="name">Design Engineer</field>
+            <field name="department">ENGG</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_21" model="estimation.expense.type">
+            <field name="name">Draughtsman</field>
+            <field name="department">ENGG</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_22" model="estimation.expense.type">
+            <field name="name">HSE Officer</field>
+            <field name="department">QHSE</field>
+        </record>
+
+        <record id="estimation_expense_type_obj_23" model="estimation.expense.type">
+            <field name="name">QA/QC Engineer</field>
+            <field name="department">QHSE</field>
+        </record>
+
+        <!-- VG Code: Budget Data-->
+
+        <record id="em_em_obj_1" model="em.em">
+            <field name="code">EM</field>
+            <field name="name">PROJECT MATERIAL</field>
+        </record>
+
+        <record id="em_em_obj_2" model="em.em">
+            <field name="code">EM</field>
+            <field name="name">PROJECT SERVICES</field>
+        </record>
+
+        <record id="em_em_obj_3" model="em.em">
+            <field name="code">EM</field>
+            <field name="name">PROJECT OTHER EXP</field>
+        </record>
+
+        <record id="em_em_obj_4" model="em.em">
+            <field name="code">EM</field>
+            <field name="name">LABOR COST</field>
+        </record>
+
+        <record id="hvac_hvac_obj_1" model="hvac.hvac">
+            <field name="code">HVAC</field>
+            <field name="name">PROJECT MATERIAL</field>
+        </record>
+
+        <record id="hvac_hvac_obj_2" model="hvac.hvac">
+            <field name="code">HVAC</field>
+            <field name="name">PROJECT SERVICES</field>
+        </record>
+
+        <record id="hvac_hvac_obj_3" model="hvac.hvac">
+            <field name="code">HVAC</field>
+            <field name="name">PROJECT OTHER EXP</field>
+        </record>
+
+        <record id="hvac_hvac_obj_4" model="hvac.hvac">
+            <field name="code">HVAC</field>
+            <field name="name">LABOR COST</field>
+        </record>
+
+        <record id="fc_fc_obj_1" model="fc.fc">
+            <field name="code">FC</field>
+            <field name="name">PROJECT MATERIAL</field>
+        </record>
+
+        <record id="fc_fc_obj_2" model="fc.fc">
+            <field name="code">FC</field>
+            <field name="name">PROJECT SERVICES</field>
+        </record>
+
+        <record id="fc_fc_obj_3" model="fc.fc">
+            <field name="code">FC</field>
+            <field name="name">PROJECT OTHER EXP</field>
+        </record>
+
+        <record id="fc_fc_obj_4" model="fc.fc">
+            <field name="code">FC</field>
+            <field name="name">LABOR COST</field>
+        </record>
+
+
+        <record id="it_it_obj_1" model="it.it">
+            <field name="code">IT</field>
+            <field name="name">PROJECT MATERIAL</field>
+        </record>
+
+        <record id="it_it_obj_2" model="it.it">
+            <field name="code">IT</field>
+            <field name="name">PROJECT SERVICES</field>
+        </record>
+
+        <record id="it_it_obj_3" model="it.it">
+            <field name="code">IT</field>
+            <field name="name">PROJECT OTHER EXP</field>
+        </record>
+
+        <record id="it_it_obj_4" model="it.it">
+            <field name="code">IT</field>
+            <field name="name">LABOR COST</field>
+        </record>
+
+
+        <record id="admin_admin_obj_1" model="admin.admin">
+            <field name="code">ADMIN</field>
+            <field name="name">ASSET PURCHASE</field>
+            <field name="wbs_char">101001-AHAP</field>
+        </record>
+
+        <record id="admin_admin_obj_2" model="admin.admin">
+            <field name="code">ADMIN</field>
+            <field name="name">SERVICES</field>
+            <field name="wbs_char">7201-AHAS</field>
+        </record>
+
+        <record id="admin_admin_obj_3" model="admin.admin">
+            <field name="code">ADMIN</field>
+            <field name="name">LABOR COST</field>
+            <field name="wbs_char">7203-AHLAB</field>
+        </record>
+
+    </data>
+</odoo>
