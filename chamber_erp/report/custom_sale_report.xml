@@ -293,99 +293,95 @@
                         <br/>
 
                         <!--  -->
-                        <br/>
-                        <table class="table table-sm o_main_table">
-                            <thead>
-                                <tr>
-                                    <!-- TODO: remove in master -->
-                                    <t t-set="colspan" t-value="5"/>
-                                    <th class="text-left">Sl.NO</th>
-                                    <th class="text-center">Description</th>
-                                    <th class="text-center">Unit</th>
-                                    <th class="text-center">Qty</th>
-                                    <th class="text-center">Unit Price</th>
-                                </tr>
-                            </thead>
-                            <t t-set="head_seq" t-value="0"/>
-                            <t t-set="line_seq" t-value="0"/>
-                            <t t-set="line_sl_no_op" t-value="0"/>
-                            <t t-set="sl_no" t-value="1"/>
-                            <tbody class="sale_tbody">
-
-                                <t t-set="current_subtotal" t-value="0"/>
-
-                                <t t-foreach="doc.sale_order_option_ids" t-as="line">
-                                    <t t-set="price_unit" t-value="round(line.price_unit, 2)"/>
+                        <t t-if="doc.sale_order_option_ids">
+                            <span style="">
+                                <u>
+                                    <b>Optional Price</b>
+                                </u>
+                            </span>
+                            <br/>
+                            <br/>
+                            <table class="table table-sm o_main_table">
+                                <thead>
                                     <tr>
-                                        <t t-set="line_sl_no_op" t-value="line_sl_no_op + 1"/>
-                                        <td class="text-center">
-                                            <span t-esc="line_sl_no_op"/>
-                                        </td>
-                                        <td class="text-left">
-                                            <t t-if="head_seq == 0">
-                                                <t t-set="head_seq" t-value="head_seq + 1"/>
+                                        <!-- TODO: remove in master -->
+                                        <t t-set="colspan" t-value="5"/>
+                                        <th class="text-left">Sl.NO</th>
+                                        <th class="text-center">Description</th>
+                                        <th class="text-center">Unit</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-center">Unit Price</th>
+                                    </tr>
+                                </thead>
+                                <t t-set="head_seq" t-value="0"/>
+                                <t t-set="line_seq" t-value="0"/>
+                                <t t-set="line_sl_no_op" t-value="0"/>
+                                <t t-set="sl_no" t-value="1"/>
+                                <tbody class="sale_tbody">
+
+                                    <t t-set="current_subtotal" t-value="0"/>
+
+                                    <t t-foreach="doc.sale_order_option_ids" t-as="line">
+                                        <t t-set="price_unit" t-value="round(line.price_unit, 2)"/>
+                                        <tr>
+                                            <t t-set="line_sl_no_op" t-value="line_sl_no_op + 1"/>
+                                            <td class="text-center">
+                                                <span t-esc="line_sl_no_op"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <t t-if="head_seq == 0">
+                                                    <t t-set="head_seq" t-value="head_seq + 1"/>
+                                                </t>
+                                                <t t-set="line_seq" t-value="line_seq + 1"/>
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.uom_id" groups="uom.group_uom"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.quantity"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format(float(line.price_unit))"
+                                                />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <div class="clearfix">
+                                <div id="total" class="row" name="total" style="page-break-inside: avoid;">
+                                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                        <table class="table table-sm">
+                                            <t>
+                                                <tr class="border-black o_subtotal" style="">
+                                                    <td>
+                                                        <strong>Total (<span t-field="doc.currency_id"/>)</strong>
+                                                    </td>
+                                                    <td>
+                                                        <strong>:</strong>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="'{0:,.2f}'.format(float(current_subtotal))"/>
+                                                    </td>
+                                                </tr>
                                             </t>
-                                            <t t-set="line_seq" t-value="line_seq + 1"/>
-                                            <span t-field="line.name"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-field="line.uom_id" groups="uom.group_uom"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-field="line.quantity"/>
-                                        </td>
-                                        <td class="text-right">
-                                            <span
-                                                    t-esc="'{0:,.2f}'.format(float(line.price_unit))"
-                                            />
-                                        </td>
-                                    </tr>
-
-                                    <tr class="is-subtotal text-right">
-                                        <td colspan="99">
-                                            <strong class="mr16">Sub total ( <span t-field="doc.currency_id"/> )</strong>
-                                            <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                            <t t-set="current_subtotal" t-value="current_subtotal + (line.price_unit * line.quantity)"/>
-                                            <span
-                                                    t-esc="'{0:,.2f}'.format(float(current_subtotal))"
-                                            />
-                                        </td>
-                                    </tr>
-                                </t>
-                            </tbody>
-                        </table>
-                        <br/>
-                        <div class="clearfix">
-                            <div id="total" class="row" name="total" style="page-break-inside: avoid;">
-                                <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
-                                    <table class="table table-sm">
-                                        <t>
-                                            <tr class="border-black o_subtotal" style="">
-                                                <td>
-                                                    <strong>Total (<span t-field="doc.currency_id"/>)</strong>
-                                                </td>
-                                                <td>
-                                                    <strong>:</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <span t-esc="'{0:,.2f}'.format(float(current_subtotal))"/>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                    </table>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong>In words :
+                                            <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(current_subtotal)"/>
+                                        </strong>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <strong>In words :
-                                        <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(current_subtotal)"/>
-                                    </strong>
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
+                            <br/>
+                        </t>
                         <!--  -->
-
 
                         <div class="row" style="font-size: 13px;font-family:Roboto;">
                             <div class="col-12">
@@ -670,96 +666,94 @@
                         <br/>
 
                         <!--  -->
-                        <table class="table table-sm o_main_table">
-                            <thead>
-                                <tr>
-                                    <!-- TODO: remove in master -->
-                                    <t t-set="colspan" t-value="5"/>
-                                    <th class="text-left">Sl.NO</th>
-                                    <th class="text-center">Description</th>
-                                    <th class="text-center">Unit</th>
-                                    <th class="text-center">Qty</th>
-                                    <th class="text-center">Unit Price</th>
-                                </tr>
-                            </thead>
-                            <t t-set="head_seq" t-value="0"/>
-                            <t t-set="line_seq" t-value="0"/>
-                            <t t-set="line_sl_no_op" t-value="0"/>
-                            <t t-set="sl_no" t-value="1"/>
-                            <tbody class="sale_tbody">
-
-                                <t t-set="current_subtotal" t-value="0"/>
-
-                                <t t-foreach="doc.sale_order_option_ids" t-as="line">
-                                    <t t-set="price_unit" t-value="round(line.price_unit, 2)"/>
+                        <t t-if="doc.sale_order_option_ids">
+                            <span style="">
+                                <u>
+                                    <b>Optional Price</b>
+                                </u>
+                            </span>
+                            <br/>
+                            <br/>
+                            <table class="table table-sm o_main_table">
+                                <thead>
                                     <tr>
-                                        <t t-set="line_sl_no_op" t-value="line_sl_no_op + 1"/>
-                                        <td class="text-center">
-                                            <span t-esc="line_sl_no_op"/>
-                                        </td>
-                                        <td class="text-left">
-                                            <t t-if="head_seq == 0">
-                                                <t t-set="head_seq" t-value="head_seq + 1"/>
-                                            </t>
-                                            <t t-set="line_seq" t-value="line_seq + 1"/>
-                                            <span t-field="line.name"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-field="line.uom_id" groups="uom.group_uom"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-field="line.quantity"/>
-                                        </td>
-                                        <td class="text-right">
-                                            <span
-                                                    t-esc="'{0:,.2f}'.format(float(line.price_unit))"
-                                            />
-                                        </td>
+                                        <!-- TODO: remove in master -->
+                                        <t t-set="colspan" t-value="5"/>
+                                        <th class="text-left">Sl.NO</th>
+                                        <th class="text-center">Description</th>
+                                        <th class="text-center">Unit</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-center">Unit Price</th>
                                     </tr>
+                                </thead>
+                                <t t-set="head_seq" t-value="0"/>
+                                <t t-set="line_seq" t-value="0"/>
+                                <t t-set="line_sl_no_op" t-value="0"/>
+                                <t t-set="sl_no" t-value="1"/>
+                                <tbody class="sale_tbody">
 
-                                    <tr class="is-subtotal text-right">
-                                        <td colspan="99">
-                                            <strong class="mr16">Sub total ( <span t-field="doc.currency_id"/> )</strong>
-                                            <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                            <t t-set="current_subtotal" t-value="current_subtotal + (line.price_unit * line.quantity)"/>
-                                            <span
-                                                    t-esc="'{0:,.2f}'.format(float(current_subtotal))"
-                                            />
-                                        </td>
-                                    </tr>
-                                </t>
-                            </tbody>
-                        </table>
-                        <br/>
-                        <div class="clearfix">
-                            <div id="total" class="row" name="total" style="page-break-inside: avoid;">
-                                <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
-                                    <table class="table table-sm">
-                                        <t>
-                                            <tr class="border-black o_subtotal" style="">
-                                                <td>
-                                                    <strong>Total (<span t-field="doc.currency_id"/>)</strong>
-                                                </td>
-                                                <td>
-                                                    <strong>:</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <span t-esc="'{0:,.2f}'.format(float(current_subtotal))"/>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                    </table>
+                                    <t t-set="current_subtotal" t-value="0"/>
+
+                                    <t t-foreach="doc.sale_order_option_ids" t-as="line">
+                                        <t t-set="price_unit" t-value="round(line.price_unit, 2)"/>
+                                        <tr>
+                                            <t t-set="line_sl_no_op" t-value="line_sl_no_op + 1"/>
+                                            <td class="text-center">
+                                                <span t-esc="line_sl_no_op"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <t t-if="head_seq == 0">
+                                                    <t t-set="head_seq" t-value="head_seq + 1"/>
+                                                </t>
+                                                <t t-set="line_seq" t-value="line_seq + 1"/>
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.uom_id" groups="uom.group_uom"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.quantity"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format(float(line.price_unit))"
+                                                />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <div class="clearfix">
+                                <div id="total" class="row" name="total" style="page-break-inside: avoid;">
+                                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                        <table class="table table-sm">
+                                            <t>
+                                                <tr class="border-black o_subtotal" style="">
+                                                    <td>
+                                                        <strong>Total (<span t-field="doc.currency_id"/>)</strong>
+                                                    </td>
+                                                    <td>
+                                                        <strong>:</strong>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="'{0:,.2f}'.format(float(current_subtotal))"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong>In words :
+                                            <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(current_subtotal)"/>
+                                        </strong>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <strong>In words :
-                                        <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(current_subtotal)"/>
-                                    </strong>
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
+                            <br/>
+                        </t>
                         <!--  -->
 
 

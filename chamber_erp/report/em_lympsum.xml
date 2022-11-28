@@ -645,17 +645,18 @@
                     <br/>
                     <!--  -->
                     <t t-if="doc.sale_order_option_ids">
+                        <strong style="padding-left:20px;">
+                            <u>OPTIONAL PRICE</u>
+                        </strong>
+                        <br/>
+                        <br/>
                         <table width="100%" style="border:1px solid black;padding-left:7px;padding-right:7px">
                             <thead>
                                 <th width="7%" style="border:1px solid black;text-align:center">S. No</th>
                                 <th width="50%" style="border:1px solid black;text-align:center">Description</th>
                                 <th width="10%" style="border:1px solid black;text-align:center">Unit</th>
                                 <th width="10%" style="border:1px solid black;text-align:center">Qty</th>
-                                <th width="13%" style="border:1px solid black;text-align:center">
-                                    <span>Unit Rate</span>
-                                    <br/>
-                                    <span>(<span t-field="doc.currency_id"/>)</span>
-                                </th>
+                                <th width="33%" style="border:1px solid black;text-align:center">Remarks</th>
                             </thead>
                             <t t-set="optional_product_sl_no" t-value="0"/>
                             <t t-set="optional_product_grand_total" t-value="0"/>
@@ -680,18 +681,17 @@
                                             <span t-field="line.quantity"/>
                                         </td>
 
-                                        <td class="text-right"
+                                        <td class="text-left"
                                             style="border:1px solid black;padding-left:7px;padding-right:7px">
                                             <span
-                                                    t-esc="'{0:,.2f}'.format(float(line.price_unit))"
-                                            />
+                                                    t-field="line.remarks"/>
                                         </td>
                                         <t t-set="optional_product_grand_total" t-value="optional_product_grand_total + (line.price_unit * line.quantity)"/>
                                     </tr>
                                 </t>
                                 <!--                                <t t-if="optional_product_grand_total">-->
                                 <tr>
-                                    <td colspan="4" class="text-center"
+                                    <td colspan="3" class="text-center"
                                         style="border:1px solid black;padding-left:7px;padding-right:7px">
                                         <strong>Grand Total ( <span t-field="doc.currency_id"/> )</strong>
                                     </td>
@@ -700,7 +700,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6" class="text-left"
+                                    <td colspan="5" class="text-left"
                                         style="border:1px solid black;padding-left:7px;padding-right:7px">
                                         <strong>Amount in Words (<span t-field="doc.currency_id"/>) :
                                             <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(optional_product_grand_total)"/>
