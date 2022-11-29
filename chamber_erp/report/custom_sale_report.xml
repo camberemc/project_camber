@@ -319,7 +319,7 @@
                                 <t t-set="sl_no" t-value="1"/>
                                 <tbody class="sale_tbody">
 
-                                    <t t-set="current_subtotal" t-value="0"/>
+                                    <t t-set="op_current_subtotal" t-value="0"/>
 
                                     <t t-foreach="doc.sale_order_option_ids" t-as="line">
                                         <t t-set="price_unit" t-value="round(line.price_unit, 2)"/>
@@ -346,6 +346,7 @@
                                                         t-esc="'{0:,.2f}'.format(float(line.price_unit))"
                                                 />
                                             </td>
+                                            <t t-set="op_current_subtotal" t-value="op_current_subtotal + (line.price_unit * line.quantity)"/>
                                         </tr>
                                     </t>
                                 </tbody>
@@ -364,7 +365,7 @@
                                                         <strong>:</strong>
                                                     </td>
                                                     <td class="text-right">
-                                                        <span t-esc="'{0:,.2f}'.format(float(current_subtotal))"/>
+                                                        <span t-esc="'{0:,.2f}'.format(float(op_current_subtotal))"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -374,7 +375,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <strong>In words :
-                                            <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(current_subtotal)"/>
+                                            <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(op_current_subtotal)"/>
                                         </strong>
                                     </div>
                                 </div>
@@ -692,7 +693,7 @@
                                 <t t-set="sl_no" t-value="1"/>
                                 <tbody class="sale_tbody">
 
-                                    <t t-set="current_subtotal" t-value="0"/>
+                                    <t t-set="current_subtotal_op" t-value="0"/>
 
                                     <t t-foreach="doc.sale_order_option_ids" t-as="line">
                                         <t t-set="price_unit" t-value="round(line.price_unit, 2)"/>
@@ -719,6 +720,7 @@
                                                         t-esc="'{0:,.2f}'.format(float(line.price_unit))"
                                                 />
                                             </td>
+                                            <t t-set="current_subtotal_op" t-value="current_subtotal_op + (line.price_unit * line.quantity)"/>
                                         </tr>
                                     </t>
                                 </tbody>
@@ -737,7 +739,7 @@
                                                         <strong>:</strong>
                                                     </td>
                                                     <td class="text-right">
-                                                        <span t-esc="'{0:,.2f}'.format(float(current_subtotal))"/>
+                                                        <span t-esc="'{0:,.2f}'.format(float(current_subtotal_op))"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -747,7 +749,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <strong>In words :
-                                            <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(current_subtotal)"/>
+                                            <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(current_subtotal_op)"/>
                                         </strong>
                                     </div>
                                 </div>
