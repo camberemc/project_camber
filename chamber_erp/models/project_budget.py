@@ -23,6 +23,24 @@ class EM(models.Model):
     def _compute_wbs(self):
         for rec in self:
             if rec.code and rec.name:
+                first_part = ''
+                second_part = ''
+                last_part = ''
+                if rec.project_id.project_code:
+                    first_part = rec.project_id.project_code
+
+                if rec.project_id.sage_code:
+                    second_part = '-' + rec.project_id.sage_code
+
+                if rec.name == 'PROJECT MATERIAL':
+                    last_part = '-EMPM'
+                elif rec.name == 'PROJECT SERVICES':
+                    last_part = '-EMPS'
+                elif rec.name == 'PROJECT OTHER EXP':
+                    last_part = '-EMPOH'
+                elif rec.name == 'LABOR COST':
+                    last_part = '-EMPLAB'
+                """
                 first_part = 'EM'
                 second_part = ''
                 last_part = ''
@@ -40,7 +58,7 @@ class EM(models.Model):
                     last_part = '-EMPOH'
                 elif rec.code == 'EM' and rec.name == 'LABOR COST':
                     last_part = '-EMPLAB'
-
+                """
 
                 rec.wbs = first_part + second_part + last_part
             else:
@@ -69,6 +87,24 @@ class HVAC(models.Model):
     def _compute_wbs(self):
         for rec in self:
             if rec.code and rec.name:
+                first_part = ''
+                second_part = ''
+                last_part = ''
+                if rec.project_id.project_code:
+                    first_part =  rec.project_id.project_code
+
+                if rec.project_id.sage_code:
+                    second_part = '-' + rec.project_id.sage_code
+
+                if rec.name == 'PROJECT MATERIAL':
+                    last_part = '-HVPM'
+                elif rec.name == 'PROJECT SERVICES':
+                    last_part = '-HVPS'
+                elif rec.name == 'PROJECT OTHER EXP':
+                    last_part = '-HVPOH'
+                elif rec.name == 'LABOR COST':
+                    last_part = '-HVPLAB'
+                """
                 first_part = 'EM'
                 second_part = ''
                 last_part = ''
@@ -86,7 +122,7 @@ class HVAC(models.Model):
                     last_part = '-HVPOH'
                 elif rec.code == 'HVAC' and rec.name == 'LABOR COST':
                     last_part = '-HVPLAB'
-
+                """
 
                 rec.wbs = first_part + second_part + last_part
             else:
@@ -115,6 +151,24 @@ class FC(models.Model):
     def _compute_wbs(self):
         for rec in self:
             if rec.code and rec.name:
+                first_part = ''
+                second_part = ''
+                last_part = ''
+                if rec.project_id.project_code:
+                    first_part = rec.project_id.project_code
+
+                if rec.project_id.sage_code:
+                    second_part = '-' + rec.project_id.sage_code
+
+                if rec.name == 'PROJECT MATERIAL':
+                    last_part = '-FCPM'
+                elif rec.name == 'PROJECT SERVICES':
+                    last_part = '-FCPS'
+                elif rec.name == 'PROJECT OTHER EXP':
+                    last_part = '-FCPOH'
+                elif rec.name == 'LABOR COST':
+                    last_part = '-FCPLAB'
+                """
                 first_part = 'EM'
                 second_part = ''
                 last_part = ''
@@ -132,7 +186,7 @@ class FC(models.Model):
                     last_part = '-FCPOH'
                 elif rec.code == 'FC' and rec.name == 'LABOR COST':
                     last_part = '-FCPLAB'
-
+                """
 
                 rec.wbs = first_part + second_part + last_part
             else:
@@ -161,6 +215,24 @@ class IT(models.Model):
     def _compute_wbs(self):
         for rec in self:
             if rec.code and rec.name:
+                first_part = ''
+                second_part = ''
+                last_part = ''
+                if rec.project_id.project_code:
+                    first_part =  rec.project_id.project_code
+
+                if rec.project_id.sage_code:
+                    second_part = '-' + rec.project_id.sage_code
+
+                if rec.name == 'PROJECT MATERIAL':
+                    last_part = '-ITPM'
+                elif rec.name == 'PROJECT SERVICES':
+                    last_part = '-ITPS'
+                elif rec.name == 'PROJECT OTHER EXP':
+                    last_part = '-ITPOH'
+                elif rec.name == 'LABOR COST':
+                    last_part = '-ITPLAB'
+                """
                 first_part = 'EM'
                 second_part = ''
                 last_part = ''
@@ -178,7 +250,7 @@ class IT(models.Model):
                     last_part = '-ITPOH'
                 elif rec.code == 'IT' and rec.name == 'LABOR COST':
                     last_part = '-ITPLAB'
-
+                """
 
                 rec.wbs = first_part + second_part + last_part
             else:
