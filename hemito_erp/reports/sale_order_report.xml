@@ -1,0 +1,431 @@
+<odoo>
+
+    <template id="custom_report_sale_order_hemito">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="hemito_erp.custom_report_sale_order_hemito_document" t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+    <template id="custom_report_sale_order_hemito_document">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="hemito_erp.report_header_minimal_sale_order"/>
+            <t t-call="web.external_layout" id="layout">
+                <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page" style="font-size: 13px;font-family:Roboto;">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <!--                                                        <strong t-if="o.approval_state == 'approved'" style="text-align:center;font-size:20px">-->
+                            <!--                                                            COMMERCIAL-->
+                            <!--                                                        </strong>-->
+                            <!--                                                        <strong t-if="o.approval_state != 'approved'" style="text-align:center;font-size:20px">-->
+                            <!--                                                            NOT APPROVED-->
+                            <!--                                                        </strong>-->
+                            <strong t-if="o.state in ('draft', 'sent', 'draft_quot')"
+                                    style="text-align:center;font-size:20px">COMMERCIAL OFFER
+                            </strong>
+                            <strong t-if="o.state in ('sale', 'done')" style="text-align:center;font-size:20px">
+                                COMMERCIAL ORDER
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <t t-if="doc.partner_id">
+                                <strong>To</strong>
+                                <br/>
+                                <strong t-field="doc.partner_id.name"/>
+                                <br/>
+                                <span t-field="o.partner_id.street"/>
+                                <t t-if="o.partner_id.street and o.partner_id.street2">
+                                    ,
+                                </t>
+                                <span t-field="o.partner_id.street2"/>
+                                <br/>
+                                <span t-if="o.partner_id.city">
+                                    <span t-field="o.partner_id.city"/>
+                                </span>
+                                <span t-if="o.partner_id.state_id">
+                                    <span t-field="o.partner_id.state_id.name"/>
+                                </span>
+                                <!--                    </span>-->
+                                <span t-if="o.partner_id.zip or o.partner_id.country_id">
+                                    <br/>
+                                    <span t-field="o.partner_id.zip"/>
+
+                                    <span t-field="o.partner_id.country_id.name"/>
+                                </span>
+                                <br/>
+                                <span>Tel:
+                                    <span t-field="o.partner_id.phone"/>
+                                </span>
+                                <br/>
+                                <span>E:
+                                    <span t-field="o.partner_id.email"/>
+                                </span>
+                            </t>
+
+                        </div>
+                        <div class="col-6" style="text-align:right">
+                            <br/>
+                            <strong style="font-size:14px" t-field="res_company.name"/>
+                            <span t-if="res_company.street">
+                                <br/>
+                                <span t-field="res_company.street"/>
+                            </span>
+                            <span t-if="res_company.street2">
+                                <br/>
+                                <span t-field="res_company.street2"/>
+                            </span>
+                            <span t-if="res_company.city">
+                                <span t-field="res_company.city"/>
+                            </span>
+                            <span t-if="res_company.state_id">
+                                <span t-field="res_company.state_id.name"/>
+                            </span>
+                            <!--                    </span>-->
+                            <span t-if="res_company.zip or res_company.country_id">
+                                <br/>
+                                <span t-field="res_company.zip"/>
+
+                                <span t-field="res_company.country_id.name"/>
+                            </span>
+                            <br/>
+                            <span t-if="res_company.email">
+                                <span>E:</span>
+                                <span t-field="res_company.email"/>
+                            </span>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <table width="100%">
+                        <tr>
+                            <td width="10%">
+                                <strong>Subject</strong>
+                            </td>
+                            <td width="50%" class="text-left">
+                                <span t-field="doc.subject"/>
+                            </td>
+                            <td width="20%">
+                                <strong>Company TRN</strong>
+                            </td>
+                            <td width="20%">
+                                <t t-if="res_company.vat">
+                                    <span t-field="res_company.vat"/>
+                                </t>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <!-- TODO: remove in master -->
+                                <t t-set="colspan" t-value="5"/>
+                                <th style="background-color: #112C5F;color: white;" class="text-center">S/No</th>
+                                <th style="background-color: #112C5F;color: white;" class="text-left">Particular</th>
+                                <th style="background-color: #112C5F;color: white;" class="text-center">Unit</th>
+                                <th style="background-color: #112C5F;color: white;" class="text-center">Qty</th>
+                                <th style="background-color: #112C5F;color: white;" class="text-center">Unit Price</th>
+                                <th style="background-color: #112C5F;color: white;" class="text-center">Total Amount
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+                            <t t-set="sl_no" t-value="1"/>
+                            <t t-set="grand_total" t-value="0"/>
+                            <t t-set="total_vat" t-value="0"/>
+                            <t t-set="discount" t-value="False"/>
+                            <t t-set="discount_amount" t-value="0"/>
+                            <t t-foreach="doc.order_line" t-as="line">
+                                <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                                <!--                                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_total"/>-->
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="line.product_id.default_code != 'DISC'">
+                                        <t t-if="not line.display_type">
+                                            <td style="border: 1px solid black;" class="text-center">
+                                                <span t-esc="sl_no"/>
+                                            </td>
+                                            <td style="border: 1px solid black;" class="text-left">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td style="border: 1px solid black;" class="text-center">
+                                                <span t-field="line.product_uom"/>
+                                            </td>
+                                            <td style="border: 1px solid black;" class="text-center">
+                                                <span t-field="line.product_uom_qty"/>
+                                            </td>
+                                            <td style="border: 1px solid black;" class="text-right">
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format(line.price_unit)"
+                                                />
+
+                                            </td>
+                                            <td style="border: 1px solid black;" class="text-right">
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format(line.price_subtotal)"
+                                                />
+                                            </td>
+                                            <t t-set="sl_no" t-value="sl_no+1"/>
+                                            <t t-set="grand_total" t-value="grand_total+line.price_subtotal"/>
+                                        </t>
+
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="discount" t-value="True"/>
+                                        <t t-set="discount_amount" t-value="line.price_subtotal"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <td style="border: 1px solid black;" colspan="99">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_note'">
+                                        <td style="border: 1px solid black;" colspan="99">
+                                            <span style="padding-left:2px" t-field="line.name"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')">
+                                    <tr class="is-subtotal text-right">
+                                        <td style="border: 1px solid black;" colspan="99">
+                                            <strong class="mr16">Subtotal</strong>
+                                            <span style="padding-left:2px"
+                                                  t-esc="'{0:,.2f}'.format(current_subtotal)"
+                                            />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                    <hr style="height:2px; border:none; background-color:#A0A7B3;"/>
+                    <!--                            <div class="clearfix">-->
+                    <div id="total" class="row" name="total">
+                        <div class="col-8">
+                            <strong>AED (
+                                <span t-esc="doc.currency_id.with_context(lang='en_US').amount_to_text(doc.amount_total)"/>
+                                )
+                            </strong>
+                        </div>
+                        <div class="col-4">
+                            <table class="table table-sm">
+                                <t t-if="discount">
+                                    <tr>
+                                        <td
+                                                style="text-align:right">
+                                            <b>
+                                                <span style="padding-left:2px">Goods Total</span>
+                                            </b>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <b>
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format((doc.amount_untaxed - discount_amount))"/>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td
+                                                style="text-align:right;">
+                                            <b>
+                                                <span style="padding-left:2px">Discount</span>
+                                            </b>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <b>
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format(discount_amount)"/>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td
+                                                style="text-align:right">
+                                            <b>
+                                                <span style="padding-left:2px">Sub Total</span>
+                                            </b>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <b>
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format(doc.amount_untaxed)"/>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td
+                                                style="text-align:right;">
+                                            <b>
+                                                <span style="padding-left:2px">VAT 5%</span>
+                                            </b>
+                                        </td>
+                                        <td style="text-align:right;">
+
+                                            <b>
+                                                <span t-esc='"%.2f" % (doc.amount_total - doc.amount_untaxed)'/>
+                                                <!--                                                <span t-esc="doc.amount_total - doc.amount_untaxed"/>-->
+                                            </b>
+                                        </td>
+                                    </tr>
+
+
+                                    <tr style="background-color: #112C5F;color: white;">
+                                        <td
+                                                style="text-align:right;border-right:1px solid black;border-bottom:1px solid black;">
+                                            <b>
+                                                <span style="padding-left:2px">Total AED</span>
+                                            </b>
+                                        </td>
+                                        <td style="text-align:right;border-bottom:1px solid black;">
+
+                                            <b>
+                                                <span t-esc="'{0:,.2f}'.format(doc.amount_total)"/>
+                                            </b>
+                                        </td>
+                                    </tr>
+
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td
+                                                style="text-align:right;">
+                                            <b>
+                                                <span style="padding-left:2px">Sub Total</span>
+                                            </b>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <b>
+                                                <span
+                                                        t-esc="'{0:,.2f}'.format(doc.amount_untaxed)"/>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td
+                                                style="text-align:right;">
+                                            <b>
+                                                <span style="padding-left:2px">VAT 5%</span>
+                                            </b>
+                                        </td>
+                                        <td style="text-align:right;">
+
+                                            <b>
+                                                <span t-esc='"%.2f" % (doc.amount_total - doc.amount_untaxed)'/>
+                                                <!--                                                <span t-esc="doc.amount_total - doc.amount_untaxed"/>-->
+                                            </b>
+                                        </td>
+                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td-->
+<!--                                                style="text-align:right;">-->
+<!--                                            <b>-->
+<!--                                                <span style="padding-left:2px">Discount</span>-->
+<!--                                            </b>-->
+<!--                                        </td>-->
+<!--                                        <td style="text-align:right;">-->
+<!--                                            <b>-->
+<!--                                                <span>0.0</span>-->
+<!--                                            </b>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+                                    <tr style="background-color: #112C5F;color: white;">
+                                        <td
+                                                style="text-align:right;border-right:1px solid black;border-bottom:1px solid black;">
+                                            <b>
+                                                <span style="padding-left:2px">Total AED</span>
+                                            </b>
+                                        </td>
+                                        <td style="text-align:right;border-bottom:1px solid black;">
+
+                                            <b>
+                                                <span t-esc="'{0:,.2f}'.format(doc.amount_total)"/>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                            </table>
+                        </div>
+
+                    </div>
+                    <br/>
+                    <div style="page-break-inside: avoid;">
+                        <div class="row">
+                            <strong>Terms &amp; Conditions</strong>
+                            <br/>
+                            <br/>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <table width="100%" style="text-align:left">
+                                    <tr>
+                                        <td style="text-align:left" width="20%">
+                                            <strong>
+                                                Reference
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.reference" width="80%"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left">
+                                            <strong>
+                                                Payment Terms
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <t t-if="doc.payment_term_id">
+                                                <span t-field="doc.payment_term_id.name"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left">
+                                            <strong>
+                                                Remarks
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.remarks"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left">
+                                            <strong>
+                                                Warranty
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.warranty"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left">
+                                            <strong>
+                                                Delivery Terms
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <t t-if="doc.delivery_term_id">
+                                                <span t-field="doc.delivery_term_id.name"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_extend_hemito" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="sheet/group/group[2]/field[@name='payment_term_id']"
+                   position="after">
+                <field name="delivery_term_id"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='other_information']" position="after">
+                <page string="Additional Details" name="additional_details">
+                    <group>
+                        <field name="subject"/>
+                        <field name="reference"/>
+                        <field name="remarks"/>
+                        <field name="warranty"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="before">
+                <button name="send_approve_quotation" type="object" string="Send for Approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'draft')]}"
+                />
+                <button name="approve_quotation" type="object" string="Approve Quotation"
+                        groups="hemito_erp.group_show_send_approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'pending')]}"/>
+                <button name="release_quotation" type="object" string="Release"
+                        groups="hemito_erp.group_edit_quotation_approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'draft_quot')]}"/>
+
+            </xpath>
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft_quot,pending,draft,sent,sale"/>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="replace"/>
+
+            <!--            </xpath>-->
+            <xpath expr="//button[@name='action_confirm']" position="replace">
+                <button name="action_confirm" string="Confirm" type="object" class="btn-primary"
+                        states="draft_quot,sent"/>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send']" position="replace">
+                <button name="action_quotation_send" string="Send by Email" type="object" states="draft_quot"
+                        class="btn-primary"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']" position="before">
+                <group>
+                    <group>
+                        <field name="other_expense"/>
+                        <button name="action_confirm_expense" string="Apply Expense" type="object" class="btn-primary"/>
+                    </group>
+                </group>
+
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom']"
+                   position="after">
+                <field name="cost" string="Unit Cost" sum="Cost"/>
+                <field name="total_cost" readonly="1" sum="Total Cost"/>
+                <field name="other_expense" readonly="1" sum="Other Expense"/>
+                <field name="cost_with_expense" readonly="1" sum="Total Cost with Expense"/>
+                <field name="margin_per"/>
+                <field name="margin_value" readonly="1" sum="Margin Value"/>
+                <field name="margin_value" invisible="1" sum="Margin Value"/>
+                <field name="sales_price" readonly="1" sum="Total Cost with margin"/>
+                <field name="sales_price" invisible="1" sum="Total Cost with margin"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quotation_tree_extend_hemito" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_untaxed']" position="before">
+                <field name="cost" optional="hide"/>
+                <field name="total_cost" optional="hide"/>
+                <field name="other_expense" optional="hide"/>
+                <field name="cost_with_expense" optional="hide"/>
+                <field name="margin_value" optional="hide"/>
+                <field name="sales_price" optional="hide"/>
+
+
+            </xpath>
+
+        </field>
+    </record>
+    <record id="sale_order_tree_extend_hemito" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_untaxed']" position="before">
+                <field name="cost" optional="hide"/>
+                <field name="total_cost" optional="hide"/>
+                <field name="other_expense" optional="hide"/>
+                <field name="cost_with_expense" optional="hide"/>
+                <field name="margin_value" optional="hide"/>
+                <field name="sales_price" optional="hide"/>
+
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

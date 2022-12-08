@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="crm_lead_form_extend_hemito" model="ir.ui.view">
+            <field name="name">crm.form.view.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_title')]/label[@for='name']" position="before">
+                    <h1>
+                        <field name="seq"/>
+                    </h1>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_lead_list_extend_hemito" model="ir.ui.view">
+            <field name="name">crm.tree.view.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='name']" position="before">
+                    <field name="seq"/>
+                </xpath>
+                <xpath expr="//tree/field[@name='team_id']" position="replace"/>
+                <xpath expr="//tree/field[@name='activity_date_deadline_my']" position="replace"/>
+                <xpath expr="//tree/field[@name='name']" position="after">
+                    <field name="partner_id"/>
+                    <field name="company_id"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

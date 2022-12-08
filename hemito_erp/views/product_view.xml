@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="product_template_form_extend_hemito" model="ir.ui.view">
+            <field name="name">product.template.view.inherited</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                 <field name="categ_id" position="after">
+                    <field name="vendor_id"/>
+                 </field>
+            </field>
+        </record>
+    </data>
+</odoo>
