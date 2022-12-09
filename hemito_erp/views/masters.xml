@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_delivery_terms" model="ir.ui.view">
+        <field name="name">delivery.terms.form</field>
+        <field name="model">delivery.terms</field>
+        <field name="arch" type="xml">
+            <form string="Delivery Terms">
+                <sheet string="Delivery Terms">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_delivery_terms_list" model="ir.ui.view">
+        <field name="model">delivery.terms</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Delivery Terms" default_order="id desc">
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+    <record id="act_delivery_terms_view" model="ir.actions.act_window">
+        <field name="name">Delivery Terms</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">delivery.terms</field>
+        <field name="view_mode">tree,form</field>
+<!--        <field name="view_type">tree</field>-->
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new Contract
+            </p>
+        </field>
+    </record>
+    <menuitem action="act_delivery_terms_view" id="menu_delivery_terms" parent="purchase.menu_purchase_config" sequence="10" />
+</odoo>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+            <xpath expr="//head" position="inside">
+                <link rel="stylesheet" href="/hemito_erp/static/src/css/all.css"/>
+                <link rel="stylesheet" href="/hemito_erp/static/src/css/print.css"/>
+            </xpath>
+        </template>
+
+        <report
+                id="action_report_custom_purchase_order_hemito"
+                model="purchase.order"
+                string="Purchase Order"
+                name="hemito_erp.custom_report_purchase_order_hemito"
+                file="hemito_erp.custom_report_purchase_order_hemito"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="(object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+                'Purchase Order - %s' % (object.name))"
+        />
+        <report
+                id="action_report_custom_rfq_hemito"
+                model="purchase.order"
+                string="Request for Quotation"
+                name="hemito_erp.custom_report_purchase_order_hemito"
+                file="hemito_erp.custom_report_purchase_order_hemito"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="'Request for Quotation - %s' % (object.name)"
+        />
+
+        <report
+                id="action_report_custom_saleorder"
+                model="sale.order"
+                string="Print"
+                name="hemito_erp.custom_report_sale_order_hemito"
+                file="hemito_erp.custom_report_sale_order_hemito"
+                report_type="qweb-pdf"
+                paperformat="portrait_paper_format"
+                print_report_name="( object.state in ('draft_quot', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+        <template id="report_header_minimal">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-6 text-left mb4">
+                        <br/>
+                        <img t-att-src="'/hemito_erp/static/src/header.png'" style="max-height: 300px;" width="250px"/>
+                    </div>
+                    <div class="col-6 pull-right" style="text-align:right">
+                        <br/>
+                        <strong style="font-size:14px" t-field="res_company.name"/>
+                        <span t-if="res_company.street">
+                            <br/>
+                            <span t-field="res_company.street"/>
+                        </span>
+                        <span t-if="res_company.street2">
+                            <br/>
+                            <span t-field="res_company.street2"/>
+                        </span>
+                        <span t-if="res_company.city">
+                            <span t-field="res_company.city"/>
+                        </span>
+                        <span t-if="res_company.state_id">
+                            <span t-field="res_company.state_id.name"/>
+                        </span>
+                        <!--                    </span>-->
+                        <span t-if="res_company.zip or res_company.country_id">
+                            <br/>
+                            <span t-field="res_company.zip"/>
+
+                            <span t-field="res_company.country_id.name"/>
+                        </span>
+                        <br/>
+                        <span t-if="res_company.email">
+                            <span>E:</span>
+                            <span t-field="res_company.email"/>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;">
+            </div>
+        </template>
+
+        <template id="report_header_minimal_sale_order">
+            <div class="header">
+                <div class="row" style="font-size: 13px;font-family:Roboto;">
+                    <div class="col-6 text-left mb4">
+                        <br/>
+                        <img t-att-src="'/hemito_erp/static/src/header.png'" style="max-height: 300px;" width="250px"/>
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+                    <div class="col-4 pull-right" style="text-align:right">
+                        <br/>
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left">
+                                    <span>Date</span>
+                                </td>
+                                <td>
+                                    <span>:</span>
+                                </td>
+                                <td style="text-align:center">
+                                    <t t-if="o.date_order">
+                                        <span t-field="o.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </t>
+                                </td>
+                            </tr>
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span>Qt No</span>
+                                    </td>
+                                    <td>
+                                        <span>:</span>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <span t-field="o.name"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="text-align:left">
+                                        <span>Validity</span>
+                                    </td>
+                                    <td>
+                                        <span>:</span>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <span t-field="o.validity_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="footer" style="font-size: 13px;font-family:Roboto;text-align:center">
+                <table class="table" width="100%" height="100%" style="background-color: #112C5F;color: white;text-align:center">
+                    <tr>
+                        <td width="100%">
+                            <span style="text-align:center">THANK YOU FOR YOUR BUSINESS</span>
+                        </td>
+                    </tr>
+                </table>
+                <span>Page</span>
+                <span class="page"/>
+                of
+                <span class="topage"/>
+            </div>
+        </template>
+    </data>
+</openerp>

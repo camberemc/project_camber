@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hemito_purchase_order_form_extend" model="ir.ui.view">
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="sheet/notebook/page[@name='purchase_delivery_invoice']/group/group[@name='invoice_info']"
+                   position="inside">
+                <field name="delivery_term_id"/>
+                <field name="remarks"/>
+            </xpath>
+            <xpath expr="header/field[@name='state']" position="replace">
+                <field name="state" widget="statusbar"
+                       statusbar_visible="draft_new,approval_pending,draft,sent,purchase" readonly="1"/>
+            </xpath>
+            <xpath expr="header" position="inside">
+                <button name="send_approve_quotation" type="object" string="Send for Approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'draft_new')]}"
+                />
+                <button name="approve_quotation" type="object" string="Approve Quotation"
+                        groups="hemito_erp.group_show_send_approval" class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'approval_pending')]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
