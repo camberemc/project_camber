@@ -118,6 +118,13 @@ class SaleOrderExtend(models.Model):
 					})
 				return res
 
+	@api.model
+	def create(self, values):
+		res = super(SaleOrderExtend, self).create(values)
+		if values.get('opportunity_id'):
+			res.name = res.opportunity_id.seq
+		return res
+
 
 class SaleOrderLineExtend(models.Model):
 	_inherit = "sale.order.line"
